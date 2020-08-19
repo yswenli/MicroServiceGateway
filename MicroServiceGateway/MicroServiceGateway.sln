@@ -3,33 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Service", "MicroServiceGateway.Service\MicroServiceGateway.Service.csproj", "{A74B063B-A175-46CA-8E20-6825BF1C9E26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Service", "MicroServiceGateway.Service\MicroServiceGateway.Service.csproj", "{A74B063B-A175-46CA-8E20-6825BF1C9E26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Routing", "MicroServiceGateway.Routing\MicroServiceGateway.Routing.csproj", "{90F9982F-1EF4-4475-B12B-F43717DB49D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Routing", "MicroServiceGateway.Routing\MicroServiceGateway.Routing.csproj", "{90F9982F-1EF4-4475-B12B-F43717DB49D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.ServiceDiscovery", "MicroServiceGateway.ServiceDiscovery\MicroServiceGateway.ServiceDiscovery.csproj", "{F020F04F-7CE6-4745-A446-10BFB4C51A2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.ServiceDiscovery", "MicroServiceGateway.ServiceDiscovery\MicroServiceGateway.ServiceDiscovery.csproj", "{F020F04F-7CE6-4745-A446-10BFB4C51A2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.CurrentlimitingFuse", "MicroServiceGateway.CurrentlimitingFuse\MicroServiceGateway.CurrentlimitingFuse.csproj", "{1426A596-5DA8-4AC8-BFA0-86EC9CE432BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.CurrentlimitingFuse", "MicroServiceGateway.CurrentlimitingFuse\MicroServiceGateway.CurrentlimitingFuse.csproj", "{1426A596-5DA8-4AC8-BFA0-86EC9CE432BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.LinkTracking", "MicroServiceGateway.LinkTracking\MicroServiceGateway.LinkTracking.csproj", "{A95C6B23-4E39-48CF-AF17-E680923076D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.LinkTracking", "MicroServiceGateway.LinkTracking\MicroServiceGateway.LinkTracking.csproj", "{A95C6B23-4E39-48CF-AF17-E680923076D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Calllogger", "MicroServiceGateway.Calllogger\MicroServiceGateway.Calllogger.csproj", "{96027E55-2FD8-4F39-90A2-F78463ABD921}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Calllogger", "MicroServiceGateway.Calllogger\MicroServiceGateway.Calllogger.csproj", "{96027E55-2FD8-4F39-90A2-F78463ABD921}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Service.Host", "MicroServiceGateway.Service.Host\MicroServiceGateway.Service.Host.csproj", "{33FB3165-D505-47B8-AE4F-8A6A0A8FD483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Service.Host", "MicroServiceGateway.Service.Host\MicroServiceGateway.Service.Host.csproj", "{33FB3165-D505-47B8-AE4F-8A6A0A8FD483}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Manager.Host", "MicroServiceGateway.Manager.Host\MicroServiceGateway.Manager.Host.csproj", "{AC0F3F6F-7A56-401B-8F56-8044E9092CFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Manager.Host", "MicroServiceGateway.Manager.Host\MicroServiceGateway.Manager.Host.csproj", "{AC0F3F6F-7A56-401B-8F56-8044E9092CFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Node", "Node", "{6F0CFD08-F96F-48A3-A2F4-7848BB9CA01F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manager", "Manager", "{9B65EDD9-438E-4213-9CD0-792D685D2E1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Manager", "MicroServiceGateway.Manager\MicroServiceGateway.Manager.csproj", "{FE6A08BF-6A58-4DDF-BA47-2D50F3011140}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Manager", "MicroServiceGateway.Manager\MicroServiceGateway.Manager.csproj", "{FE6A08BF-6A58-4DDF-BA47-2D50F3011140}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D14C5492-DC76-4790-93A6-E4DC178A7A90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Model", "MicroServiceGateway.Model\MicroServiceGateway.Model.csproj", "{DCB43EAE-88D5-4350-AE41-6D39497E1F20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Model", "MicroServiceGateway.Model\MicroServiceGateway.Model.csproj", "{DCB43EAE-88D5-4350-AE41-6D39497E1F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.LoadBalancer", "MicroServiceGateway.LoadBalancer\MicroServiceGateway.LoadBalancer.csproj", "{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.LoadBalancer", "MicroServiceGateway.LoadBalancer\MicroServiceGateway.LoadBalancer.csproj", "{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{A1187D17-7372-4B41-BAD9-219C0DE41431}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Client", "MicroServiceGateway.Client\MicroServiceGateway.Client.csproj", "{526EE813-9156-4963-AD76-AA452C9DF117}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,10 @@ Global
 		{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{526EE813-9156-4963-AD76-AA452C9DF117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{526EE813-9156-4963-AD76-AA452C9DF117}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{526EE813-9156-4963-AD76-AA452C9DF117}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{526EE813-9156-4963-AD76-AA452C9DF117}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +105,7 @@ Global
 		{FE6A08BF-6A58-4DDF-BA47-2D50F3011140} = {9B65EDD9-438E-4213-9CD0-792D685D2E1C}
 		{DCB43EAE-88D5-4350-AE41-6D39497E1F20} = {D14C5492-DC76-4790-93A6-E4DC178A7A90}
 		{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C} = {D14C5492-DC76-4790-93A6-E4DC178A7A90}
+		{526EE813-9156-4963-AD76-AA452C9DF117} = {A1187D17-7372-4B41-BAD9-219C0DE41431}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1974C8EF-FD60-4959-A0C9-4A47C4AEBD7E}
