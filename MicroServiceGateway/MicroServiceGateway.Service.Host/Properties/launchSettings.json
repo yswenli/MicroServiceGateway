@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "MicroServiceGateway.Service.Host": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
