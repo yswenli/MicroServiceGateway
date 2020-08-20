@@ -27,7 +27,11 @@ namespace MicroServiceGateway.Model
         /// <summary>
         /// 微服务管理地址
         /// </summary>
-        public string ManagerUrl { get; set; }
+        public string ManagerServerIP { get; set; }
+        /// <summary>
+        /// 微服务管理端口
+        /// </summary>
+        public string ManagerServerPort { get; set; }
 
         /// <summary>
         /// 网关转发地址
@@ -43,6 +47,10 @@ namespace MicroServiceGateway.Model
         /// </summary>
         public string ServiceName { get; set; }
 
+        /// <summary>
+        /// 服务ip
+        /// </summary>
+        public string IP { get; set; }
         /// <summary>
         /// 服务端口
         /// </summary>

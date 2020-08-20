@@ -11,13 +11,18 @@ namespace MicroServiceGateway.Manager.Host
     {
         public static void Main(string[] args)
         {
+
+#if DEBUG
+            ManagerService.GeneratCode();
+#endif
+
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
                                              .UseWindowsService() //windows
-                                             //.UseSystemd() //linux
+                                                                  //.UseSystemd() //linux
                                              .ConfigureServices((hostContext, services) =>
                                              {
                                                  services.AddHostedService<Worker>();

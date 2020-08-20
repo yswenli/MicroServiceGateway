@@ -19,11 +19,12 @@ namespace MicroServiceGateway.Manager.Host
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            ManagerService.Start();
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }
+            ManagerService.Stop();
         }
     }
 }

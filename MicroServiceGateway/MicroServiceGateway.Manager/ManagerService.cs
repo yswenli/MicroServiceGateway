@@ -15,14 +15,67 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using SAEA.Common;
+using SAEA.MVC;
+using SAEA.RPC.Provider;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MicroServiceGateway.Manager
 {
-    public class ManagerService
+    /// <summary>
+    /// 管理端服务
+    /// </summary>
+    public static class ManagerService
     {
+        static SAEAMvcApplication _application;
 
+        static ServiceProvider _rpcProvider;
+
+        /// <summary>
+        /// 管理端服务
+        /// </summary>
+        static ManagerService()
+        {
+            SAEAMvcApplicationConfig mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
+
+            _application = new SAEAMvcApplication(mvcConfig);
+
+            _rpcProvider = new ServiceProvider(mvcConfig.Port + 1);
+
+            _rpcProvider.OnErr += _rpcProvider_OnErr;
+        }
+
+        private static void _rpcProvider_OnErr(Exception ex)
+        {
+            LogHelper.Error("rpc service error", ex);
+        }
+
+        /// <summary>
+        /// 启动服务
+        /// </summary>
+        public static void Start()
+        {
+            _application.Start();
+            _rpcProvider.Start();
+        }
+
+        /// <summary>
+        /// 关闭服务
+        /// </summary>
+        public static void Stop()
+        {
+            _application.Stop();
+            _rpcProvider.Stop();
+        }
+
+#if DEBUG
+        /// <summary>
+        /// 生成rpc客户端代码
+        /// </summary>
+        public static void GeneratCode()
+        {
+            SAEA.RPC.Generater.CodeGnerater.Generate(@"C:\Users\yswenli\Desktop", "MicroServiceGateway.Client", typeof(Services.MSGClientService));
+        }
+#endif
     }
 }

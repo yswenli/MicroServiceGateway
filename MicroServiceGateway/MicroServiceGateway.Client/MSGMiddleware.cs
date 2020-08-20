@@ -15,11 +15,12 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Client.Consumer;
+using MicroServiceGateway.Common;
 using MicroServiceGateway.Model;
 using Microsoft.AspNetCore.Http;
+using SAEA.Common;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MicroServiceGateway.Client
@@ -33,6 +34,12 @@ namespace MicroServiceGateway.Client
 
         MicroServiceConfig _microServiceConfig = null;
 
+        RPCServiceProxy _rpcServiceProxy;
+
+        /// <summary>
+        /// 微服务客户asp.net core中间件
+        /// </summary>
+        /// <param name="next"></param>
         public MSGMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -43,12 +50,43 @@ namespace MicroServiceGateway.Client
                 {
                     _microServiceConfig = MicroServiceConfig.Read();
 
+                    var errStr = _microServiceConfig.CheckNull();
 
-                }                
+                    if (!string.IsNullOrEmpty(errStr))
+
+                        throw new Exception($"在MicroServiceConfig配置中{errStr}");
+
+                    _rpcServiceProxy = new RPCServiceProxy($"rpc://{_microServiceConfig.ManagerServerIP}:{_microServiceConfig.ManagerServerPort}/");
+
+                    _rpcServiceProxy.MSGClientService.Regist(_microServiceConfig.ConvertTo<Consumer.Model.MicroServiceConfig>());
+
+                    PerformanceHelper.OnCounted += PerformanceHelper_OnCounted;
+
+                    PerformanceHelper.Start();
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception("初始化MicroServiceConfig配置失败，请检查MicroServiceConfig配置文件及其内容是否正确", ex);
+            }
+        }
+
+        private void PerformanceHelper_OnCounted(Performace performace)
+        {
+            if (_rpcServiceProxy != null && _rpcServiceProxy.IsConnected)
+            {
+                _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
+                {
+                    IP = _microServiceConfig.IP,
+                    Port = _microServiceConfig.Port,
+                    ServiceName = _microServiceConfig.ServiceName,
+                    CPU = performace.CPU,
+                    MemoryUsage = performace.MemoryUsage,
+                    TotalThreads = performace.TotalThreads,
+                    BytesRec = performace.BytesRec,
+                    BytesSen = performace.BytesSen,
+                    HandleCount = performace.HandleCount
+                });
             }
         }
 
