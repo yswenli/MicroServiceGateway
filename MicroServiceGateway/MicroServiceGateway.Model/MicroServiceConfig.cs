@@ -16,10 +16,6 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Common;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace MicroServiceGateway.Model
 {
