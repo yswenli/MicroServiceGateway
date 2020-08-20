@@ -13,7 +13,9 @@ namespace MicroServiceGateway.Manager.Host
         {
 
 #if DEBUG
-            ManagerService.GeneratCode();
+            //ManagerService.GeneratCode();
+            ManagerService.Start();
+            Console.ReadLine();
 #endif
 
             CreateHostBuilder(args).Build().Run();

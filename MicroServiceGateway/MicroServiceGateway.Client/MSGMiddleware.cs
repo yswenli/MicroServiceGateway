@@ -43,7 +43,16 @@ namespace MicroServiceGateway.Client
         public MSGMiddleware(RequestDelegate next)
         {
             _next = next;
+        }
 
+        
+        /// <summary>
+        /// 请求时检查与微服务管理端的连接情况
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public async Task InvokeAsync(HttpContext context)
+        {
             try
             {
                 if (_microServiceConfig == null)
@@ -67,32 +76,37 @@ namespace MicroServiceGateway.Client
             }
             catch (Exception ex)
             {
+                new MicroServiceConfig().Save();
                 throw new Exception("初始化MicroServiceConfig配置失败，请检查MicroServiceConfig配置文件及其内容是否正确", ex);
             }
-        }
 
-        private void PerformanceHelper_OnCounted(Performace performace)
-        {
-            if (_rpcServiceProxy != null && _rpcServiceProxy.IsConnected)
-            {
-                _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
-                {
-                    IP = _microServiceConfig.IP,
-                    Port = _microServiceConfig.Port,
-                    ServiceName = _microServiceConfig.ServiceName,
-                    CPU = performace.CPU,
-                    MemoryUsage = performace.MemoryUsage,
-                    TotalThreads = performace.TotalThreads,
-                    BytesRec = performace.BytesRec,
-                    BytesSen = performace.BytesSen,
-                    HandleCount = performace.HandleCount
-                });
-            }
-        }
-
-        public async Task InvokeAsync(HttpContext context)
-        {
             await _next(context);
+        }
+
+        /// <summary>
+        /// 上报资源使用情况
+        /// </summary>
+        /// <param name="performace"></param>
+        private async void PerformanceHelper_OnCounted(Performace performace)
+        {
+            await Task.Run(() =>
+            {
+                if (_rpcServiceProxy != null && _rpcServiceProxy.IsConnected)
+                {
+                    _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
+                    {
+                        IP = _microServiceConfig.IP,
+                        Port = _microServiceConfig.Port,
+                        ServiceName = _microServiceConfig.ServiceName,
+                        CPU = performace.CPU,
+                        MemoryUsage = performace.MemoryUsage,
+                        TotalThreads = performace.TotalThreads,
+                        BytesRec = performace.BytesRec,
+                        BytesSen = performace.BytesSen,
+                        HandleCount = performace.HandleCount
+                    });
+                }
+            });
         }
     }
 }

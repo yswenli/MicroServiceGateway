@@ -48,7 +48,7 @@ namespace MicroServiceGateway.Common
         /// <summary>
         /// OnCounted
         /// </summary>
-        public static event Action<Performace> OnCounted;
+        public static event  Action<Performace> OnCounted;
 
         static PerformanceHelper()
         {
@@ -156,7 +156,7 @@ namespace MicroServiceGateway.Common
                             BytesSen = sent
                         };
 
-                        OnCounted.BeginInvoke(performace, null, null);
+                        OnCounted.Invoke(performace);
                     }
                 }, TaskCreationOptions.LongRunning);
             }

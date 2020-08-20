@@ -50,7 +50,7 @@ namespace MicroServiceGateway.Common
         public static T Deserialize<T>(string yaml)
         {
             var deserializer = new DeserializerBuilder()
-                                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                                //.WithNamingConvention(CamelCaseNamingConvention.Instance)
                                 .Build();
             return deserializer.Deserialize<T>(yaml);
         }

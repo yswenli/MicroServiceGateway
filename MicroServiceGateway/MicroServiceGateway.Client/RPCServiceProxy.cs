@@ -3,13 +3,12 @@
 * 尽量不要修改此代码 2020-08-20 15:26:42
 *******/
 
-using System;
-using System.Collections.Generic;
+using MicroServiceGateway.Client.Consumer.Model;
+using MicroServiceGateway.Client.Consumer.Service;
 using SAEA.Common;
 using SAEA.RPC.Consumer;
 using SAEA.RPC.Model;
-using MicroServiceGateway.Client.Consumer.Model;
-using MicroServiceGateway.Client.Consumer.Service;
+using System;
 
 namespace MicroServiceGateway.Client.Consumer
 {
@@ -88,7 +87,7 @@ namespace MicroServiceGateway.Client.Consumer.Model
         /// <summary>
         /// 微服务管理端口
         /// </summary>
-        public string ManagerServerPort { get; set; }
+        public int ManagerServerPort { get; set; }
 
         /// <summary>
         /// 网关转发地址

@@ -27,16 +27,16 @@ namespace MicroServiceGateway.Model
         /// <summary>
         /// 微服务管理地址
         /// </summary>
-        public string ManagerServerIP { get; set; }
+        public string ManagerServerIP { get; set; } = "127.0.0.1";
         /// <summary>
         /// 微服务管理端口
         /// </summary>
-        public string ManagerServerPort { get; set; }
+        public int ManagerServerPort { get; set; } = 28080;
 
         /// <summary>
         /// 网关转发地址
         /// </summary>
-        public string VirtualAddress { get; set; }
+        public string VirtualAddress { get; set; } = "APIService1";
 
         /// <summary>
         /// 服务环境
@@ -45,26 +45,26 @@ namespace MicroServiceGateway.Model
         /// <summary>
         /// 服务名称
         /// </summary>
-        public string ServiceName { get; set; }
+        public string ServiceName { get; set; } = "APIService1";
 
         /// <summary>
         /// 服务ip
         /// </summary>
-        public string IP { get; set; }
+        public string IP { get; set; } = "127.0.0.1";
         /// <summary>
         /// 服务端口
         /// </summary>
-        public int Port { get; set; }
+        public int Port { get; set; } = 5000;
 
         /// <summary>
         /// 服务健康检测地址
         /// </summary>
-        public string HealthChecksUrl { get; set; }
+        public string HealthChecksUrl { get; set; } = "api/index/ping";
 
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = "APIService1 is a test";
 
         /// <summary>
         /// 保存
