@@ -15,10 +15,12 @@ namespace MicroServiceGateway.Manager.Host
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddHostedService<Worker>();
-                });
+            Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
+                                             .UseWindowsService() //windows
+                                             //.UseSystemd() //linux
+                                             .ConfigureServices((hostContext, services) =>
+                                             {
+                                                 services.AddHostedService<Worker>();
+                                             });
     }
 }

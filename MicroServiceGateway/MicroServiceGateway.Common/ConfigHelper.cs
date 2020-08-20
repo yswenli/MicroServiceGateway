@@ -36,24 +36,9 @@ namespace MicroServiceGateway.Common
         /// <returns></returns>
         public static T Read<T>(string fileName)
         {
-            T result = default(T);
+            var filePath = PathHelper.GetFullName(fileName);
 
-            string filePath = string.Empty;
-            try
-            {
-                filePath = PathHelper.GetFullName(fileName);
-
-                if (FileHelper.Exists(filePath))
-                {
-                    result = YamlHelper.Deserialize<T>(FileHelper.ReadString(filePath));
-                }
-
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("ConfigHelper.Read", ex);
-            }
-            return result;
+            return YamlHelper.Deserialize<T>(FileHelper.ReadString(filePath));
         }
         /// <summary>
         /// 保存配置
@@ -65,22 +50,11 @@ namespace MicroServiceGateway.Common
         {
             if (config == null) return;
 
-            string yaml = string.Empty;
+            var filePath = PathHelper.GetFullName(fileName);
 
-            string filePath = string.Empty;
+            var yaml = YamlHelper.Serialize(config);
 
-            try
-            {
-                filePath = PathHelper.GetFullName(fileName);
-
-                yaml = YamlHelper.Serialize(config);
-
-                FileHelper.WriteString(filePath, yaml);
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("ConfigHelper.Write ", ex);
-            }
+            FileHelper.WriteString(filePath, yaml);
 
         }
     }
