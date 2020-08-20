@@ -40,7 +40,7 @@ namespace MicroServiceGateway.Manager
 
             _application = new SAEAMvcApplication(mvcConfig);
 
-            _rpcProvider = new ServiceProvider(mvcConfig.Port + 1);
+            _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
 
             _rpcProvider.OnErr += _rpcProvider_OnErr;
         }

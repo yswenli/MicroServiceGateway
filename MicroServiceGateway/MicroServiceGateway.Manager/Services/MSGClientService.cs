@@ -36,6 +36,7 @@ namespace MicroServiceGateway.Manager.Services
         /// <returns></returns>
         public bool Regist(MicroServiceConfig microServiceConfig)
         {
+            Console.WriteLine($"microServiceConfig:{SAEA.Common.SerializeHelper.Serialize(microServiceConfig)}");
             return true;
         }
 
@@ -46,7 +47,7 @@ namespace MicroServiceGateway.Manager.Services
         /// <returns></returns>
         public bool Report(PerformaceModel performaceModel)
         {
-
+            Console.WriteLine($"performaceModel:{SAEA.Common.SerializeHelper.Serialize(performaceModel)}");
             return true;
         }
     }
