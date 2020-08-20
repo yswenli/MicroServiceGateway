@@ -48,7 +48,7 @@ namespace MicroServiceGateway.Common
         /// <summary>
         /// OnCounted
         /// </summary>
-        public static event  Action<Performace> OnCounted;
+        public static event Action<Performace> OnCounted;
 
         static PerformanceHelper()
         {
@@ -152,8 +152,8 @@ namespace MicroServiceGateway.Common
                             MemoryUsage = _privateMemCounter.NextValue() / 1024,
                             TotalThreads = _threadCounter.NextValue(),
                             HandleCount = _handlerCounter.NextValue(),
-                            BytesRec = recv,
-                            BytesSen = sent
+                            BytesRec = recv / 1024,
+                            BytesSen = sent / 1024
                         };
 
                         OnCounted.Invoke(performace);
