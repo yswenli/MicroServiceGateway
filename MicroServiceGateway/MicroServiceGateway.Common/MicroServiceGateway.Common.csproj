@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroServiceGateway.Common\MicroServiceGateway.Common.csproj" />
+    <PackageReference Include="SAEA.RPC" Version="5.3.3.2" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
   </ItemGroup>
 
 </Project>

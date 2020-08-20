@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.LoadBal
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{A1187D17-7372-4B41-BAD9-219C0DE41431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Client", "MicroServiceGateway.Client\MicroServiceGateway.Client.csproj", "{526EE813-9156-4963-AD76-AA452C9DF117}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServiceGateway.Client", "MicroServiceGateway.Client\MicroServiceGateway.Client.csproj", "{526EE813-9156-4963-AD76-AA452C9DF117}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceGateway.Common", "MicroServiceGateway.Common\MicroServiceGateway.Common.csproj", "{7E5E15D6-B192-4F76-826E-5CD97E08F021}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{526EE813-9156-4963-AD76-AA452C9DF117}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{526EE813-9156-4963-AD76-AA452C9DF117}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{526EE813-9156-4963-AD76-AA452C9DF117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E5E15D6-B192-4F76-826E-5CD97E08F021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E5E15D6-B192-4F76-826E-5CD97E08F021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E5E15D6-B192-4F76-826E-5CD97E08F021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E5E15D6-B192-4F76-826E-5CD97E08F021}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{DCB43EAE-88D5-4350-AE41-6D39497E1F20} = {D14C5492-DC76-4790-93A6-E4DC178A7A90}
 		{2B01F7AD-D40F-4767-9DF2-20D53CB1C49C} = {D14C5492-DC76-4790-93A6-E4DC178A7A90}
 		{526EE813-9156-4963-AD76-AA452C9DF117} = {A1187D17-7372-4B41-BAD9-219C0DE41431}
+		{7E5E15D6-B192-4F76-826E-5CD97E08F021} = {D14C5492-DC76-4790-93A6-E4DC178A7A90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1974C8EF-FD60-4959-A0C9-4A47C4AEBD7E}
