@@ -16,6 +16,8 @@
 *描    述：
 *****************************************************************************/
 
+using System;
+
 namespace MicroServiceGateway.Model
 {
     public class JsonResult<T>
@@ -33,6 +35,28 @@ namespace MicroServiceGateway.Model
         public T Data
         {
             get; set;
+        }
+
+
+    }
+
+    public static class JsonResultExtention
+    {
+        public static JsonResult<T> SetResult<T>(this JsonResult<T> result, string msg = "操作完成", T t = default(T), int code = 0)
+        {
+            result.Code = code;
+            result.Message = msg;
+            result.Data = t;
+            return result;
+        }
+
+
+        public static JsonResult<T> SetError<T>(this JsonResult<T> result, Exception ex, int code = 1)
+        {
+            result.Code = code;
+            result.Message = $"系统异常：{ex.Message}";
+            result.Data = default(T);
+            return result;
         }
     }
 }

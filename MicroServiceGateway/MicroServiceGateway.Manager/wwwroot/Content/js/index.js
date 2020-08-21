@@ -1,4 +1,9 @@
-﻿layui.use(['jquery', 'layer', 'form'], function () {
+﻿layui.config({
+    base: '/content/lay/modules/layui/'
+    , version: '1531663423583'
+}).use('global');
+
+layui.use(['jquery', 'layer', 'form'], function () {
 
     var layer = layui.layer, form = layui.form, $ = layui.$;
     //

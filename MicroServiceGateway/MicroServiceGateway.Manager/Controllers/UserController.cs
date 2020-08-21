@@ -88,7 +88,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// 注销
         /// </summary>
         /// <returns></returns>
-        [Auth(false, true)]
+        [Auth(false)]
         public ActionResult Logout()
         {
             try
@@ -110,7 +110,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// <param name="confirmPwd"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        [Auth(true, true)]
+        [Auth(true)]
         public ActionResult Set(User user, string confirmPwd, int role)
         {
             try
@@ -140,7 +140,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// 获取用户列表
         /// </summary>
         /// <returns></returns>
-        [Auth(true, true)]
+        [Auth(true)]
         public ActionResult GetUserList()
         {
             try
@@ -158,7 +158,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-        [Auth(true, true)]
+        [Auth(true)]
         public ActionResult Rem(string uid)
         {
             try

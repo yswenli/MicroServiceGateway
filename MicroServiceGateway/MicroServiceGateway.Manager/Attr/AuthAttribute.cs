@@ -32,12 +32,7 @@ namespace MicroServiceGateway.Manager.Attr
 
         bool _isAdmin = false;
 
-        public AuthAttribute(bool isEnabled)
-        {
-
-        }
-
-        public AuthAttribute(bool isAdmin, bool isEnabled) : this(isEnabled)
+        public AuthAttribute(bool isAdmin)
         {
             _isAdmin = isAdmin;
         }

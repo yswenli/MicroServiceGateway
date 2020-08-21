@@ -38,7 +38,7 @@ namespace MicroServiceGateway.Manager
         {
             SAEAMvcApplicationConfig mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
 
-            _application = new SAEAMvcApplication(mvcConfig);
+            _application = new SAEAMvcApplication(mvcConfig);            
 
             _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
 
