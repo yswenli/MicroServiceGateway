@@ -23,6 +23,9 @@ using System.Linq;
 
 namespace MicroServiceGateway.Data.Redis
 {
+    /// <summary>
+    /// redis网关节点列表操作类
+    /// </summary>
     public static class MSGNodeOpertion
     {
         const string _prex = "msgnode_";
@@ -30,7 +33,7 @@ namespace MicroServiceGateway.Data.Redis
         static RedisClient _redisClient;
 
         /// <summary>
-        /// 网关节点列表操作类
+        /// redis网关节点列表操作类
         /// </summary>
         static MSGNodeOpertion()
         {
@@ -44,9 +47,9 @@ namespace MicroServiceGateway.Data.Redis
             return $"{_prex}ZSort";
         }
 
-        static string GetKey(MSGNode msgNode)
+        static string GetKey(MSGNodeInfo msgNode)
         {
-            return GetKey(msgNode.IP, msgNode.Port);
+            return GetKey(msgNode.NodeIP, msgNode.NodePort);
         }
 
         static string GetKey(string ip, int port)
@@ -58,7 +61,7 @@ namespace MicroServiceGateway.Data.Redis
         /// 将网关节点信息添加到redis
         /// </summary>
         /// <param name="msgNode"></param>
-        public static void Set(MSGNode msgNode)
+        public static void Set(MSGNodeInfo msgNode)
         {
             var key = GetKey(msgNode);
             _redisClient.GetDataBase().Set(key, SerializeHelper.Serialize(msgNode));
@@ -71,7 +74,7 @@ namespace MicroServiceGateway.Data.Redis
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static MSGNode Get(string ip, int port)
+        public static MSGNodeInfo Get(string ip, int port)
         {
             var key = GetKey(ip, port);
 
@@ -79,7 +82,7 @@ namespace MicroServiceGateway.Data.Redis
 
             if (json != null)
             {
-                var result = SerializeHelper.Deserialize<MSGNode>(json);
+                var result = SerializeHelper.Deserialize<MSGNodeInfo>(json);
 
                 if (result != null)
                 {
@@ -95,13 +98,13 @@ namespace MicroServiceGateway.Data.Redis
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static MSGNode Get(string key)
+        public static MSGNodeInfo Get(string key)
         {
             var json = _redisClient.GetDataBase().Get(key);
 
             if (json != null)
             {
-                var result = SerializeHelper.Deserialize<MSGNode>(json);
+                var result = SerializeHelper.Deserialize<MSGNodeInfo>(json);
 
                 if (result != null)
                 {
@@ -117,7 +120,7 @@ namespace MicroServiceGateway.Data.Redis
         /// 查询网关节点列表
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<MSGNode> GetList()
+        public static IEnumerable<MSGNodeInfo> GetList()
         {
             var zis = _redisClient.GetDataBase().ZRange(GetZid());
 

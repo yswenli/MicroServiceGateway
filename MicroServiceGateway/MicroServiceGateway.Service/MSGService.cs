@@ -16,12 +16,12 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Model;
+using MicroServiceGateway.Service.Forwarding;
 using SAEA.Common;
+using SAEA.Http.Model;
 using SAEA.MVC;
 using SAEA.RPC.Provider;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MicroServiceGateway.Service
 {
@@ -70,17 +70,22 @@ namespace MicroServiceGateway.Service
 
             SAEAMvcApplicationConfig mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
 
-            mvcConfig.Port = _msgnodeConfig.Port;
+            mvcConfig.Port = _msgnodeConfig.NodePort;
 
             SAEAMvcApplicationConfigBuilder.Write(mvcConfig);
 
             _application = new SAEAMvcApplication(mvcConfig);
 
-            _application.SetDefault("ForwardingService", "Forward");
+            _application.OnRequestDelegate += _application_OnRequestDelegate;
 
             _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
 
             _rpcProvider.OnErr += _rpcProvider_OnErr;
+        }
+
+        private static void _application_OnRequestDelegate(IHttpContext context)
+        {
+            new RequestHandler(context).Invoke();
         }
 
         private static void _rpcProvider_OnErr(Exception ex)

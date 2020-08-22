@@ -115,8 +115,8 @@ namespace MicroServiceGateway.Client
                 {
                     _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
                     {
-                        IP = _microServiceConfig.IP,
-                        Port = _microServiceConfig.Port,
+                        IP = _microServiceConfig.ServiceIP,
+                        Port = _microServiceConfig.ServicePort,
                         ServiceName = _microServiceConfig.ServiceName,
                         CPU = performace.CPU,
                         MemoryUsage = performace.MemoryUsage,

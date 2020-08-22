@@ -1,40 +1,38 @@
 ﻿/****************************************************************************
-*项目名称：MicroServiceGateway.Service.Controllers
+*项目名称：MicroServiceGateway.Model
 *CLR 版本：4.0.30319.42000
 *机器名称：WALLE-PC
-*命名空间：MicroServiceGateway.Service.Controllers
-*类 名 称：ForwardingServiceController
+*命名空间：MicroServiceGateway.Model
+*类 名 称：MSGNodeBaseInfo
 *版 本 号：V1.0.0.0
 *创建人： yswenli
 *电子邮箱：yswenli@outlook.com
-*创建时间：2020/8/21 14:10:14
+*创建时间：2020/8/21 13:17:53
 *描述：
 *=====================================================================
-*修改时间：2020/8/21 14:10:14
+*修改时间：2020/8/21 13:17:53
 *修 改 人： yswenli
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.MVC;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MicroServiceGateway.Service.Controllers
+namespace MicroServiceGateway.Model
 {
     /// <summary>
-    /// 微服务网关转发控制器
+    /// 微服务网关节点信息
     /// </summary>
-    public class ForwardingServiceController : Controller
+    public class MSGNodeBaseInfo
     {
         /// <summary>
-        /// 转发
+        /// 节点ip
         /// </summary>
-        /// <returns></returns>
-        [Forward]
-        public ActionResult Forward()
-        {
-            return Empty();
-        }
+        public string NodeIP { get; set; }
+        /// <summary>
+        /// 节点端口
+        /// </summary>
+        public int NodePort { get; set; }
     }
 }

@@ -1,47 +1,49 @@
 ﻿/****************************************************************************
-*项目名称：MicroServiceGateway.Model
+*项目名称：MicroServiceGateway.Service.Forwarding
 *CLR 版本：4.0.30319.42000
 *机器名称：WALLE-PC
-*命名空间：MicroServiceGateway.Model
-*类 名 称：MSGNodeConfig
+*命名空间：MicroServiceGateway.Service.Forwarding
+*类 名 称：RequestHandler
 *版 本 号：V1.0.0.0
 *创建人： yswenli
 *电子邮箱：yswenli@outlook.com
-*创建时间：2020/8/21 13:45:47
+*创建时间：2020/8/22 11:00:21
 *描述：
 *=====================================================================
-*修改时间：2020/8/21 13:45:47
+*修改时间：2020/8/22 11:00:21
 *修 改 人： yswenli
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using MicroServiceGateway.Common;
+using SAEA.Http.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MicroServiceGateway.Model
+namespace MicroServiceGateway.Service.Forwarding
 {
     /// <summary>
-    /// 微服务网关节点配置
+    /// webhost请求处理
     /// </summary>
-    public class MSGNodeConfig: MSGNodeBaseInfo
+    public class RequestHandler
     {
+        IHttpContext _httpContext;
+
         /// <summary>
-        /// 保存配置
+        /// webhost请求处理
         /// </summary>
-        public void Save()
+        /// <param name="httpContext"></param>
+        public RequestHandler(IHttpContext httpContext)
         {
-            ConfigHelper.Write(this, "MSGNodeConfig.yaml");
+            _httpContext = httpContext;
         }
 
         /// <summary>
-        /// 读取管理端配置
+        /// 处理
         /// </summary>
-        /// <returns></returns>
-        public static MSGNodeConfig Read()
+        public void Invoke()
         {
-            return ConfigHelper.Read<MSGNodeConfig>("MSGNodeConfig.yaml");
+
         }
     }
 }

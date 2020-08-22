@@ -106,11 +106,11 @@ namespace MicroServiceGateway.Client.Consumer.Model
         /// <summary>
         /// 服务ip
         /// </summary>
-        public string IP { get; set; }
+        public string ServiceIP { get; set; }
         /// <summary>
         /// 服务端口
         /// </summary>
-        public int Port { get; set; }
+        public int ServicePort { get; set; }
 
         /// <summary>
         /// 服务健康检测地址

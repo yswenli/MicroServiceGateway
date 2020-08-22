@@ -51,7 +51,7 @@ namespace MicroServiceGateway.Data.Redis
 
         static string GetKey(MicroServiceConfig microServiceConfig)
         {
-            return GetKey(microServiceConfig.ServiceName, microServiceConfig.IP, microServiceConfig.Port);
+            return GetKey(microServiceConfig.ServiceName, microServiceConfig.ServiceIP, microServiceConfig.ServicePort);
         }
 
         static string GetKey(string serviceName, string ip, int port)

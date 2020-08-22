@@ -3,19 +3,18 @@
 *CLR 版本：4.0.30319.42000
 *机器名称：WALLE-PC
 *命名空间：MicroServiceGateway.Model
-*类 名 称：MSGNodeConfig
+*类 名 称：MSGNodeInfo
 *版 本 号：V1.0.0.0
 *创建人： yswenli
 *电子邮箱：yswenli@outlook.com
-*创建时间：2020/8/21 13:45:47
+*创建时间：2020/8/22 16:11:52
 *描述：
 *=====================================================================
-*修改时间：2020/8/21 13:45:47
+*修改时间：2020/8/22 16:11:52
 *修 改 人： yswenli
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using MicroServiceGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,25 +22,25 @@ using System.Text;
 namespace MicroServiceGateway.Model
 {
     /// <summary>
-    /// 微服务网关节点配置
+    /// 管理端保存的微服务网关节点信息
     /// </summary>
-    public class MSGNodeConfig: MSGNodeBaseInfo
+    public class MSGNodeInfo : MSGNodeBaseInfo
     {
         /// <summary>
-        /// 保存配置
+        /// 节点所在集群
         /// </summary>
-        public void Save()
-        {
-            ConfigHelper.Write(this, "MSGNodeConfig.yaml");
-        }
-
+        public string Cluster { get; set; } = "cluster1";
         /// <summary>
-        /// 读取管理端配置
+        /// 节点支持的环境
         /// </summary>
-        /// <returns></returns>
-        public static MSGNodeConfig Read()
-        {
-            return ConfigHelper.Read<MSGNodeConfig>("MSGNodeConfig.yaml");
-        }
+        public string Env { get; set; } = "dev";
+        /// <summary>
+        /// 与管理端连接状态
+        /// </summary>
+        public bool Linked { get; set; } = false;
+        /// <summary>
+        /// 与管理端连接时间
+        /// </summary>
+        public DateTime LinkedTime { get; set; }
     }
 }

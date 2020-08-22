@@ -16,6 +16,7 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Common;
+using System;
 
 namespace MicroServiceGateway.Model
 {
@@ -27,7 +28,7 @@ namespace MicroServiceGateway.Model
         /// <summary>
         /// redis 连接字符串
         /// </summary>
-        public string RedisCnnStr { get; set; }
+        public string RedisCnnStr { get; set; } = "server=127.0.0.1:6379;passwords=yswenli";
 
         /// <summary>
         /// 保存配置
@@ -43,7 +44,32 @@ namespace MicroServiceGateway.Model
         /// <returns></returns>
         public static ManagerConfig Read()
         {
-            return ConfigHelper.Read<ManagerConfig>("ManagerConfig.yaml");
+            ManagerConfig mc = null;
+            Exception ex = null;
+            try
+            {
+                mc = ConfigHelper.Read<ManagerConfig>("ManagerConfig.yaml");
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+            try
+            {
+                if (ex != null)
+                {
+                    new ManagerConfig().Save();
+                }
+            }
+            catch
+            {
+
+            }
+            if (ex != null)
+            {
+                throw new Exception("初始化配置有误，请检查ManagerConfig.yaml文件及其内容", ex);
+            }
+            return mc;
         }
     }
 }
