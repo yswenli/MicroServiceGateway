@@ -16,8 +16,6 @@
 *描    述：
 *****************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MicroServiceGateway.Model
 {

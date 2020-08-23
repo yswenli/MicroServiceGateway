@@ -15,6 +15,8 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Common;
+using MicroServiceGateway.Data.Redis;
 using MicroServiceGateway.Model;
 using SAEA.RPC;
 using System;
@@ -36,7 +38,15 @@ namespace MicroServiceGateway.Manager.Services
         /// <returns></returns>
         public bool Regist(MicroServiceConfig microServiceConfig)
         {
-            Console.WriteLine($"microServiceConfig:{SAEA.Common.SerializeHelper.Serialize(microServiceConfig)}");
+            try
+            {
+                Console.WriteLine($"microServiceConfig:{SAEA.Common.SerializeHelper.Serialize(microServiceConfig)}");
+                MSGClientOpertion.Set(microServiceConfig);
+            }
+            catch(Exception ex)
+            {
+                Logger.Error("Microservice client failed to register service", ex);
+            }
             return true;
         }
 
