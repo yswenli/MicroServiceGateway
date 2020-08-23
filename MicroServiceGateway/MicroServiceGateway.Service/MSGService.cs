@@ -66,7 +66,7 @@ namespace MicroServiceGateway.Service
 
             if (ex != null)
 
-                throw new Exception("微服务网关服务读取配置MSGNodeConfig.yaml失败，请准确配置后再尝试启动服务");
+                throw new Exception("Microservice gateway service read configuration MSGNodeConfig.yaml Failed, please try to start the service after accurate configuration");
 
             SAEAMvcApplicationConfig mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
 

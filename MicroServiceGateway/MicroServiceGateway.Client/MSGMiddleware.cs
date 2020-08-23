@@ -57,7 +57,7 @@ namespace MicroServiceGateway.Client
 
                     if (!string.IsNullOrEmpty(errStr))
 
-                        throw new Exception($"在MicroServiceConfig配置中{errStr}");
+                        throw new Exception($"In microserviceconfig configuration:{errStr}");
 
                     _rpcServiceProxy = new RPCServiceProxy($"rpc://{_microServiceConfig.ManagerServerIP}:{_microServiceConfig.ManagerServerPort + 1}");
 
@@ -80,7 +80,7 @@ namespace MicroServiceGateway.Client
             catch (Exception ex)
             {
                 new MicroServiceConfig().Save();
-                throw new Exception("初始化MicroServiceConfig配置失败，请检查MicroServiceConfig配置文件及其内容是否正确", ex);
+                throw new Exception("Failed to initialize microserviceconfig configuration. Please check whether microserviceconfig configuration file and its contents are correct", ex);
             }
 
         }
