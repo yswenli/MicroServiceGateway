@@ -3,7 +3,7 @@
 *CLR 版本：4.0.30319.42000
 *机器名称：WALLE-PC
 *命名空间：MicroServiceGateway.Data.Redis
-*类 名 称：MSGClusterOperation
+*类 名 称：MSGEnvOperation
 *版 本 号：V1.0.0.0
 *创建人： yswenli
 *电子邮箱：yswenli@outlook.com
@@ -23,18 +23,18 @@ using System.Collections.Generic;
 namespace MicroServiceGateway.Data.Redis
 {
     /// <summary>
-    /// redis集群管理操作类
+    /// redis环境管理操作类
     /// </summary>
-    public class MSGClusterOperation
+    public class MSGEnvOperation
     {
-        const string _prex = "msgcluster_";
+        const string _prex = "msgenv_";
 
         static RedisClient _redisClient;
 
         /// <summary>
-        /// redis集群管理操作类
+        /// redis环境管理操作类
         /// </summary>
-        static MSGClusterOperation()
+        static MSGEnvOperation()
         {
             var mConfig = ManagerConfig.Read();
 
@@ -42,25 +42,24 @@ namespace MicroServiceGateway.Data.Redis
         }
 
         /// <summary>
-        /// 添加集群
+        /// 添加环境
         /// </summary>
-        /// <param name="cluster"></param>
-        public static void Set(string cluster)
+        /// <param name="env"></param>
+        public static void Set(string env)
         {
-            _redisClient.GetDataBase().ZAdd(_prex, cluster, DateTimeHelper.GetUnixTick());
+            _redisClient.GetDataBase().ZAdd(_prex, env, DateTimeHelper.GetUnixTick());
+        }
+        /// <summary>
+        /// 移除环境
+        /// </summary>
+        /// <param name="env"></param>
+        public static void Remove(string env)
+        {
+            _redisClient.GetDataBase().ZRemove(_prex, new string[] { env });
         }
 
         /// <summary>
-        /// 移除集群
-        /// </summary>
-        /// <param name="cluster"></param>
-        public static void Remove(string cluster)
-        {
-            _redisClient.GetDataBase().ZRemove(_prex, new string[] { cluster });
-        }
-
-        /// <summary>
-        /// 添加集群
+        /// 添加环境
         /// </summary>
         /// <param name="cluster"></param>
         public static List<string> GetList()
