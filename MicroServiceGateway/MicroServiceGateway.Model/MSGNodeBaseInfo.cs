@@ -29,10 +29,10 @@ namespace MicroServiceGateway.Model
         /// <summary>
         /// 节点ip
         /// </summary>
-        public string NodeIP { get; set; }
+        public string NodeIP { get; set; } = "127.0.0.1";
         /// <summary>
         /// 节点端口
         /// </summary>
-        public int NodePort { get; set; }
+        public int NodePort { get; set; } = 35393;
     }
 }

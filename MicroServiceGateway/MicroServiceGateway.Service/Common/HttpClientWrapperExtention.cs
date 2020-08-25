@@ -19,18 +19,16 @@ using SAEA.Http;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using MicroServiceGateway.Common;
+using MicroServiceGateway.Routing;
+using MicroServiceGateway.Model;
 
 namespace MicroServiceGateway.Service.Common
 {
     public static class HttpClientWrapperExtention
     {
-        public static HttpRequestMessage ToRequest(this HttpRequest httpRequest,)
-        {
-            HttpMethod httpMethod = new HttpMethod(httpRequest.Method);
 
-
-            var hrm = new HttpRequestMessage(httpMethod,);
-        }
     }
 }

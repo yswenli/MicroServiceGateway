@@ -11,6 +11,9 @@ namespace MicroServiceGateway.Service.Host
     {
         public static void Main(string[] args)
         {
+            MSGService.Start();
+            Console.ReadLine();
+
             CreateHostBuilder(args).Build().Run();
         }
 

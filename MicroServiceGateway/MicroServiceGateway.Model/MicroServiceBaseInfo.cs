@@ -24,21 +24,13 @@ namespace MicroServiceGateway.Model
     public class MicroServiceBaseInfo
     {
         /// <summary>
-        /// 集群
-        /// </summary>
-        public string Cluster { get; set; } = "cluster1";
-        /// <summary>
-        /// 环境
-        /// </summary>
-        public string Env { get; set; } = "dev";
-        /// <summary>
-        /// 服务名称
-        /// </summary>
-        public string ServiceName { get; set; } = "APIService1";
-        /// <summary>
         /// 虚拟地址
         /// </summary>
         public string VirtualAddress { get; set; } = "APIService";
+        /// <summary>
+        /// 服务名称
+        /// </summary>
+        public string ServiceName { get; set; } = "APIService1";        
         /// <summary>
         /// 服务ip
         /// </summary>

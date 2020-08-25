@@ -28,6 +28,7 @@ namespace MicroServiceGateway.Model
         /// 路由权重
         /// </summary>
         public int Score { get; set; } = 100;
+
         /// <summary>
         /// 熔断状态
         /// </summary>

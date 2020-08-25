@@ -85,7 +85,7 @@ namespace MicroServiceGateway.Service
 
         private static void _application_OnRequestDelegate(IHttpContext context)
         {
-            new RequestHandler(context).Invoke();
+            new RequestHandler().Invoke(context);
         }
 
         private static void _rpcProvider_OnErr(Exception ex)

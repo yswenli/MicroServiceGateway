@@ -59,6 +59,11 @@ namespace MicroServiceGateway.Client
 
                         throw new Exception($"In microserviceconfig configuration:{errStr}");
 
+                    if (!_microServiceConfig.VirtualAddress.VirtualAddressValid())
+                    {
+                        throw new Exception($"In microserviceconfig configuration,the value of configuration field VirtualAddress is not valid!");
+                    }
+
                     _rpcServiceProxy = new RPCServiceProxy($"rpc://{_microServiceConfig.ManagerServerIP}:{_microServiceConfig.ManagerServerPort + 1}");
 
                     _rpcServiceProxy.OnErr += _rpcServiceProxy_OnErr;

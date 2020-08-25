@@ -73,13 +73,13 @@ namespace MicroServiceGateway.Data.Redis
         /// <summary>
         /// 获取客户端信息
         /// </summary>
-        /// <param name="serviceName"></param>
+        /// <param name="virtualAddress"></param>
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static MicroServiceConfig Get(string serviceName, string ip, int port)
+        public static MicroServiceConfig Get(string virtualAddress, string ip, int port)
         {
-            var key = GetKey(serviceName, ip, port);
+            var key = GetKey(virtualAddress, ip, port);
 
             var json = _redisClient.GetDataBase().Get(key);
 

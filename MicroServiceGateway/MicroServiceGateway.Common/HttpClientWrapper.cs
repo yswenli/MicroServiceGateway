@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace MicroServiceGateway.Common
         /// <summary>
         /// HttpClientWrapper
         /// </summary>
-        public HttpClientWrapper()
+        internal HttpClientWrapper()
         {
             _client = new HttpClient();
         }
@@ -55,5 +56,30 @@ namespace MicroServiceGateway.Common
         {
             return Client.SendAsync(request, cancellationToken);
         }
+
+        static ConcurrentDictionary<string, HttpClientWrapper> _cache = new ConcurrentDictionary<string, HttpClientWrapper>();
+
+        /// <summary>
+        /// 获取HttpClientWrapper
+        /// </summary>
+        /// <param name="virtualAddress"></param>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        /// <returns></returns>
+        public static HttpClientWrapper GetWrapper(string virtualAddress, string serviceIP, int servicePort)
+        {
+            var key = $"{virtualAddress}_{serviceIP}_{servicePort}";
+            if (_cache.TryGetValue(key, out HttpClientWrapper httpClientWrapper1) && httpClientWrapper1 != null)
+            {
+                return httpClientWrapper1;
+            }
+            else
+            {
+                var httpClientWrapper2 = new HttpClientWrapper();
+                _cache.TryAdd(key, httpClientWrapper2);
+                return httpClientWrapper2;
+            }
+        }
+
     }
 }

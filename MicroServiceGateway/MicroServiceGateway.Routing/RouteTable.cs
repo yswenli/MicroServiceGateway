@@ -60,57 +60,30 @@ namespace MicroServiceGateway.Routing
         /// <summary>
         /// 路由表
         /// </summary>
-        /// <param name="cluster"></param>
+        /// <param name="virtualAddress"></param>
         /// <returns></returns>
-        public List<RouteInfo> this[string cluster]
+        public List<RouteInfo> this[string virtualAddress]
         {
             get
             {
                 lock (_locker)
                 {
-                    return _routeInfos.Where(b => b.Cluster == cluster).ToList();
+                    return _routeInfos.Where(b => b.VirtualAddress == virtualAddress).ToList();
                 }
             }
         }
-
         /// <summary>
-        /// 获取某集群下的全部服务
-        /// </summary>
-        /// <param name="cluster"></param>
-        /// <returns></returns>
-        public List<RouteInfo> GetServices(string cluster)
-        {
-            lock (_locker)
-            {
-                return _routeInfos.Where(b => b.Cluster == cluster).ToList();
-            }
-        }
-
-        /// <summary>
-        /// 获取某集群某环境下的全部服务
-        /// </summary>
-        /// <param name="cluster"></param>
-        /// <param name="env"></param>
-        /// <returns></returns>
-        public List<RouteInfo> GetServices(string cluster, string env)
-        {
-            lock (_locker)
-            {
-                return _routeInfos.Where(b => b.Cluster == cluster && b.Env == env).ToList();
-            }
-        }
-        /// <summary>
-        /// 获取某集群某环境某服务下的全部网关节点
+        /// 获取全部微服务节点
         /// </summary>
         /// <param name="cluster"></param>
         /// <param name="env"></param>
         /// <param name="serviceName"></param>
         /// <returns></returns>
-        public List<RouteInfo> GetServices(string cluster, string env, string serviceName)
+        public List<RouteInfo> GetServices(string virtualAddress)
         {
             lock (_locker)
             {
-                return _routeInfos.Where(b => b.Cluster == cluster && b.Env == env && b.ServiceName == serviceName).ToList();
+                return _routeInfos.Where(b => b.VirtualAddress == virtualAddress).ToList();
             }
         }
 
@@ -121,11 +94,11 @@ namespace MicroServiceGateway.Routing
         /// <param name="servicePort"></param>
         /// <param name="virtualAddress"></param>
         /// <returns></returns>
-        public List<RouteInfo> Get(string serviceIP, int servicePort, string virtualAddress)
+        public RouteInfo Get(string serviceIP, int servicePort, string virtualAddress)
         {
             lock (_locker)
             {
-                return _routeInfos.Where(b => b.ServiceIP == serviceIP && b.ServicePort == servicePort && b.VirtualAddress == virtualAddress).ToList();
+                return _routeInfos.Where(b => b.ServiceIP == serviceIP && b.ServicePort == servicePort && b.VirtualAddress == virtualAddress).FirstOrDefault();
             }
         }
 
