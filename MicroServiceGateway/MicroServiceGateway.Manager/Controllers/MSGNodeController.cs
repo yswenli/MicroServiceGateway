@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Data.Redis;
 using MicroServiceGateway.Manager.Attr;
 using MicroServiceGateway.Model;
 using SAEA.MVC;
@@ -24,12 +25,28 @@ using System.Text;
 
 namespace MicroServiceGateway.Manager.Controllers
 {
-    public class MSGNodeController:Controller
+    public class MSGNodeController : Controller
     {
         [Auth(false)]
-        public ActionResult Add(string name,string ip,int port)
+        public ActionResult Add(string nodeName, string nodeIP, int nodePort)
         {
             var result = new JsonResult<bool>();
+
+            try
+            {
+                MSGNodeOpertion.Set(new MSGNodeInfo()
+                {
+                    NodeName = nodeName,
+                    NodeIP = nodeIP,
+                    NodePort = nodePort
+                });
+
+                //doto
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return Json(result);
         }

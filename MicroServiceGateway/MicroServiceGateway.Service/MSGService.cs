@@ -105,5 +105,17 @@ namespace MicroServiceGateway.Service
             _application.Stop();
             _rpcProvider.Stop();
         }
+
+
+
+#if DEBUG
+        /// <summary>
+        /// 生成rpc客户端代码
+        /// </summary>
+        public static void GeneratCode()
+        {
+            SAEA.RPC.Generater.CodeGnerater.Generate(@"C:\Users\yswenli\Desktop", "MicroServiceGateway.Manager", typeof(Services.NodeService));
+        }
+#endif
     }
 }

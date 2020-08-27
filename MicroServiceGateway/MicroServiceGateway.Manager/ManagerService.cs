@@ -48,9 +48,9 @@ namespace MicroServiceGateway.Manager
             MicroServiceCache.OnChanged += MicroServiceCache_OnChanged;
         }
 
-        private static void MicroServiceCache_OnChanged(bool isAdd, Model.MicroServiceConfig microServiceConfig)
+        private async static void MicroServiceCache_OnChanged(bool isAdd, Model.MicroServiceConfig microServiceConfig)
         {
-            
+            //todo
         }
 
         private static void _rpcProvider_OnErr(Exception ex)

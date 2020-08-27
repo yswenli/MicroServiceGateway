@@ -16,8 +16,6 @@
 *描    述：
 *****************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MicroServiceGateway.Model
 {
@@ -26,14 +24,7 @@ namespace MicroServiceGateway.Model
     /// </summary>
     public class MSGNodeInfo : MSGNodeBaseInfo
     {
-        /// <summary>
-        /// 节点所在集群
-        /// </summary>
-        public string Cluster { get; set; } = "cluster1";
-        /// <summary>
-        /// 节点支持的环境
-        /// </summary>
-        public string Env { get; set; } = "dev";
+        public string NodeName { get; set; }
         /// <summary>
         /// 与管理端连接状态
         /// </summary>
