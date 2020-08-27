@@ -24,8 +24,10 @@ namespace MicroServiceGateway.Model
 {
     public class PerformaceModel: Performace
     {
-        public string ServiceName { get; set; }
+        public string VirtualAddress { get; set; }
         public string IP { get; set; }
         public int Port { get; set; }
+
+        public DateTime Created { get; set; }
     }
 }

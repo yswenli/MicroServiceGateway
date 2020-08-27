@@ -136,7 +136,7 @@ namespace MicroServiceGateway.Routing
         /// 不存在则添加
         /// </summary>
         /// <param name="routeInfo"></param>
-        public void Add(RouteInfo routeInfo)
+        public bool Add(RouteInfo routeInfo)
         {
             lock (_locker)
             {
@@ -145,7 +145,22 @@ namespace MicroServiceGateway.Routing
                 if (rt == null)
                 {
                     _routeInfos.Add(routeInfo);
+
+                    return true;
                 }
+            }
+            return false;
+        }
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="virtualAddress"></param>
+        /// <returns></returns>
+        public bool Exists(string virtualAddress)
+        {
+            lock (_locker)
+            {
+                return _routeInfos.Exists(b => b.VirtualAddress == virtualAddress);
             }
         }
     }

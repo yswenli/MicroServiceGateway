@@ -28,6 +28,10 @@ namespace MicroServiceGateway.Model
         /// 路由权重
         /// </summary>
         public int Score { get; set; } = 100;
+        /// <summary>
+        /// 操作超过
+        /// </summary>
+        public int Timeout { get; set; } = 5;
 
         /// <summary>
         /// 熔断状态

@@ -122,7 +122,7 @@ namespace MicroServiceGateway.Client
                     {
                         IP = _microServiceConfig.ServiceIP,
                         Port = _microServiceConfig.ServicePort,
-                        ServiceName = _microServiceConfig.ServiceName,
+                        VirtualAddress = _microServiceConfig.VirtualAddress,
                         CPU = performace.CPU,
                         MemoryUsage = performace.MemoryUsage,
                         TotalThreads = performace.TotalThreads,

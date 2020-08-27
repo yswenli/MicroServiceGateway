@@ -57,6 +57,20 @@ namespace MicroServiceGateway.Common
             return Client.SendAsync(request, cancellationToken);
         }
 
+        /// <summary>
+        /// 请求
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, int timeout = 5 * 1000)
+        {
+            using (CancellationTokenSource cts = new CancellationTokenSource(timeout))
+            {
+                return SendAsync(request, cts.Token);
+            }
+        }
+
         static ConcurrentDictionary<string, HttpClientWrapper> _cache = new ConcurrentDictionary<string, HttpClientWrapper>();
 
         /// <summary>

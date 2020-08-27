@@ -10,7 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicroServiceGateway.Calllogger\MicroServiceGateway.Calllogger.csproj" />
+    <ProjectReference Include="..\MicroServiceGateway.Common\MicroServiceGateway.Common.csproj" />
+    <ProjectReference Include="..\MicroServiceGateway.LoadBalancer\MicroServiceGateway.LoadBalancer.csproj" />
     <ProjectReference Include="..\MicroServiceGateway.Model\MicroServiceGateway.Model.csproj" />
+    <ProjectReference Include="..\MicroServiceGateway.Routing\MicroServiceGateway.Routing.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Common;
 using MicroServiceGateway.Data.Redis;
 using MicroServiceGateway.Model;
 using System.Collections.Generic;
@@ -48,9 +49,22 @@ namespace MicroServiceGateway.Routing
             return _routeTable.ToList();
         }
 
-        public static void AddIfNotExist()
+        /// <summary>
+        /// AddIfNotExist
+        /// </summary>
+        /// <param name="url"></param>
+        public static void AddIfNotExist(string url)
         {
+            var tuple = url.ToVirtualAddressUrl();
+            if (tuple != null)
+            {
+                if (_routeTable.Exists(tuple.Item1))
+                {
 
+                }
+
+                MSGRouteInfoOperation
+            }
         }
     }
 }

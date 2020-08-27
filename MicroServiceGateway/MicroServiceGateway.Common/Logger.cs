@@ -91,17 +91,17 @@ namespace MicroServiceGateway.Common
         /// <param name="name"></param>
         /// <param name="url"></param>
         /// <param name="inputs"></param>
-        /// <param name="outputs"></param>
+        /// <param name="output"></param>
         /// <param name="cost"></param>
         /// <param name="exception"></param>
-        public static void ApiLog(string name, string url, IEnumerable<object> inputs, IEnumerable<object> outputs, int cost, Exception exception = null)
+        public static void ApiLog(string name, string url, IEnumerable<KeyValuePair<string, string>> inputs, object output, long cost, Exception exception = null)
         {
             var apiLog = new ApiLog()
             {
                 name = name,
                 url = url,
                 inputs = inputs,
-                outputs = outputs,
+                output = output,
                 cost = cost
             };
             var json = JsonConvert.SerializeObject(apiLog);
@@ -119,16 +119,16 @@ namespace MicroServiceGateway.Common
     /// <summary>
     /// 日志类
     /// </summary>
-    internal class ApiLog
+    public class ApiLog
     {
         public string name { get; set; }
 
         public string url { get; set; }
 
-        public IEnumerable<object> inputs { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> inputs { get; set; }
 
-        public IEnumerable<object> outputs { get; set; }
+        public object output { get; set; }
 
-        public int cost { get; set; }
+        public long cost { get; set; }
     }
 }

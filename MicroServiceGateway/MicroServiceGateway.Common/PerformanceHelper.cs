@@ -50,6 +50,10 @@ namespace MicroServiceGateway.Common
         /// </summary>
         public static event Action<Performace> OnCounted;
 
+
+        /// <summary>
+        /// PerformanceUtil
+        /// </summary>
         static PerformanceHelper()
         {
             //Process.Start("LODCTR /R");

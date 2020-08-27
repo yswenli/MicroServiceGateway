@@ -15,18 +15,19 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Calllogger;
 using MicroServiceGateway.Common;
+using MicroServiceGateway.LoadBalancer;
 using MicroServiceGateway.Model;
 using MicroServiceGateway.Routing;
-using SAEA.Http;
+using SAEA.Common;
 using SAEA.Http.Model;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace MicroServiceGateway.Service.Forwarding
 {
@@ -35,72 +36,32 @@ namespace MicroServiceGateway.Service.Forwarding
     /// </summary>
     public class RequestHandler
     {
-        Stopwatch _stopwatch;
-
-        /// <summary>
-        /// webhost请求处理
-        /// </summary>
-        /// <param name="httpContext"></param>
-        public RequestHandler()
-        {
-            _stopwatch = new Stopwatch();
-        }
-
         /// <summary>
         /// 处理
         /// </summary>
         public void Invoke(IHttpContext httpContext)
         {
-            _stopwatch.Start();
+            var routes = Router.Route(httpContext);
 
-
-            _stopwatch.Stop();
-        }
-
-        static List<RouteInfo> Route(IHttpContext httpContext)
-        {
-            try
+            if (routes != null)
             {
-                var tuple = httpContext.Request.RelativeUrl.ToVirtualAddressUrl();
+                var routeInfo = LoadBalance.Get(routes);
 
-                if (tuple == null)
-                {
-                    throw new Exception("The URL format is incorrect");
-                }
-
-                List<RouteInfo> routeInfos = NodeRouteInfoCache.GetRouteInfos(tuple.Item1);
-
-                if (routeInfos == null || !routeInfos.Any()) throw new Exception("Routing information not found");
-
-                return routeInfos;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("MicroServiceGateway url not found,url:" + httpContext.Request.RelativeUrl, ex);
-                httpContext.Response.Status = System.Net.HttpStatusCode.NotFound;
-                httpContext.Response.Write("MicroServiceGateway url not found,url:" + httpContext.Request.RelativeUrl);
-                httpContext.Response.End();
-            }
-
-            return null;
-        }
-
-        static RouteInfo LoadBalance(IHttpContext httpContext, List<RouteInfo> routeInfos)
-        {
-            try
-            {
-
-                //todo
-            }
-            catch (Exception ex)
-            {
-
+                Forward(httpContext, routeInfo);
             }
         }
 
-        static HttpResponseMessage Forward(IHttpContext httpContext, RouteInfo routeInfo)
+        /// <summary>
+        /// 转发
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <param name="routeInfo"></param>
+        /// <returns></returns>
+        static async void Forward(IHttpContext httpContext, RouteInfo routeInfo)
         {
-            HttpResponseMessage result = null;
+            var stopwatch = Stopwatch.StartNew();
+
+            string url = $"http://{routeInfo.ServiceIP}:{routeInfo.ServicePort}{(httpContext.Request.RelativeUrl.Substring(0, 1) == "/" ? httpContext.Request.RelativeUrl : "/" + httpContext.Request.RelativeUrl)}";
 
             try
             {
@@ -114,22 +75,50 @@ namespace MicroServiceGateway.Service.Forwarding
                 {
                     msg.Headers.Add(item.Key, item.Value);
                 }
+
+                msg.RequestUri = new Uri(url);
+
+                if (httpContext.Request.Method == "POST")
+                {
+                    msg.Content = new ByteArrayContent(httpContext.Request.Body);
+                }
+
                 var httpClient = HttpClientWrapper.GetWrapper(routeInfo.VirtualAddress, routeInfo.ServiceIP, routeInfo.ServicePort);
 
-                using (CancellationTokenSource cts = new CancellationTokenSource())
+                var result = await httpClient.SendAsync(msg, routeInfo.Timeout * 1000);
+
+                httpContext.Response.Status = result.StatusCode;
+
+                foreach (var kv in result.Headers)
                 {
-                    var task = httpClient.SendAsync(msg, cts.Token);
-                    task.Wait();
-                    result = task.Result;
+                    httpContext.Response.Headers.TryAdd(kv.Key, kv.Value.FirstOrDefault());
+                }
+
+                if (result.IsSuccessStatusCode)
+                {
+                    httpContext.Response.Write(await result.Content.ReadAsStringAsync());
                 }
             }
-            catch (Exception ex)
+            catch (SocketException se)
             {
-
+                httpContext.Response.Status = System.Net.HttpStatusCode.BadRequest;
+                httpContext.Response.Write(SerializeHelper.Serialize(se));
             }
-            return result;
+            catch (TimeoutException te)
+            {
+                httpContext.Response.Status = System.Net.HttpStatusCode.RequestTimeout;
+                httpContext.Response.Write(SerializeHelper.Serialize(te));
+            }
+            catch (Exception e)
+            {
+                httpContext.Response.Status = System.Net.HttpStatusCode.InternalServerError;
+                httpContext.Response.Write(SerializeHelper.Serialize(e));
+            }
+            httpContext.Response.End();
+
+            stopwatch.Stop();
+
+            CallLog.Log(routeInfo.ServiceName, url, httpContext.Request.Headers.ToList(), Encoding.UTF8.GetString(httpContext.Response.Body), stopwatch.ElapsedMilliseconds);
         }
-
-
     }
 }

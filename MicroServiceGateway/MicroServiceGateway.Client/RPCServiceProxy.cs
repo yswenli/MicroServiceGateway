@@ -128,7 +128,7 @@ namespace MicroServiceGateway.Client.Consumer.Model
 {
     public class PerformaceModel
     {
-        public String ServiceName
+        public String VirtualAddress
         {
             get;set;
         }
@@ -140,6 +140,8 @@ namespace MicroServiceGateway.Client.Consumer.Model
         {
             get;set;
         }
+
+        public DateTime Created { get; set; }
         public Single CPU
         {
             get;set;

@@ -17,11 +17,11 @@
 *****************************************************************************/
 using MicroServiceGateway.Common;
 using MicroServiceGateway.Data.Redis;
+using MicroServiceGateway.Manager.Libs;
 using MicroServiceGateway.Model;
+using SAEA.Common;
 using SAEA.RPC;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MicroServiceGateway.Manager.Services
 {
@@ -40,10 +40,9 @@ namespace MicroServiceGateway.Manager.Services
         {
             try
             {
-                Console.WriteLine($"microServiceConfig:{SAEA.Common.SerializeHelper.Serialize(microServiceConfig)}");
                 MSGClientOpertion.Set(microServiceConfig);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error("Microservice client failed to register service", ex);
             }
@@ -57,7 +56,9 @@ namespace MicroServiceGateway.Manager.Services
         /// <returns></returns>
         public bool Report(PerformaceModel performaceModel)
         {
-            Console.WriteLine($"performaceModel:{SAEA.Common.SerializeHelper.Serialize(performaceModel)}");
+            performaceModel.Created = DateTimeHelper.Now;
+            MSGClientOpertion.KeepAlive(performaceModel.VirtualAddress);
+            PerformaceModelCache.Set(performaceModel);
             return true;
         }
     }

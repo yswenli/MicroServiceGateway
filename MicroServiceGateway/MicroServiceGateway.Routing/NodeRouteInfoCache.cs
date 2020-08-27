@@ -22,18 +22,28 @@ using System.Linq;
 
 namespace MicroServiceGateway.Routing
 {
+    /// <summary>
+    /// 网关节点路由缓存
+    /// </summary>
     public static class NodeRouteInfoCache
     {
         static RouteTable _routeTable;
 
         /// <summary>
-        /// 路由信息缓存
+        /// 网关节点路由缓存
         /// </summary>
         static NodeRouteInfoCache()
         {
             _routeTable = new RouteTable();
-            //todo
-            //_routeTable.Set(ris);
+        }
+
+        /// <summary>
+        /// 更新本地缓存
+        /// </summary>
+        /// <param name="routeInfos"></param>
+        public static void Set(List<RouteInfo> routeInfos)
+        {
+            _routeTable.Set(routeInfos);
         }
 
         /// <summary>

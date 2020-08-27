@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SAEA.MVC" Version="5.3.3.3" />
+    <PackageReference Include="SAEA.RPC" Version="5.3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MicroServiceGateway.Data.Redis\MicroServiceGateway.Data.Redis.csproj" />
     <ProjectReference Include="..\MicroServiceGateway.Model\MicroServiceGateway.Model.csproj" />
   </ItemGroup>
