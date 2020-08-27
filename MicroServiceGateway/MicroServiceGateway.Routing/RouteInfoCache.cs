@@ -36,7 +36,7 @@ namespace MicroServiceGateway.Routing
         static RouteInfoCache()
         {
             _routeTable = new RouteTable();
-            var ris = MSGRouteInfoOperation.Get();
+            var ris = MSGRouteInfoOperation.Read();
             _routeTable.Set(ris);
         }
 
@@ -49,22 +49,11 @@ namespace MicroServiceGateway.Routing
             return _routeTable.ToList();
         }
 
-        /// <summary>
-        /// AddIfNotExist
-        /// </summary>
-        /// <param name="url"></param>
-        public static void AddIfNotExist(string url)
+
+        public void Set(RouteInfo routeInfo)
         {
-            var tuple = url.ToVirtualAddressUrl();
-            if (tuple != null)
-            {
-                if (_routeTable.Exists(tuple.Item1))
-                {
-
-                }
-
-                MSGRouteInfoOperation
-            }
+            var old = _routeTable.Get(routeInfo.ServiceIP, routeInfo.ServicePort, routeInfo.VirtualAddress);
+            if(old)
         }
     }
 }

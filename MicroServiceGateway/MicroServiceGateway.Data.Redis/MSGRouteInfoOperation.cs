@@ -44,7 +44,7 @@ namespace MicroServiceGateway.Data.Redis
         /// 设置路由
         /// </summary>
         /// <param name="routeInfos"></param>
-        public static void Set(List<RouteInfo> routeInfos)
+        public static void Write(List<RouteInfo> routeInfos)
         {
             var json = SerializeHelper.Serialize(routeInfos);
             _redisClient.GetDataBase().Set(_prex, json);
@@ -53,7 +53,7 @@ namespace MicroServiceGateway.Data.Redis
         /// 获取路由列表
         /// </summary>
         /// <returns></returns>
-        public static List<RouteInfo> Get()
+        public static List<RouteInfo> Read()
         {
             var json = _redisClient.GetDataBase().Get(_prex);
 
