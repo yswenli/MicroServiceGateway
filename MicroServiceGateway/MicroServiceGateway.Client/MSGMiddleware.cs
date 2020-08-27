@@ -49,7 +49,7 @@ namespace MicroServiceGateway.Client
                 if (_microServiceConfig == null)
                 {
 #if DEBUG
-                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MSGMiddleware Starting");
+                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceGateway connecting");
 #endif
                     _microServiceConfig = MicroServiceConfig.Read();
 
@@ -70,15 +70,12 @@ namespace MicroServiceGateway.Client
 
                     _rpcServiceProxy.MSGClientService.Regist(_microServiceConfig.ConvertTo<Consumer.Model.MicroServiceConfig>());
 
-                    Task.Run(() =>
-                    {
-                        PerformanceHelper.OnCounted += PerformanceHelper_OnCounted;
+                    PerformanceHelper.OnCounted += PerformanceHelper_OnCounted;
 
-                        PerformanceHelper.Start();
-                    });
+                    PerformanceHelper.Start();
 
 #if DEBUG
-                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MSGMiddleware Started");
+                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceGateway connected");
 #endif
                 }
             }
@@ -93,8 +90,9 @@ namespace MicroServiceGateway.Client
         private void _rpcServiceProxy_OnErr(string name, Exception ex)
         {
 #if DEBUG
-            Console.WriteLine($"{DateTimeHelper.Now.ToFString()} {name} err:" + ex.Message);
+            Console.WriteLine($"{DateTimeHelper.Now.ToFString()}  {name} err:" + ex.Message);
 #endif
+            LogHelper.Error("The connection to gateway management center has been lost", ex, _microServiceConfig);
         }
 
 
@@ -116,7 +114,7 @@ namespace MicroServiceGateway.Client
         {
             await Task.Run(() =>
             {
-                if (_rpcServiceProxy != null && _rpcServiceProxy.IsConnected)
+                try
                 {
                     _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
                     {
@@ -130,6 +128,10 @@ namespace MicroServiceGateway.Client
                         BytesSen = performace.BytesSen,
                         HandleCount = performace.HandleCount
                     });
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("The connection to gateway management center has been lost", ex, _microServiceConfig);
                 }
             });
         }

@@ -15,13 +15,10 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using MicroServiceGateway.Common;
-using MicroServiceGateway.Data.Redis;
 using MicroServiceGateway.Manager.Libs;
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using SAEA.RPC;
-using System;
 
 namespace MicroServiceGateway.Manager.Services
 {
@@ -38,15 +35,7 @@ namespace MicroServiceGateway.Manager.Services
         /// <returns></returns>
         public bool Regist(MicroServiceConfig microServiceConfig)
         {
-            try
-            {
-                MSGClientOpertion.Set(microServiceConfig);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Microservice client failed to register service", ex);
-            }
-            return true;
+            return MicroServiceCache.Set(microServiceConfig);
         }
 
         /// <summary>
@@ -57,7 +46,7 @@ namespace MicroServiceGateway.Manager.Services
         public bool Report(PerformaceModel performaceModel)
         {
             performaceModel.Created = DateTimeHelper.Now;
-            MSGClientOpertion.KeepAlive(performaceModel.VirtualAddress);
+            MicroServiceCache.KeepAlive(performaceModel.VirtualAddress, performaceModel.IP, performaceModel.Port);
             PerformaceModelCache.Set(performaceModel);
             return true;
         }
