@@ -71,7 +71,6 @@ namespace MicroServiceGateway.Manager.Libs
             }
             OnChanged?.Invoke(arg1, arg2);
         }
-
         static string GetKey(MicroServiceConfig microService)
         {
             return GetKey(microService.VirtualAddress, microService.ServiceIP, microService.ServicePort);
