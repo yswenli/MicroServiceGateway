@@ -41,9 +41,9 @@ namespace MicroServiceGateway.Routing
         /// 更新本地缓存
         /// </summary>
         /// <param name="routeInfos"></param>
-        public static void Set(List<RouteInfo> routeInfos)
+        public static bool Set(List<RouteInfo> routeInfos)
         {
-            _routeTable.Set(routeInfos);
+            return _routeTable.Set(routeInfos);
         }
 
         /// <summary>

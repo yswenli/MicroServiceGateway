@@ -19,9 +19,7 @@ using MicroServiceGateway.Model;
 using MicroServiceGateway.Routing;
 using MicroServiceGateway.Service.Common;
 using SAEA.RPC;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MicroServiceGateway.Service.Services
 {
@@ -32,13 +30,22 @@ namespace MicroServiceGateway.Service.Services
     public class NodeService
     {
         /// <summary>
+        /// ping
+        /// </summary>
+        /// <returns></returns>
+        public string Ping()
+        {
+            return "Pong";
+        }
+
+        /// <summary>
         /// 设置路由
         /// </summary>
         /// <param name="routeInfos"></param>
         /// <returns></returns>
-        public void SetRoutes(List<RouteInfo> routeInfos)
+        public bool SetRoutes(List<RouteInfo> routeInfos)
         {
-            NodeRouteInfoCache.Set(routeInfos);
+            return NodeRouteInfoCache.Set(routeInfos);
         }
         /// <summary>
         /// 获取资源使用情况

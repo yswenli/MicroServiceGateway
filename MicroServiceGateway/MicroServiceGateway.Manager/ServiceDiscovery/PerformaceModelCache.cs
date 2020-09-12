@@ -21,7 +21,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MicroServiceGateway.Manager.Libs
+namespace MicroServiceGateway.Manager.ServiceDiscovery
 {
     /// <summary>
     /// 资源情况缓存

@@ -49,11 +49,14 @@ namespace MicroServiceGateway.Routing
             return _routeTable.ToList();
         }
 
-
-        public void Set(RouteInfo routeInfo)
+        /// <summary>
+        /// 设置
+        /// </summary>
+        /// <param name="routeInfo"></param>
+        public static void Set(RouteInfo routeInfo)
         {
-            var old = _routeTable.Get(routeInfo.ServiceIP, routeInfo.ServicePort, routeInfo.VirtualAddress);
-            if(old)
+            _routeTable.Set(routeInfo);
+            MSGRouteInfoOperation.Write(_routeTable.ToList());
         }
     }
 }

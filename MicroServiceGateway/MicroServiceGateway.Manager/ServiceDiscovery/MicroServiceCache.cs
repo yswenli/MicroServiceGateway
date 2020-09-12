@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MicroServiceGateway.Manager.Libs
+namespace MicroServiceGateway.Manager.ServiceDiscovery
 {
     public delegate void OnChangedHandler(bool isAdd, MicroServiceConfig microServiceConfig);
 

@@ -125,12 +125,14 @@ namespace MicroServiceGateway.Routing
         /// 更新本机缓存
         /// </summary>
         /// <param name="routeInfos"></param>
-        public void Set(List<RouteInfo> routeInfos)
+        public bool Set(List<RouteInfo> routeInfos)
         {
+            if (routeInfos == null && !routeInfos.Any()) return false;
             lock (_locker)
             {
                 _routeInfos = routeInfos;
             }
+            return true;
         }
 
         /// <summary>

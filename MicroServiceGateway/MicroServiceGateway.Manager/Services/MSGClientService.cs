@@ -15,7 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using MicroServiceGateway.Manager.Libs;
+using MicroServiceGateway.Manager.ServiceDiscovery;
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using SAEA.RPC;
