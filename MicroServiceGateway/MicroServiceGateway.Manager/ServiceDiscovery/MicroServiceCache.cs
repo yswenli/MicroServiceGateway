@@ -143,5 +143,21 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
             }
             return result;
         }
+
+        /// <summary>
+        /// 获取VirualAddress
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetVirualAddress()
+        {
+            if (!_dic.IsEmpty)
+            {
+                return _dic.Keys.ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

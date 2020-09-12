@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="SAEA.Common" Version="5.3.3.2" />
+    <PackageReference Include="log4net" Version="2.0.9" />
+    <PackageReference Include="SAEA.Common" Version="5.3.3.7" />
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.7.0" />
     <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
     <PackageReference Include="YamlDotNet" Version="8.1.2" />

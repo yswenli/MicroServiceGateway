@@ -34,11 +34,6 @@ namespace MicroServiceGateway.Model
         public int ManagerServerPort { get; set; } = 28080;
 
         /// <summary>
-        /// 服务健康检测地址
-        /// </summary>
-        public string HealthChecksUrl { get; set; } = "api/index/ping";
-
-        /// <summary>
         /// 保存
         /// </summary>
         public void Save()

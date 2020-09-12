@@ -30,7 +30,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
         });
         //默认加载index烈表
 
-        $.get("/api/config/getlist", null, function (data) {
+        $.get("/api/ms/getvirtualaddress", null, function (data) {
 
             layer.close(layerIndex);
 
@@ -39,7 +39,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                 if (data.Data !== undefined && data.Data.length > 0) {
                     for (var i = 0; i < data.Data.length; i++) {
                         var html = `<dd class="layui-nav-itemed">
-                                <a class='index_link' href="javascript:;" data-name='${data.Data[i].Name}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-template-1"></i> ${data.Data[i].Name}</a>                                
+                                <a class='index_link' href="javascript:;" data-name='${data.Data[i]}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-template-1"></i> ${data.Data[i]}</a>                                
                             </dd>`;
                         $("dl.redis-dbs").append(html);
                     }
@@ -65,7 +65,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                         });
                     });
 
-                    //点击redis实例
+                    //点击微服务实例
                     $("a.index_link").on("click", function () {
                         var _parent = $(this).parent();
                         var name = encodeURI($(this).attr("data-name"));
@@ -84,7 +84,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                             , shade: 0.01
                             , time: 30000
                         });
-                        $.post("/api/redis/connect?name=" + encodeURI(name), null, function (dbData) {
+                        $.post("/api/ms/getlist?virtualaddress=" + encodeURI(name), null, function (dbData) {
                             layer.close(layerIndex);
                             if (dbData.Code === 1) {
                                 if (dbData.Data !== undefined && dbData.Data.length > 0) {
@@ -92,7 +92,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                                     _parent.append('<dl class="layui-nav-child redis-db"></dl>');
                                     var db_dl = _parent.find("dl");
                                     for (var j = 0; j < dbData.Data.length; j++) {
-                                        var shtml = `<dd><a class='redis_db_link' href='javascript:;' data-name='${name}' data-db='${j}'>&nbsp;&nbsp;&nbsp;&nbsp;<i class="layui-icon layui-icon-circle"></i> db${j}</a></dd>`;
+                                        var shtml = `<dd><a class='redis_db_link' href='javascript:;' data-name='${name}' data-db='${j}'>&nbsp;&nbsp;&nbsp;&nbsp;<i class="layui-icon layui-icon-circle"></i> ${dbData.Data[j].ServiceIP}:${dbData.Data[j].ServerPort}</a></dd>`;
                                         db_dl.append(shtml);
                                     }
 

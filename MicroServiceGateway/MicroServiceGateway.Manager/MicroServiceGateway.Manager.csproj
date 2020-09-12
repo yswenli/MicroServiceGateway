@@ -45,6 +45,7 @@
     <None Remove="wwwroot\Content\js\lay\modules\table.js" />
     <None Remove="wwwroot\Content\js\lay\modules\util.js" />
     <None Remove="wwwroot\Content\js\npm.js" />
+    <None Remove="wwwroot\Content\js\performancechat.js" />
     <None Remove="wwwroot\Content\js\requestpamars.js" />
     <None Remove="wwwroot\Content\lay\modules\layui\global.js" />
     <None Remove="wwwroot\favicon.ico" />
@@ -52,7 +53,14 @@
     <None Remove="wwwroot\Index.html" />
     <None Remove="wwwroot\indexcontent.html" />
     <None Remove="wwwroot\login.html" />
+    <None Remove="wwwroot\performancechart.html" />
     <None Remove="wwwroot\userlist.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\Content\js\performancechat.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -197,14 +205,17 @@
     <Content Include="wwwroot\login.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\performancechart.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\userlist.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="5.3.3.6" />
-    <PackageReference Include="SAEA.RPC" Version="5.3.3.5" />
+    <PackageReference Include="SAEA.MVC" Version="5.3.3.7" />
+    <PackageReference Include="SAEA.RPC" Version="5.3.3.7" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
