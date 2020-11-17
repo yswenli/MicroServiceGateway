@@ -27,15 +27,6 @@ namespace MicroServiceGateway.Model
     /// </summary>
     public class MSGNodeConfig: MSGNodeBaseInfo
     {
-        /// <summary>
-        /// 微服务管理地址
-        /// </summary>
-        public string ManagerServerIP { get; set; } = "127.0.0.1";
-        /// <summary>
-        /// 微服务管理端口
-        /// </summary>
-        public int ManagerServerPort { get; set; } = 28080;
-
 
         /// <summary>
         /// 保存配置

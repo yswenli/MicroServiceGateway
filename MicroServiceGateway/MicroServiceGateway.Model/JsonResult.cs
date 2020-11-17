@@ -37,7 +37,13 @@ namespace MicroServiceGateway.Model
             get; set;
         }
 
-
+        public static JsonResult<T> Default
+        {
+            get
+            {
+                return new JsonResult<T>();
+            }
+        }
     }
 
     public static class JsonResultExtention

@@ -39,12 +39,14 @@ namespace MicroServiceGateway.Service.Common
         {
             get
             {
+                if (_performace == null) return new PerformaceModel();
                 _performaceModel.CPU = _performace.CPU;
                 _performaceModel.MemoryUsage = _performace.MemoryUsage;
                 _performaceModel.BytesRec = _performace.BytesRec;
                 _performaceModel.BytesSen = _performace.BytesSen;
                 _performaceModel.TotalThreads = _performace.TotalThreads;
                 _performaceModel.HandleCount = _performace.HandleCount;
+                _performaceModel.Created = DateTime.Now;
                 return _performaceModel;
             }
         }
@@ -59,7 +61,7 @@ namespace MicroServiceGateway.Service.Common
             _performaceModel = new PerformaceModel()
             {
                 IP = nodeConfig.NodeIP,
-                Port = nodeConfig.NodePort
+                Port = nodeConfig.NodeRpcPort
             };
             PerformanceHelper.OnCounted += PerformanceHelper_OnCounted;
         }

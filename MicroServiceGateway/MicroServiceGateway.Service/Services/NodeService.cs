@@ -29,13 +29,10 @@ namespace MicroServiceGateway.Service.Services
     [RPCService]
     public class NodeService
     {
-        /// <summary>
-        /// ping
-        /// </summary>
-        /// <returns></returns>
-        public string Ping()
+        static MSGNodeConfig _msgnodeConfig;
+        static NodeService()
         {
-            return "Pong";
+            _msgnodeConfig = MSGNodeConfig.Read();
         }
 
         /// <summary>
@@ -47,13 +44,17 @@ namespace MicroServiceGateway.Service.Services
         {
             return NodeRouteInfoCache.Set(routeInfos);
         }
+
         /// <summary>
         /// 获取资源使用情况
         /// </summary>
         /// <returns></returns>
         public PerformaceModel GetPerformace()
         {
-            return StatisticsReporter.PerformaceModel;
+            var performance = StatisticsReporter.PerformaceModel;
+            performance.IP = _msgnodeConfig.NodeIP;
+            performance.Port = _msgnodeConfig.NodeRpcPort;
+            return performance;
         }
 
     }

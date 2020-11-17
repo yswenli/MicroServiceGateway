@@ -16,6 +16,7 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Model;
+using MicroServiceGateway.Service.Common;
 using MicroServiceGateway.Service.Forwarding;
 using SAEA.Common;
 using SAEA.Http.Model;
@@ -78,7 +79,7 @@ namespace MicroServiceGateway.Service
 
             _application.OnRequestDelegate += _application_OnRequestDelegate;
 
-            _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
+            _rpcProvider = new ServiceProvider(_msgnodeConfig.NodeRpcPort, 10240, 10);
 
             _rpcProvider.OnErr += _rpcProvider_OnErr;
         }
@@ -95,6 +96,8 @@ namespace MicroServiceGateway.Service
 
         public static void Start()
         {
+            StatisticsReporter.Start();
+
             _application.Start();
 
             _rpcProvider.Start();

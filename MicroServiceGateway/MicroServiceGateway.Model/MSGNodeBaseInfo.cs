@@ -34,5 +34,9 @@ namespace MicroServiceGateway.Model
         /// 节点端口
         /// </summary>
         public int NodePort { get; set; } = 35393;
+        /// <summary>
+        /// 节点rpc端口
+        /// </summary>
+        public int NodeRpcPort { get; set; } = 35394;
     }
 }

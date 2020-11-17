@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Manager.Libs;
 using MicroServiceGateway.Manager.ServiceDiscovery;
 using SAEA.Common;
 using SAEA.MVC;
@@ -39,7 +40,7 @@ namespace MicroServiceGateway.Manager
         {
             SAEAMvcApplicationConfig mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
 
-            _application = new SAEAMvcApplication(mvcConfig);            
+            _application = new SAEAMvcApplication(mvcConfig);
 
             _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
 
@@ -65,6 +66,7 @@ namespace MicroServiceGateway.Manager
         {
             _application.Start();
             _rpcProvider.Start();
+            MSGNodeRPCServiceDic.Start();
         }
 
         /// <summary>
@@ -72,6 +74,7 @@ namespace MicroServiceGateway.Manager
         /// </summary>
         public static void Stop()
         {
+            MSGNodeRPCServiceDic.Stop();
             _application.Stop();
             _rpcProvider.Stop();
         }

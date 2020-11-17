@@ -66,10 +66,6 @@ namespace MicroServiceGateway.Manager.Consumer.Service
         {
             _serviceConsumer = serviceConsumer;
         }
-        public String Ping()
-        {
-            return _serviceConsumer.RemoteCall<String>("NodeService", "Ping");
-        }
         public bool SetRoutes(List<RouteInfo> routeInfos)
         {
             return _serviceConsumer.RemoteCall<bool>("NodeService", "SetRoutes", routeInfos);

@@ -28,9 +28,9 @@ layui.use(['jquery', 'layer', 'form'], function () {
             icon: 16
             , shade: 0.01
         });
-        //默认加载index烈表
 
-        $.get("/api/ms/getvirtualaddress", null, function (data) {
+        //默认加载msgnodes列表
+        $.get("/api/msgnode/getlist", null, function (data) {
 
             layer.close(layerIndex);
 
@@ -39,9 +39,9 @@ layui.use(['jquery', 'layer', 'form'], function () {
                 if (data.Data !== undefined && data.Data.length > 0) {
                     for (var i = 0; i < data.Data.length; i++) {
                         var html = `<dd class="layui-nav-itemed">
-                                <a class='index_link' href="javascript:;" data-name='${data.Data[i]}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-template-1"></i> ${data.Data[i]}</a>                                
+                                <a class='index_link' href="javascript:;" data-name='${data.Data[i].NodeName}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-cols"></i> ${data.Data[i].NodeName}</a>                                
                             </dd>`;
-                        $("dl.redis-dbs").append(html);
+                        $("dl.msgnodes").append(html);
                     }
                     //搜索
 
@@ -66,7 +66,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                     });
 
                     //点击微服务实例
-                    $("a.index_link").on("click", function () {
+                    $("dl.msgnodes a.index_link").on("click", function () {
                         var _parent = $(this).parent();
                         var name = encodeURI($(this).attr("data-name"));
 
@@ -79,40 +79,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                         }
                         _parent.attr("data-loaded", "1");
 
-                        layerIndex = layer.msg('加载中', {
-                            icon: 16
-                            , shade: 0.01
-                            , time: 30000
-                        });
-                        $.post("/api/ms/getlist?virtualaddress=" + encodeURI(name), null, function (dbData) {
-                            layer.close(layerIndex);
-                            if (dbData.Code === 1) {
-                                if (dbData.Data !== undefined && dbData.Data.length > 0) {
-                                    _parent.find("dl").remove();
-                                    _parent.append('<dl class="layui-nav-child redis-db"></dl>');
-                                    var db_dl = _parent.find("dl");
-                                    for (var j = 0; j < dbData.Data.length; j++) {
-                                        var shtml = `<dd><a class='redis_db_link' href='javascript:;' data-name='${name}' data-db='${j}'>&nbsp;&nbsp;&nbsp;&nbsp;<i class="layui-icon layui-icon-circle"></i> ${dbData.Data[j].ServiceIP}:${dbData.Data[j].ServerPort}</a></dd>`;
-                                        db_dl.append(shtml);
-                                    }
-
-                                    $(".layadmin-iframe").attr("src", "/chart.html?name=" + name);
-
-                                    //点击redus db
-                                    $("a.redis_db_link").on("click", function () {
-
-                                        var sname = $(this).attr("data-name");
-                                        var dbindex = $(this).attr("data-db");
-
-                                        $(".layadmin-iframe").attr("src", "/keys.html?name=" + encodeURI(sname) + "&dbindex=" + dbindex);
-
-                                    });
-                                }
-                            }
-                            else {
-                                layer.msg("操作失败:" + dbData.Message, { time: 2000 });
-                            }
-                        });
+                        $(".layadmin-iframe").attr("src", "/nodechart.html?name=" + encodeURI(name));
                     });
                     //
                     $("textarea[name='configs']").val(JSON.stringify(data.Data, " ", 4));
@@ -135,7 +102,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
     //添加node按钮
     $("#add_link").on("click", function () {
         layer.open({
-            title: 'Set Redis Server',
+            title: 'Add MSGNode',
             type: 2,
             area: ['580px', '320px'],
             fixed: true,
@@ -143,7 +110,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
             move: false,
             maxmin: false,
             time: 0,
-            content: ['/redisadd.html', 'no'],
+            content: ['/nodeadd.html', 'no'],
             end: function () {
                 location.reload();
             }
@@ -153,21 +120,21 @@ layui.use(['jquery', 'layer', 'form'], function () {
     //移除node按钮
     $("#rem_link").on("click", function () {
         layer.open({
-            title: 'Remove Redis Server',
+            title: 'Delete MSGNode',
             type: 2,
-            area: ['580px', '200px'],
+            area: ['580px', '180px'],
             fixed: true,
             resize: false,
             move: false,
             maxmin: false,
             time: 0,
-            content: ['/remove.html', 'no']
+            content: ['/nodedel.html', 'no']
         });
     });
     //node server configs按钮
     $("#conf_link").on("click", function () {
         layer.open({
-            title: 'Redis Server Configs',
+            title: 'MSGNode Configs',
             type: 2,
             area: ['670px', '560px'],
             fixed: true,

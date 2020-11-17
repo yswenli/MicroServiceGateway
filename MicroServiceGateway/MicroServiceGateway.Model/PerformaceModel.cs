@@ -22,7 +22,7 @@ using System.Text;
 
 namespace MicroServiceGateway.Model
 {
-    public class PerformaceModel: Performace
+    public class PerformaceModel : Performace
     {
         public string VirtualAddress { get; set; }
         public string IP { get; set; }

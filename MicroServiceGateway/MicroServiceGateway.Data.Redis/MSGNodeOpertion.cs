@@ -40,6 +40,8 @@ namespace MicroServiceGateway.Data.Redis
             var mConfig = ManagerConfig.Read();
 
             _redisClient = new RedisClient(mConfig.RedisCnnStr);
+
+            _redisClient.Connect();
         }
 
         static string GetZid()
@@ -49,12 +51,12 @@ namespace MicroServiceGateway.Data.Redis
 
         static string GetKey(MSGNodeInfo msgNode)
         {
-            return GetKey(msgNode.NodeIP, msgNode.NodePort);
+            return GetKey(msgNode.NodeName);
         }
 
-        static string GetKey(string ip, int port)
+        static string GetKey(string nodeName)
         {
-            return $"{_prex}{ip.Replace(".", "")}{port}";
+            return $"{_prex}{nodeName}";
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace MicroServiceGateway.Data.Redis
         /// <param name="msgNode"></param>
         public static void Set(MSGNodeInfo msgNode)
         {
-            var key = GetKey(msgNode);
+            var key = GetKey(msgNode.NodeName);
             _redisClient.GetDataBase().Set(key, SerializeHelper.Serialize(msgNode));
             _redisClient.GetDataBase().ZAdd(GetZid(), key, DateTimeHelper.GetUnixTick());
         }
@@ -71,12 +73,16 @@ namespace MicroServiceGateway.Data.Redis
         /// <summary>
         /// 获取网关节点信息
         /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="port"></param>
+        /// <param name="nodeName"></param>
         /// <returns></returns>
-        public static MSGNodeInfo Get(string ip, int port)
+        public static MSGNodeInfo Get(string nodeName)
         {
-            var key = GetKey(ip, port);
+            var key = nodeName;
+
+            if (nodeName.IndexOf(_prex) == -1)
+            {
+                key = GetKey(nodeName);
+            }
 
             var json = _redisClient.GetDataBase().Get(key);
 
@@ -94,26 +100,19 @@ namespace MicroServiceGateway.Data.Redis
         }
 
         /// <summary>
-        /// 获取网关节点信息
+        /// 是否已存在网关节点信息
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="nodeName"></param>
         /// <returns></returns>
-        public static MSGNodeInfo Get(string key)
+        public static bool Exists(string nodeName)
         {
-            var json = _redisClient.GetDataBase().Get(key);
+            var key = nodeName;
 
-            if (json != null)
+            if (nodeName.IndexOf(_prex) == -1)
             {
-                var result = SerializeHelper.Deserialize<MSGNodeInfo>(json);
-
-                if (result != null)
-                {
-                    return result;
-                }
+                key = GetKey(nodeName);
             }
-            _redisClient.GetDataBase().ZRemove(GetZid(), new string[] { key });
-
-            return null;
+            return _redisClient.GetDataBase().Exists(key);
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace MicroServiceGateway.Data.Redis
             {
                 foreach (var zi in zis)
                 {
-                    var item = Get(zi.Value);
+                    var item = Get(zi.Value.Trim());
 
                     if (item != null)
 
@@ -145,9 +144,14 @@ namespace MicroServiceGateway.Data.Redis
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="port"></param>
-        public static void Remove(string ip, int port)
+        public static void Del(string nodeName)
         {
-            var key = GetKey(ip, port);
+            var key = nodeName;
+
+            if (nodeName.IndexOf(_prex) == -1)
+            {
+                key = GetKey(nodeName);
+            }
             _redisClient.GetDataBase().Del(key);
             _redisClient.GetDataBase().ZRemove(GetZid(), new string[] { key });
         }

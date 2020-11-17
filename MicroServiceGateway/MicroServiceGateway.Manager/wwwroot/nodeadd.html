@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="background-color: #f2f2f2;">
+<head>
+    <meta charset="utf-8" />
+    <title>Add MSGNode</title>
+    <meta name="renderer" content="webkit" />
+    <meta name="author" content="yswenli" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="/content/css/layui.css" rel="stylesheet" />
+    <link href="/content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-md12" style="margin-top:15px;">
+            <div class="layui-card layui-form" lay-filter="component-form-element">
+                <form id="add_form" class="layui-form layui-form-pane" action="">
+                    <div class="layui-card-body layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <input type="text" name="NodeName" placeholder="Please enter a NodeName" autocomplete="off" class="layui-input" />
+                        </div>
+                        <div class="layui-col-md12">
+                            <input type="text" name="NodeIP" placeholder="Please enter a NodeIP" autocomplete="off" class="layui-input" />
+                        </div>
+                        <div class="layui-col-md12">
+                            <input type="text" name="NodePort" placeholder="Please enter a NodePort" autocomplete="off" class="layui-input" value="39653" />
+                        </div>
+                        <div class="layui-col-md12">
+                            <input type="text" name="NodeRpcPort" placeholder="Please enter a NodeRpcPort" autocomplete="off" class="layui-input" value="39654" />
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" id="add_btn" class="layui-btn">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="content/js/requestpamars.js"></script>
+    <script src="Content/js/datetimehelper.js"></script>
+    <script src="content/js/layui.js"></script>
+    <script>
+
+        function isNumber(value) {
+            if (parseFloat(value).toString() == "NaN") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        layui.use(['jquery', 'layer', 'form', 'laydate'], function () {
+
+            var layer = layui.layer, form = layui.form, $ = layui.$, laydate = layui.laydate;
+
+            $("#add_btn").click(function () {
+
+                var nodeName = encodeURIComponent($("input[name='NodeName']").val());
+                var nodeIP = encodeURIComponent($("input[name='NodeIP']").val());
+                var nodePort = encodeURIComponent($("input[name='NodePort']").val());
+                var nodeRpcPort = encodeURIComponent($("input[name='NodeRpcPort']").val());
+
+                if (nodePort == "") nodePort = "39654";
+
+                if (!isNumber(nodePort)) {
+                    layer.msg('端口输入有误，必须为合理值', { time: 2000 });
+                    return;
+                }
+
+                var layerIndex = layer.msg('正在处理，请稍候...', { icon: 16, shade: 0.3, time: 0 });
+
+                var url = `/api/msgnode/add`;
+
+                var json = JSON.parse(`{"nodeName":"${nodeName}","nodeIP":"${nodeIP}","nodePort":"${nodePort}","nodeRpcPort":"${nodeRpcPort}"}`);
+
+                $.post(url, json, function (sdata) {
+
+                    layer.close(layerIndex);
+
+                    if (sdata.Code == 1) {
+                        parent.location.reload();
+                    }
+                    else {
+                        if (sdata.Message.indexOf("连接失败")>-1) {
+                            parent.location.reload();
+                        }
+                        else
+                            layer.msg("操作失败:" + sdata.Message, { time: 2000 });
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
