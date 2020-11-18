@@ -341,13 +341,13 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: 'times',
+                    name: 'count',
                     boundaryGap: [0, '100%']
                 }
             ],
             series: [
                 {
-                    name: 'times',
+                    name: 'time',
                     type: 'bar',
                     data: (function () {
                         var res = [];
@@ -454,7 +454,7 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: 'b',
+                    name: 'bit',
                     boundaryGap: [0, '100%']
                 }
             ],

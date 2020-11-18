@@ -39,7 +39,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                 if (data.Data !== undefined && data.Data.length > 0) {
                     for (var i = 0; i < data.Data.length; i++) {
                         var html = `<dd class="layui-nav-itemed">
-                                <a class='index_link' href="javascript:;" data-name='${data.Data[i].NodeName}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-cols"></i> ${data.Data[i].NodeName}</a>                                
+                                <a class='index_link' href="javascript:;" data-name='${data.Data[i].NodeName}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-senior"></i> ${data.Data[i].NodeName}</a>                                
                             </dd>`;
                         $("dl.msgnodes").append(html);
                     }
@@ -94,7 +94,6 @@ layui.use(['jquery', 'layer', 'form'], function () {
                 layer.msg("操作失败:" + data.Message, { time: 2000 });
             }
         });
-
 
     });
 
