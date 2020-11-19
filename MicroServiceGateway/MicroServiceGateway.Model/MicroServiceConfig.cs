@@ -16,6 +16,8 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Common;
+using System;
+using System.Threading;
 
 namespace MicroServiceGateway.Model
 {
@@ -47,7 +49,17 @@ namespace MicroServiceGateway.Model
         /// <returns></returns>
         public static MicroServiceConfig Read()
         {
-            return ConfigHelper.Read<MicroServiceConfig>("MicroServiceConfig.yaml");
+            try
+            {
+                return ConfigHelper.Read<MicroServiceConfig>("MicroServiceConfig.yaml");
+            }
+            catch(Exception ex)
+            {
+                Thread.Sleep(1000);
+                new MicroServiceConfig().Save();
+                Logger.Error("MicroServiceConfig.Read", new Exception("加载配置文件MicroServiceConfig.yaml失败", ex));
+            }
+            return Read();
         }
     }
 }

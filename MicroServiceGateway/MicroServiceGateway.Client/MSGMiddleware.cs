@@ -49,6 +49,10 @@ namespace MicroServiceGateway.Client
                 if (_microServiceConfig == null)
                 {
 #if DEBUG
+                    if (DateTimeHelper.Now.Year<1)
+                    {
+                        return;
+                    }
                     Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceNodeManager is connecting...");
 #endif
                     _microServiceConfig = MicroServiceConfig.Read();
@@ -73,7 +77,6 @@ namespace MicroServiceGateway.Client
                     PerformanceHelper.OnCounted += PerformanceHelper_OnCounted;
 
                     PerformanceHelper.Start();
-
 #if DEBUG
                     Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceNodeManager is connected");
 #endif
@@ -81,7 +84,6 @@ namespace MicroServiceGateway.Client
             }
             catch (Exception ex)
             {
-                new MicroServiceConfig().Save();
                 throw new Exception("Failed to initialize microserviceconfig configuration. Please check whether microserviceconfig configuration file and its contents are correct", ex);
             }
 
