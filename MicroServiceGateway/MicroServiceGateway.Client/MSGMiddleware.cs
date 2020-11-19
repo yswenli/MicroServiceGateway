@@ -49,7 +49,7 @@ namespace MicroServiceGateway.Client
                 if (_microServiceConfig == null)
                 {
 #if DEBUG
-                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceGateway connecting");
+                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceNodeManager is connecting...");
 #endif
                     _microServiceConfig = MicroServiceConfig.Read();
 
@@ -75,7 +75,7 @@ namespace MicroServiceGateway.Client
                     PerformanceHelper.Start();
 
 #if DEBUG
-                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceGateway connected");
+                    Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceNodeManager is connected");
 #endif
                 }
             }

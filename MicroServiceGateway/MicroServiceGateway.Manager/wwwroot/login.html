@@ -108,19 +108,19 @@
 
                             if (data.Code === 1) {
 
-                                layer.msg('登录成功', { offset: '15px', icon: 1, time: 2000, shade: 0.3, shadeClose: false }, function () {
+                                layer.msg('登录成功', { offset: '366px', icon: 1, time: 2000, shade: 0.3, shadeClose: false }, function () {
 
                                     location.href = '/'; //后台主页
                                 });
                             }
                             else {
-                                layer.msg('登录失败,' + data.Message, { offset: '15px', icon: 2, time: 3000, shade: 0.3, shadeClose: false }, null);
+                                layer.msg('登录失败,' + data.Message, { offset: '366px', icon: 2, time: 3000, shade: 0.3, shadeClose: false }, null);
                                 $("#vercode-img").attr("src", "/api/Verification/index/4?t=" + new Date().getTime());
                             }
                         });
                     }
                     else {
-                        layer.msg('登录失败,' + vdata.Message, { offset: '15px', icon: 2, time: 3000, shade: 0.3, shadeClose: false }, null);
+                        layer.msg('登录失败,' + vdata.Message, { offset: '366px', icon: 2, time: 3000, shade: 0.3, shadeClose: false }, null);
                         $("#vercode-img").attr("src", "/api/Verification/index/4?t=" + new Date().getTime());
                     }
                 });

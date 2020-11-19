@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="background-color: #f2f2f2;">
+<head>
+    <meta charset="utf-8" />
+    <title>微服务列表</title>
+    <meta name="renderer" content="webkit" />
+    <meta name="author" content="yswenli" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="/content/css/layui.css" rel="stylesheet" />
+    <link href="/content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-md12" style="margin-top:15px;">
+            <div class="layui-card" lay-filter="component-form-element">
+                <div class="layui-card-body layui-row layui-col-space10">
+                    <table id="mstable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="content/js/requestpamars.js"></script>
+    <script src="Content/js/datetimehelper.js"></script>
+    <script src="content/js/layui.js"></script>
+    <script>
+        var virtualaddress = decodeURI(GetRequest().virtualaddress);
+
+        layui.use('table', function () {
+            var table = layui.table;
+            //第一个实例
+            table.render({
+                elem: '#mstable'
+                , height: 312
+                , url: '/api/ms/getlist?virtualaddress=' + virtualaddress //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { field: 'VirtualAddress', title: 'VirtualAddress', width: 80, sort: true, fixed: 'left' }
+                    , { field: 'ManagerServerIP', title: 'ManagerServerIP', width: 80 }
+                    , { field: 'ManagerServerPort', title: 'ManagerServerPort', width: 80, sort: true }
+                    , { field: 'ServiceName', title: 'ServiceName', width: 80 }
+                    , { field: 'ServiceIP', title: 'ServiceIP', width: 177 }
+                ]]
+                , parseData: function (res) { 
+                    return {
+                        "code": res.Code, 
+                        "msg": res.Message, 
+                        "data": res.Data 
+                    };
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

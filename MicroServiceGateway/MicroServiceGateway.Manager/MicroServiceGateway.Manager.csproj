@@ -53,6 +53,7 @@
     <None Remove="wwwroot\Index.html" />
     <None Remove="wwwroot\indexcontent.html" />
     <None Remove="wwwroot\login.html" />
+    <None Remove="wwwroot\mslist.html" />
     <None Remove="wwwroot\nodeadd.html" />
     <None Remove="wwwroot\nodechart.html" />
     <None Remove="wwwroot\nodedel.html" />
@@ -206,6 +207,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\login.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\mslist.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\nodeadd.html">

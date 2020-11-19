@@ -1,4 +1,5 @@
-﻿using MicroServiceGateway.Manager.ServiceDiscovery;
+﻿using MicroServiceGateway.Manager.Attr;
+using MicroServiceGateway.Manager.ServiceDiscovery;
 using MicroServiceGateway.Model;
 using SAEA.MVC;
 using System;
@@ -16,6 +17,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// 获取虚拟地址列表
         /// </summary>
         /// <returns></returns>
+        [Auth(false)]
         public ActionResult GetVirtualAddress()
         {
             return Json(new JsonResult<List<string>>().SetResult(MicroServiceCache.GetVirualAddress()));
@@ -26,6 +28,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// </summary>
         /// <param name="virtualAddress"></param>
         /// <returns></returns>
+        [Auth(false)]
         public ActionResult GetList(string virtualAddress)
         {
             return Json(new JsonResult<List<MicroServiceConfig>>().SetResult(MicroServiceCache.GetList(virtualAddress)));

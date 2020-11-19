@@ -9,6 +9,10 @@
     <Authors>yswenli</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.5.3</Version>
+    <AssemblyVersion>1.0.5.3</AssemblyVersion>
+    <FileVersion>1.0.5.3</FileVersion>
+    <Description>MicroServiceGateway.Client</Description>
   </PropertyGroup>
 
   <ItemGroup>

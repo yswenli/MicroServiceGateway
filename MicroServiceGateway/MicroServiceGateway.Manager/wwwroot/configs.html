@@ -18,7 +18,7 @@
             <div class="layui-card">
                 <form id="add_form" class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
-                        <textarea name="configs" autocomplete="on" placeholder="redis server configs" lay-verify="required" rows="26" cols="88" style="overflow:auto;"></textarea>
+                        <textarea name="configs" autocomplete="on" placeholder="Mircoservice gateway configs" lay-verify="required" rows="26" cols="88" style="overflow:auto;"></textarea>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
@@ -31,6 +31,42 @@
         </div>
     </div>
     <script src="content/js/layui.js"></script>
-    <script src="content/js/redis.js"></script>
+    <script>
+        layui.use(['jquery', 'layer', 'form', 'laydate'], function () {
+
+            var layer = layui.layer, form = layui.form, $ = layui.$;
+
+            var layerIndex = layer.msg('加载中', {
+                icon: 16
+                , shade: 0.3
+            });
+
+            $.get("/api/msgnode/getconfig", null, function (res) {
+
+                layer.close(layerIndex);
+
+                if (res.Code === 1) {
+                    $("textarea[name='configs']").val(res.Data);
+                }
+                else {
+                    layer.msg("操作失败:" + res.Message, { time: 2000 });
+                }
+            });
+
+            $("#conf_btn").click(function () {
+                $.post("/api/msgnode/setconfig", `json=${encodeURIComponent($("textarea[name='configs']").val())}`, function (res) {
+                    if (res.Code === 1) {
+                        layer.msg("操作成功", { time: 2000 }, function () {
+                            parent.layer.closeAll();
+                        });
+                    }
+                    else {
+                        layer.msg("操作失败:" + res.Message, { time: 2000 });
+                    }
+                });
+            });
+
+        });
+    </script>
 </body>
 </html>

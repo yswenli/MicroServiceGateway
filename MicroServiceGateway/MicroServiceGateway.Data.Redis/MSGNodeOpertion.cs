@@ -60,7 +60,7 @@ namespace MicroServiceGateway.Data.Redis
         }
 
         /// <summary>
-        /// 将网关节点信息添加到redis
+        /// 将网关节点信息添加到集合
         /// </summary>
         /// <param name="msgNode"></param>
         public static void Set(MSGNodeInfo msgNode)
@@ -68,6 +68,21 @@ namespace MicroServiceGateway.Data.Redis
             var key = GetKey(msgNode.NodeName);
             _redisClient.GetDataBase().Set(key, SerializeHelper.Serialize(msgNode));
             _redisClient.GetDataBase().ZAdd(GetZid(), key, DateTimeHelper.GetUnixTick());
+        }
+
+        /// <summary>
+        /// 将网关节点信息添加到集合
+        /// </summary>
+        /// <param name="msgNodes"></param>
+        public static void Set(List<MSGNodeInfo> msgNodes)
+        {
+            if(msgNodes!=null && msgNodes.Any())
+            {
+                foreach (var msgNode in msgNodes)
+                {
+                    Set(msgNode);
+                }
+            }
         }
 
         /// <summary>

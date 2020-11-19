@@ -56,7 +56,7 @@ namespace MicroServiceGateway.Manager.Controllers
                     NodeName = nodeName,
                     NodeIP = nodeIP,
                     NodePort = nodePort,
-                    NodeRpcPort= nodeRpcPort
+                    NodeRpcPort = nodeRpcPort
                 };
                 if (MSGNodeOpertion.Exists(msgnode.NodeName))
                 {
@@ -153,6 +153,50 @@ namespace MicroServiceGateway.Manager.Controllers
             {
                 Logger.Error("获取微服务节点信息失败", ex);
                 result.SetError(new Exception("获取微服务节点信息失败"));
+            }
+            return Json(result);
+        }
+
+        [Auth(false)]
+        public ActionResult GetConfig()
+        {
+            var result = JsonResult<string>.Default;
+
+            try
+            {
+                var list = MSGNodeOpertion.GetList().ToList();
+
+                result.SetResult("OK", Serialize(list, true));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("获取微服务节点列表失败", ex);
+                result.SetError(new Exception("获取微服务节点列表失败"));
+            }
+            return Json(result);
+        }
+
+        [Auth(false)]
+        public ActionResult SetConfig(string json)
+        {
+            var result = JsonResult<bool>.Default;
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(json))
+                {
+
+                    var list = Deserialize<List<MSGNodeInfo>>(json);
+
+                    MSGNodeOpertion.Set(list);
+
+                    result.SetResult(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("获取微服务节点列表失败", ex);
+                result.SetError(new Exception("获取微服务节点列表失败"));
             }
             return Json(result);
         }
