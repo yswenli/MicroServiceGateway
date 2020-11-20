@@ -15,8 +15,10 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Data.Redis;
 using MicroServiceGateway.Manager.Libs;
 using MicroServiceGateway.Manager.ServiceDiscovery;
+using MicroServiceGateway.Routing;
 using SAEA.Common;
 using SAEA.MVC;
 using SAEA.RPC.Provider;
@@ -51,7 +53,25 @@ namespace MicroServiceGateway.Manager
 
         private async static void MicroServiceCache_OnChanged(bool isAdd, Model.MicroServiceConfig microServiceConfig)
         {
-            //todo
+            var list = MSGNodeOpertion.GetList();
+
+            if (isAdd)
+            {
+                var ri = microServiceConfig.ConvertTo<Model.RouteInfo>();
+
+                RouteInfoCache.Add(ri);
+            }
+            else
+            {
+                RouteInfoCache.Del(microServiceConfig.ServiceIP, microServiceConfig.ServicePort, microServiceConfig.VirtualAddress);
+            }
+
+            foreach (var msgnode in list)
+            {
+                var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
+            }            
         }
 
         private static void _rpcProvider_OnErr(Exception ex)

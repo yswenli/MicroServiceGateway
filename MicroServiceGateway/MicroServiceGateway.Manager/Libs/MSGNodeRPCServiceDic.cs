@@ -118,6 +118,12 @@ namespace MicroServiceGateway.Manager.Libs
                                             nodeInfo.Linked = true;
                                             nodeInfo.LinkedTime = DateTimeHelper.Now;
                                         }
+                                        else
+                                        {
+                                            nodeInfo.Linked = false;
+                                        }
+
+                                        MSGNodeOpertion.Set(nodeInfo);
                                     }
                                     catch (Exception ex)
                                     {

@@ -13,6 +13,7 @@ namespace MicroServiceGateway.Service.Host
         public static void Main(string[] args)
         {
 #if DEBUG
+            Console.Title = "MicroServiceGateway.Service.Host";
             //MSGService.GeneratCode();
             MSGService.Start();
             Console.ReadLine();

@@ -31,7 +31,7 @@ namespace MicroServiceGateway.Manager.Controllers
         [Auth(false)]
         public ActionResult GetList(string virtualAddress)
         {
-            return Json(new JsonResult<List<MicroServiceConfig>>().SetResult(MicroServiceCache.GetList(virtualAddress)));
+            return Json(MicroServiceCache.GetList(virtualAddress));
         }
     }
 }

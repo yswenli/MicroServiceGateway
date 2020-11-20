@@ -44,13 +44,6 @@
                     , { field: 'ServiceName', title: 'ServiceName', width: 80 }
                     , { field: 'ServiceIP', title: 'ServiceIP', width: 177 }
                 ]]
-                , parseData: function (res) { 
-                    return {
-                        "code": res.Code, 
-                        "msg": res.Message, 
-                        "data": res.Data 
-                    };
-                }
             });
 
         });

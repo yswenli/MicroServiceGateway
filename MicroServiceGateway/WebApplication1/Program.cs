@@ -13,6 +13,7 @@ namespace WebApplication1
     {
         public static void Main(string[] args)
         {
+            Console.Title = "WebApplication1";
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -49,10 +49,6 @@ namespace MicroServiceGateway.Client
                 if (_microServiceConfig == null)
                 {
 #if DEBUG
-                    if (DateTimeHelper.Now.Year<1)
-                    {
-                        return;
-                    }
                     Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceNodeManager is connecting...");
 #endif
                     _microServiceConfig = MicroServiceConfig.Read();

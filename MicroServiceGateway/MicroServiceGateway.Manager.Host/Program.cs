@@ -14,6 +14,7 @@ namespace MicroServiceGateway.Manager.Host
         {
 
 #if DEBUG
+            Console.Title = "MicroServiceGateway.Manager.Host";
             //ManagerService.GeneratCode();
             ManagerService.Start();
             Console.ReadLine();

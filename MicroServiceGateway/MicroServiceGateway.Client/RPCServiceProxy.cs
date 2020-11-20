@@ -1,18 +1,19 @@
 ﻿/*******
 * 此代码为SAEA.RPC.Generater生成
-* 尽量不要修改此代码 2020-08-20 15:26:42
+* 尽量不要修改此代码 2020-11-19 16:05:14
 *******/
 
-using MicroServiceGateway.Client.Consumer.Model;
-using MicroServiceGateway.Client.Consumer.Service;
+using System;
+using System.Collections.Generic;
 using SAEA.Common;
 using SAEA.RPC.Consumer;
 using SAEA.RPC.Model;
-using System;
+using MicroServiceGateway.Client.Consumer.Model;
+using MicroServiceGateway.Client.Consumer.Service;
 
 namespace MicroServiceGateway.Client.Consumer
 {
-    class RPCServiceProxy
+    public class RPCServiceProxy
     {
         public event ExceptionCollector.OnErrHander OnErr;
 
@@ -80,47 +81,34 @@ namespace MicroServiceGateway.Client.Consumer.Model
 {
     public class MicroServiceConfig
     {
-        /// <summary>
-        /// 微服务管理地址
-        /// </summary>
-        public string ManagerServerIP { get; set; }
-        /// <summary>
-        /// 微服务管理端口
-        /// </summary>
-        public int ManagerServerPort { get; set; }
-
-        /// <summary>
-        /// 网关转发地址
-        /// </summary>
-        public string VirtualAddress { get; set; }
-
-        /// <summary>
-        /// 服务环境
-        /// </summary>
-        public string Env { get; set; } = "dev";
-        /// <summary>
-        /// 服务名称
-        /// </summary>
-        public string ServiceName { get; set; }
-
-        /// <summary>
-        /// 服务ip
-        /// </summary>
-        public string ServiceIP { get; set; }
-        /// <summary>
-        /// 服务端口
-        /// </summary>
-        public int ServicePort { get; set; }
-
-        /// <summary>
-        /// 服务健康检测地址
-        /// </summary>
-        public string HealthChecksUrl { get; set; }
-
-        /// <summary>
-        /// 描述
-        /// </summary>
-        public string Description { get; set; }
+        public String ManagerServerIP
+        {
+            get;set;
+        }
+        public Int32 ManagerServerPort
+        {
+            get;set;
+        }
+        public String VirtualAddress
+        {
+            get;set;
+        }
+        public String ServiceName
+        {
+            get;set;
+        }
+        public String ServiceIP
+        {
+            get;set;
+        }
+        public Int32 ServicePort
+        {
+            get;set;
+        }
+        public String Description
+        {
+            get;set;
+        }
     }
 }
 
@@ -140,8 +128,10 @@ namespace MicroServiceGateway.Client.Consumer.Model
         {
             get;set;
         }
-
-        public DateTime Created { get; set; }
+        public DateTime Created
+        {
+            get;set;
+        }
         public Single CPU
         {
             get;set;

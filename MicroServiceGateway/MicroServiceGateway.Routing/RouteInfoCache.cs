@@ -58,5 +58,25 @@ namespace MicroServiceGateway.Routing
             _routeTable.Set(routeInfo);
             MSGRouteInfoOperation.Write(_routeTable.ToList());
         }
+        /// <summary>
+        /// add
+        /// </summary>
+        /// <param name="routeInfo"></param>
+        public static void Add(RouteInfo routeInfo)
+        {
+            _routeTable.Add(routeInfo);
+            MSGRouteInfoOperation.Write(_routeTable.ToList());
+        }
+        /// <summary>
+        /// Del
+        /// </summary>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        /// <param name="virtualAddress"></param>
+        public static void Del(string serviceIP, int servicePort, string virtualAddress)
+        {
+            _routeTable.Del(serviceIP, servicePort, virtualAddress);
+            MSGRouteInfoOperation.Write(_routeTable.ToList());
+        }
     }
 }

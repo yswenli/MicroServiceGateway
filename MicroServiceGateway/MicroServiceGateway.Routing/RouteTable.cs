@@ -154,17 +154,28 @@ namespace MicroServiceGateway.Routing
             }
             return false;
         }
+
         /// <summary>
-        /// 是否存在
+        /// 移除
         /// </summary>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
         /// <param name="virtualAddress"></param>
         /// <returns></returns>
-        public bool Exists(string virtualAddress)
+        public bool Del(string serviceIP, int servicePort, string virtualAddress)
         {
             lock (_locker)
             {
-                return _routeInfos.Exists(b => b.VirtualAddress == virtualAddress);
+                var rt = _routeInfos.Where(b => b.ServiceIP == serviceIP && b.ServicePort == servicePort && b.VirtualAddress == virtualAddress).FirstOrDefault();
+
+                if (rt == null)
+                {
+                    _routeInfos.Remove(rt);
+
+                    return true;
+                }
             }
+            return false;
         }
     }
 }
