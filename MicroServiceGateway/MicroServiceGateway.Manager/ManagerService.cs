@@ -53,7 +53,7 @@ namespace MicroServiceGateway.Manager
 
         private async static void MicroServiceCache_OnChanged(bool isAdd, Model.MicroServiceConfig microServiceConfig)
         {
-            var list = MSGNodeOpertion.GetList();
+            var list = MSGNodeOperation.GetList();
 
             if (isAdd)
             {

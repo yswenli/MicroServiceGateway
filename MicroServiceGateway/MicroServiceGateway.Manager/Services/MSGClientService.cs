@@ -46,7 +46,7 @@ namespace MicroServiceGateway.Manager.Services
         public bool Report(PerformaceModel performaceModel)
         {
             performaceModel.Created = DateTimeHelper.Now;
-            MicroServiceCache.KeepAlive(performaceModel.VirtualAddress, performaceModel.IP, performaceModel.Port);
+            MicroServiceCache.SetOnline(performaceModel.VirtualAddress, performaceModel.IP, performaceModel.Port);
             PerformaceModelCache.Set(performaceModel);
             return true;
         }

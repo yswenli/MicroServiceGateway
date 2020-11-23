@@ -3,7 +3,7 @@
 *CLR 版本：4.0.30319.42000
 *机器名称：WALLE-PC
 *命名空间：MicroServiceGateway.Data.Redis
-*类 名 称：MSGNodeOpertion
+*类 名 称：MSGNodeOperation
 *版 本 号：V1.0.0.0
 *创建人： yswenli
 *电子邮箱：yswenli@outlook.com
@@ -26,7 +26,7 @@ namespace MicroServiceGateway.Data.Redis
     /// <summary>
     /// redis网关节点列表操作类
     /// </summary>
-    public static class MSGNodeOpertion
+    public static class MSGNodeOperation
     {
         const string _prex = "msgnode_";
 
@@ -35,7 +35,7 @@ namespace MicroServiceGateway.Data.Redis
         /// <summary>
         /// redis网关节点列表操作类
         /// </summary>
-        static MSGNodeOpertion()
+        static MSGNodeOperation()
         {
             var mConfig = ManagerConfig.Read();
 

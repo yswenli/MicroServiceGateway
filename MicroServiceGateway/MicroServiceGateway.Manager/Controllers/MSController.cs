@@ -2,9 +2,8 @@
 using MicroServiceGateway.Manager.ServiceDiscovery;
 using MicroServiceGateway.Model;
 using SAEA.MVC;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace MicroServiceGateway.Manager.Controllers
 {
@@ -20,7 +19,7 @@ namespace MicroServiceGateway.Manager.Controllers
         [Auth(false)]
         public ActionResult GetVirtualAddress()
         {
-            return Json(new JsonResult<List<string>>().SetResult(MicroServiceCache.GetVirualAddress()));
+            return Json(new JsonResult<List<string>>().SetResult(MicroServiceCache.GetVirualAddress().ToList()));
         }
 
         /// <summary>
@@ -32,6 +31,30 @@ namespace MicroServiceGateway.Manager.Controllers
         public ActionResult GetList(string virtualAddress)
         {
             return Json(MicroServiceCache.GetList(virtualAddress));
+        }
+
+        /// <summary>
+        /// IsOnline
+        /// </summary>
+        /// <param name="virtualAddress"></param>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        /// <returns></returns>
+        public ActionResult IsOnline(string virtualAddress, string serviceIP, int servicePort)
+        {
+            return Json(MicroServiceCache.GetOnline(virtualAddress, serviceIP, servicePort));
+        }
+
+        /// <summary>
+        /// del
+        /// </summary>
+        /// <param name="virtualAddress"></param>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        /// <returns></returns>
+        public ActionResult Del(string virtualAddress, string serviceIP, int servicePort)
+        {
+            return Json(MicroServiceCache.Del(virtualAddress, serviceIP, servicePort));
         }
     }
 }

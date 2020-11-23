@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Data.Redis;
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using System;
@@ -32,73 +33,14 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
     /// </summary>
     public static class MicroServiceCache
     {
-        static MemoryCacheHelper<MicroServiceConfig> _memoryCache;
-
-        static ConcurrentDictionary<string, List<string>> _dic;
-
-        /// <summary>
-        /// 微服务端发生变化时事件
-        /// </summary>
-        public static event OnChangedHandler OnChanged;
-
-        /// <summary>
-        /// 微服务缓存
-        /// </summary>
-        static MicroServiceCache()
-        {
-            _memoryCache = new MemoryCacheHelper<MicroServiceConfig>();
-
-            _memoryCache.OnChanged += _memoryCache_OnChanged;
-
-            _dic = new ConcurrentDictionary<string, List<string>>();
-        }
-
-        private static void _memoryCache_OnChanged(bool arg1, MicroServiceConfig arg2)
-        {
-            if (!arg1)
-            {
-                if (arg2 == null)
-                {
-                    _dic.TryRemove(arg2.VirtualAddress, out List<string> strs);
-                }
-                else
-                {
-                    if (_dic.ContainsKey(arg2.VirtualAddress))
-                    {
-                        _dic[arg2.VirtualAddress].Remove(arg2.ServiceIP + arg2.ServicePort);
-                    }
-                }
-            }
-            OnChanged?.Invoke(arg1, arg2);
-        }
-        static string GetKey(MicroServiceConfig microService)
-        {
-            return GetKey(microService.VirtualAddress, microService.ServiceIP, microService.ServicePort);
-        }
-
-        static string GetKey(string virtualAddress, string serviceIP, int servicePort)
-        {
-            return $"{virtualAddress}{serviceIP}{servicePort}";
-        }
         /// <summary>
         /// 更新微服务信息
         /// </summary>
         /// <param name="microService"></param>
         /// <returns></returns>
-        public static bool Set(MicroServiceConfig microService)
+        public static void Set(MicroServiceConfig microService)
         {
-            var ipport = $"{microService.ServiceIP}{microService.ServicePort}";
-
-            _dic.AddOrUpdate(microService.VirtualAddress, new List<string>() { ipport }, (k, v) =>
-            {
-                if (!v.Exists(b => b == ipport))
-                {
-                    v.Add(ipport);
-                }
-                return v;
-            });
-            _memoryCache.Set(GetKey(microService), microService, TimeSpan.FromSeconds(60));
-            return true;
+            MSInfoOperation.Set(microService);
         }
 
         /// <summary>
@@ -107,9 +49,31 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// <param name="virtualAddress"></param>
         /// <param name="serviceIP"></param>
         /// <param name="servicePort"></param>
-        public static void KeepAlive(string virtualAddress, string serviceIP, int servicePort)
+        public static void SetOnline(string virtualAddress, string serviceIP, int servicePort)
         {
-            _memoryCache.Active(GetKey(virtualAddress, serviceIP, servicePort), TimeSpan.FromSeconds(60));
+            MSInfoOperation.SetOnline(virtualAddress, serviceIP, servicePort);
+        }
+        /// <summary>
+        /// 调整缓存过期时间
+        /// </summary>
+        /// <param name="virtualAddress"></param>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        /// <returns></returns>
+        public static bool GetOnline(string virtualAddress, string serviceIP, int servicePort)
+        {
+            return MSInfoOperation.GetOnline(virtualAddress, serviceIP, servicePort);
+        }
+
+        /// <summary>
+        /// Del
+        /// </summary>
+        /// <param name="virtualAddress"></param>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        public static bool Del(string virtualAddress, string serviceIP, int servicePort)
+        {
+            return MSInfoOperation.Del(virtualAddress, serviceIP, servicePort);
         }
 
         /// <summary>
@@ -117,47 +81,18 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// </summary>
         /// <param name="virtualAddress"></param>
         /// <returns></returns>
-        public static List<MicroServiceConfig> GetList(string virtualAddress)
+        public static IEnumerable<MicroServiceConfig> GetList(string virtualAddress)
         {
-            List<MicroServiceConfig> result = null;
-
-            if (_dic.TryGetValue(virtualAddress, out List<string> ipports))
-            {
-                if (ipports != null && ipports.Any())
-                {
-                    result = new List<MicroServiceConfig>();
-
-                    foreach (var ipport in ipports)
-                    {
-                        var msi = _memoryCache.Get($"{virtualAddress}{ipport}");
-                        if (msi != null)
-                        {
-                            result.Add(msi);
-                        }
-                        else
-                        {
-                            _dic[virtualAddress].Remove(ipport);
-                        }
-                    }
-                }
-            }
-            return result;
+            return MSInfoOperation.GetList(virtualAddress);
         }
 
         /// <summary>
         /// 获取VirualAddress
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetVirualAddress()
+        public static IEnumerable<string> GetVirualAddress()
         {
-            if (!_dic.IsEmpty)
-            {
-                return _dic.Keys.ToList();
-            }
-            else
-            {
-                return null;
-            }
+            return MSInfoOperation.GetVirtualAddress();
         }
     }
 }

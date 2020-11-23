@@ -58,7 +58,7 @@ namespace MicroServiceGateway.Manager.Controllers
                     NodePort = nodePort,
                     NodeRpcPort = nodeRpcPort
                 };
-                if (MSGNodeOpertion.Exists(msgnode.NodeName))
+                if (MSGNodeOperation.Exists(msgnode.NodeName))
                 {
                     result.SetError(new Exception("微服务节点nodeName已存在"));
                     return Json(result);
@@ -86,7 +86,7 @@ namespace MicroServiceGateway.Manager.Controllers
                 }
                 finally
                 {
-                    MSGNodeOpertion.Set(msgnode);
+                    MSGNodeOperation.Set(msgnode);
                 }
             }
             catch (Exception ex)
@@ -105,7 +105,7 @@ namespace MicroServiceGateway.Manager.Controllers
 
             try
             {
-                MSGNodeOpertion.Del(nodeName);
+                MSGNodeOperation.Del(nodeName);
 
                 MSGNodeRPCServiceDic.Del(nodeName);
 
@@ -126,7 +126,7 @@ namespace MicroServiceGateway.Manager.Controllers
 
             try
             {
-                var list = MSGNodeOpertion.GetList().ToList();
+                var list = MSGNodeOperation.GetList().ToList();
 
                 result.SetResult(list);
             }
@@ -164,7 +164,7 @@ namespace MicroServiceGateway.Manager.Controllers
 
             try
             {
-                var list = MSGNodeOpertion.GetList().ToList();
+                var list = MSGNodeOperation.GetList().ToList();
 
                 result.SetResult("OK", Serialize(list, true));
             }
@@ -188,7 +188,7 @@ namespace MicroServiceGateway.Manager.Controllers
 
                     var list = Deserialize<List<MSGNodeInfo>>(json);
 
-                    MSGNodeOpertion.Set(list);
+                    MSGNodeOperation.Set(list);
 
                     result.SetResult(true);
                 }

@@ -60,7 +60,7 @@ namespace MicroServiceGateway.Manager.Libs
             }
             else
             {
-                var msgnode = MSGNodeOpertion.Get(name);
+                var msgnode = MSGNodeOperation.Get(name);
 
                 if (msgnode != null)
                 {
@@ -75,7 +75,7 @@ namespace MicroServiceGateway.Manager.Libs
 
                         Set(msgnode.NodeName, serviceProxy);
 
-                        MSGNodeOpertion.Set(msgnode);
+                        MSGNodeOperation.Set(msgnode);
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace MicroServiceGateway.Manager.Libs
                                         var cp = p.ConvertTo<PerformaceModel>();
                                         _cache.AddOrUpdate(item.Key, cp, (k, v) => cp);
 
-                                        var nodeInfo = MSGNodeOpertion.Get(item.Key);
+                                        var nodeInfo = MSGNodeOperation.Get(item.Key);
                                         if (nodeInfo != null)
                                         {
                                             nodeInfo.Linked = true;
@@ -123,7 +123,7 @@ namespace MicroServiceGateway.Manager.Libs
                                             nodeInfo.Linked = false;
                                         }
 
-                                        MSGNodeOpertion.Set(nodeInfo);
+                                        MSGNodeOperation.Set(nodeInfo);
                                     }
                                     catch (Exception ex)
                                     {
