@@ -82,7 +82,7 @@ namespace MicroServiceGateway.Data.Redis
         public static MicroServiceConfig Get(string virtualAddress, string serviceIP, int servicePort)
         {
             var json = _redisClient.GetDataBase().HGet(GetKey(virtualAddress), serviceIP + servicePort);
-            if (!string.IsNullOrEmpty(json))
+            if (!string.IsNullOrEmpty(json) && json!= "One or more errors occurred. (A task was canceled.)")
             {
                 return SerializeHelper.Deserialize<MicroServiceConfig>(json);
             }

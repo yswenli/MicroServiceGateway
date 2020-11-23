@@ -18,7 +18,34 @@
         <div class="layui-col-md12" style="margin-top:15px;">
             <div class="layui-card" lay-filter="component-form-element">
                 <div class="layui-card-body layui-row layui-col-space10">
-                    <table id="mstable"></table>
+                    <table id="mstable" class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col width="200">
+                            <col width="200">
+                            <col width="200">
+                            <col width="200">
+                            <col width="200">
+                            <col>
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>VirtualAddress</th>
+                                <th>ManagerServerIP</th>
+                                <th>ManagerServerPort</th>
+                                <th>ServiceName</th>
+                                <th>ServiceIP</th>
+                                <th>ServicePort</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -28,24 +55,46 @@
     <script src="content/js/layui.js"></script>
     <script>
         var virtualaddress = decodeURI(GetRequest().virtualaddress);
+        layui.use(['jquery', 'layer', 'form', 'laydate'], function () {
 
-        layui.use('table', function () {
-            var table = layui.table;
-            //第一个实例
-            table.render({
-                elem: '#mstable'
-                , height: 312
-                , url: '/api/ms/getlist?virtualaddress=' + virtualaddress //数据接口
-                , page: true //开启分页
-                , cols: [[ //表头
-                    { field: 'VirtualAddress', title: 'VirtualAddress', width: 80, sort: true, fixed: 'left' }
-                    , { field: 'ManagerServerIP', title: 'ManagerServerIP', width: 80 }
-                    , { field: 'ManagerServerPort', title: 'ManagerServerPort', width: 80, sort: true }
-                    , { field: 'ServiceName', title: 'ServiceName', width: 80 }
-                    , { field: 'ServiceIP', title: 'ServiceIP', width: 177 }
-                ]]
+            var layer = layui.layer, form = layui.form, $ = layui.$, laydate = layui.laydate;
+
+            var html = ``;
+
+            $("#mstable tbody").html(html);
+
+            var layerIndex = layer.msg('加载中', {
+                icon: 16
+                , shade: 0.3
             });
 
+            $.get('/api/ms/getlist?virtualaddress=' + virtualaddress, null, function (res) {
+
+                layer.close(layerIndex);
+
+                if (res.Code === 1) {
+
+                    if (res.Data != null && res.Data.length > 0) {
+                        res.Data.forEach(function (item) {
+                            html += `<tr data-virtualAddress="${item.VirtualAddress}" data-serviceIP="${item.ServiceIP}" data-servicePort="${item.ServicePort}">
+                                        <td>${item.VirtualAddress}</td>
+                                        <td>${item.ManagerServerIP}</td>
+                                        <td>${item.ManagerServerPort}</td>
+                                        <td>${item.ServiceName}</td>
+                                        <td>${item.ServiceIP}</td>
+                                        <td>${item.ServicePort}</td>
+                                        <td></td>
+                                        <td>${item.Description}</td>
+                                        <td></td>
+                                    </tr>`;
+                        });
+                        $("#mstable tbody").html(html);
+                    }
+                }
+                else {
+                    layer.msg("加载失败，err:" + res.Message, { time: 2000 });
+                }
+            });
         });
     </script>
 </body>

@@ -1,7 +1,9 @@
 ﻿using MicroServiceGateway.Manager.Attr;
 using MicroServiceGateway.Manager.ServiceDiscovery;
 using MicroServiceGateway.Model;
+using SAEA.Common;
 using SAEA.MVC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +32,21 @@ namespace MicroServiceGateway.Manager.Controllers
         [Auth(false)]
         public ActionResult GetList(string virtualAddress)
         {
-            return Json(MicroServiceCache.GetList(virtualAddress));
+            var result = new JsonResult<List<MicroServiceConfig>>();
+            try
+            {
+                var list = MicroServiceCache.GetList(virtualAddress).ToList();
+                if (list != null && list.Any())
+                {
+                    result.SetResult(list);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSController.GetList", ex, virtualAddress);
+                result.SetError(ex);
+            }
+            return Json(result);
         }
 
         /// <summary>
@@ -42,13 +58,18 @@ namespace MicroServiceGateway.Manager.Controllers
         /// <returns></returns>
         public ActionResult IsOnline(string virtualAddress, string serviceIP, int servicePort)
         {
-            return Json(MicroServiceCache.GetOnline(virtualAddress, serviceIP, servicePort));
+            return Json(new JsonResult<bool>().SetResult(MicroServiceCache.GetOnline(virtualAddress, serviceIP, servicePort)));
         }
 
-
+        /// <summary>
+        /// GetPerformance
+        /// </summary>
+        /// <param name="serviceIP"></param>
+        /// <param name="servicePort"></param>
+        /// <returns></returns>
         public ActionResult GetPerformance(string serviceIP, int servicePort)
         {
-           return Json(PerformaceModelCache.Get(serviceIP, servicePort));
+            return Json(new JsonResult<PerformaceModel>().SetResult(PerformaceModelCache.Get(serviceIP, servicePort)));
         }
 
         /// <summary>
@@ -60,7 +81,7 @@ namespace MicroServiceGateway.Manager.Controllers
         /// <returns></returns>
         public ActionResult Del(string virtualAddress, string serviceIP, int servicePort)
         {
-            return Json(MicroServiceCache.Del(virtualAddress, serviceIP, servicePort));
+            return Json(new JsonResult<bool>().SetResult(MicroServiceCache.Del(virtualAddress, serviceIP, servicePort)));
         }
     }
 }
