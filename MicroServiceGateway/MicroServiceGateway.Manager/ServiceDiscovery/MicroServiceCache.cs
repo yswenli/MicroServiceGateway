@@ -16,7 +16,9 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Data.Redis;
+using MicroServiceGateway.Manager.Libs;
 using MicroServiceGateway.Model;
+using MicroServiceGateway.Routing;
 using SAEA.Common;
 using System;
 using System.Collections.Concurrent;
@@ -38,9 +40,31 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// </summary>
         /// <param name="microService"></param>
         /// <returns></returns>
-        public static void Set(MicroServiceConfig microService)
+        public static bool Set(MicroServiceConfig microService)
         {
-            MSInfoOperation.Set(microService);
+            try
+            {
+                MSInfoOperation.Set(microService);
+
+                var ri = microService.ConvertTo<Model.RouteInfo>();
+
+                RouteInfoCache.Add(ri);
+
+                var list = MSGNodeOperation.GetList();
+
+                foreach (var msgnode in list)
+                {
+                    var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                    MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MicroServiceCache.Set", ex, microService);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -51,7 +75,36 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// <param name="servicePort"></param>
         public static void SetOnline(string virtualAddress, string serviceIP, int servicePort)
         {
-            MSInfoOperation.SetOnline(virtualAddress, serviceIP, servicePort);
+            try
+            {
+                if (MSInfoOperation.GetOnline(virtualAddress, serviceIP, servicePort) == false)
+                {
+                    var microService = MSInfoOperation.Get(virtualAddress, serviceIP, servicePort);
+
+                    if (microService != null)
+                    {
+                        var ri = microService.ConvertTo<Model.RouteInfo>();
+
+                        RouteInfoCache.Add(ri);
+
+                        var list = MSGNodeOperation.GetList();
+
+                        foreach (var msgnode in list)
+                        {
+                            var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                            MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
+                        }
+                    }
+                }
+                MSInfoOperation.SetOnline(virtualAddress, serviceIP, servicePort);
+
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Error("MicroServiceCache.SetOnline", ex, virtualAddress, serviceIP, servicePort);
+            }
+            
         }
         /// <summary>
         /// 调整缓存过期时间
@@ -62,7 +115,35 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// <returns></returns>
         public static bool GetOnline(string virtualAddress, string serviceIP, int servicePort)
         {
-            return MSInfoOperation.GetOnline(virtualAddress, serviceIP, servicePort);
+            var online = false;
+            try
+            {
+                online = MSInfoOperation.GetOnline(virtualAddress, serviceIP, servicePort);
+
+                if (!online)
+                {
+                    var microService = MSInfoOperation.Get(virtualAddress, serviceIP, servicePort);
+
+                    if (microService != null)
+                    {
+                        RouteInfoCache.Del(serviceIP, servicePort, virtualAddress);
+
+                        var list = MSGNodeOperation.GetList();
+
+                        foreach (var msgnode in list)
+                        {
+                            var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                            MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Error("MicroServiceCache.GetOnline", ex, virtualAddress, serviceIP, servicePort);
+            }
+            return online;
         }
 
         /// <summary>
@@ -73,7 +154,31 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// <param name="servicePort"></param>
         public static bool Del(string virtualAddress, string serviceIP, int servicePort)
         {
-            return MSInfoOperation.Del(virtualAddress, serviceIP, servicePort);
+            try
+            {
+                var microService = MSInfoOperation.Get(virtualAddress, serviceIP, servicePort);
+
+                if (microService != null)
+                {
+                    RouteInfoCache.Del(serviceIP, servicePort, virtualAddress);
+
+                    var list = MSGNodeOperation.GetList();
+
+                    foreach (var msgnode in list)
+                    {
+                        var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                        MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
+                    }
+                }
+
+                return MSInfoOperation.Del(virtualAddress, serviceIP, servicePort);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MicroServiceCache.Del", ex, virtualAddress, serviceIP, servicePort);
+            }
+            return false;
         }
 
         /// <summary>

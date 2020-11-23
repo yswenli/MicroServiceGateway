@@ -45,6 +45,12 @@ namespace MicroServiceGateway.Manager.Controllers
             return Json(MicroServiceCache.GetOnline(virtualAddress, serviceIP, servicePort));
         }
 
+
+        public ActionResult GetPerformance(string serviceIP, int servicePort)
+        {
+           return Json(PerformaceModelCache.Get(serviceIP, servicePort));
+        }
+
         /// <summary>
         /// del
         /// </summary>
