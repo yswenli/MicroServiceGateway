@@ -64,7 +64,12 @@ namespace MicroServiceGateway.Data.Redis
         /// <returns></returns>
         public static bool GetOnline(string virtualAddress, string serviceIP, int servicePort)
         {
-            return _redisClient.GetDataBase().Exists($"{virtualAddress}{serviceIP}{servicePort}");
+            try
+            {
+                return _redisClient.GetDataBase().Exists($"{virtualAddress}{serviceIP}{servicePort}");
+            }
+            catch { }
+            return false;
         }
 
         /// <summary>
