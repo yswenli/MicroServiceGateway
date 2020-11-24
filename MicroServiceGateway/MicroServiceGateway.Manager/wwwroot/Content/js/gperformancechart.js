@@ -527,12 +527,10 @@
     LineChart3("msgnode-cmd-div", "threads");
     LineChart4("msgnode-net-div", "net");
 
-    var virtualAddress = decodeURI(GetRequest().virtualAddress);
-    var serviceIP = decodeURI(GetRequest().serviceIP);
-    var servicePort = decodeURI(GetRequest().servicePort);
+    var name = decodeURI(GetRequest().name);
 
     function refresh() {
-        $.get("/api/ms/getperformance", `virtualAddress=${virtualAddress}&serviceIP=${serviceIP}&servicePort=${servicePort}`, function (sdata) {
+        $.get("/api/msgnode/getperformance", "nodename=" + name, function (sdata) {
 
             layer.close(layerIndex);
 

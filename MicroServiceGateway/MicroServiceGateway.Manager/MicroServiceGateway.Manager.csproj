@@ -31,6 +31,7 @@
     <None Remove="wwwroot\Content\js\datetimehelper.js" />
     <None Remove="wwwroot\Content\js\echarts.common.min.js" />
     <None Remove="wwwroot\Content\js\formhelper.js" />
+    <None Remove="wwwroot\Content\js\gperformancechart.js" />
     <None Remove="wwwroot\Content\js\index.js" />
     <None Remove="wwwroot\Content\js\layer.js" />
     <None Remove="wwwroot\Content\js\layui.js" />
@@ -63,6 +64,9 @@
 
   <ItemGroup>
     <Content Include="wwwroot\Content\js\performancechart.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\Content\js\gperformancechart.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

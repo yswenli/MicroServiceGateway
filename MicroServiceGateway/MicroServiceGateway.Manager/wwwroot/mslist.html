@@ -75,6 +75,7 @@
                 if (res.Code === 1) {
 
                     if (res.Data != null && res.Data.length > 0) {
+
                         res.Data.forEach(function (item) {
                             html += `<tr data-virtualAddress="${item.VirtualAddress}" data-serviceIP="${item.ServiceIP}" data-servicePort="${item.ServicePort}">
                                         <td>${item.VirtualAddress}</td>
@@ -85,10 +86,47 @@
                                         <td>${item.ServicePort}</td>
                                         <td></td>
                                         <td>${item.Description}</td>
-                                        <td></td>
+                                        <td><a class="performance" href="javascript:;">详情</a></td>
                                     </tr>`;
                         });
+
                         $("#mstable tbody").html(html);
+
+                        $("#mstable tbody tr").each(function () {
+
+                            var tr = $(this);
+
+                            var virtualAddress = tr.attr("data-virtualAddress");
+                            var serviceIP = tr.attr("data-serviceIP");
+                            var servicePort = tr.attr("data-servicePort");
+
+                            $.get("/api/ms/isonline", `virtualAddress=${virtualAddress}&serviceIP=${serviceIP}&servicePort=${servicePort}`, function (data) {
+                                if (data.Data === true) {
+                                    tr.children("td").eq(6).html("Online");
+                                }
+                                else {
+                                    tr.children("td").eq(6).html("Offline");
+                                }
+                            });
+
+                            $(".performance").click(function () {
+                                layer.open({
+                                    title: 'MS Performance',
+                                    type: 2,
+                                    area: ['1450px', '790px'],
+                                    fixed: true,
+                                    resize: false,
+                                    move: false,
+                                    maxmin: true,
+                                    scrollbar: true,
+                                    time: 0,
+                                    content: `/performancechart.html?virtualAddress=${virtualAddress}&serviceIP=${serviceIP}&servicePort=${servicePort}`,
+                                    end: function () {
+                                        location.reload();
+                                    }
+                                });
+                            });
+                        });
                     }
                 }
                 else {
