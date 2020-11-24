@@ -41,13 +41,23 @@ namespace MicroServiceGateway.Service.Forwarding
         /// </summary>
         public void Invoke(IHttpContext httpContext)
         {
-            var routes = Router.Route(httpContext);
-
-            if (routes != null)
+            try
             {
-                var routeInfo = LoadBalance.Get(routes);
+                var routes = Router.Route(httpContext);
 
-                Forward(httpContext, routeInfo);
+                if (routes != null)
+                {
+                    var routeInfo = LoadBalance.Get(routes);
+
+                    if (routeInfo != null)
+
+                        Forward(httpContext, routeInfo);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("RequestHandler.Invoke", ex, httpContext);
             }
         }
 
@@ -61,64 +71,89 @@ namespace MicroServiceGateway.Service.Forwarding
         {
             var stopwatch = Stopwatch.StartNew();
 
-            string url = $"http://{routeInfo.ServiceIP}:{routeInfo.ServicePort}{(httpContext.Request.RelativeUrl.Substring(0, 1) == "/" ? httpContext.Request.RelativeUrl : "/" + httpContext.Request.RelativeUrl)}";
+            string url = $"http://{routeInfo.ServiceIP}:{routeInfo.ServicePort}";
+
+            var request = httpContext.Request;
+
+            var response = httpContext.Response;
+
+            if (!string.IsNullOrEmpty(request.RelativeUrl))
+            {
+                var arr = request.RelativeUrl.Split("/", StringSplitOptions.RemoveEmptyEntries);
+
+                if (arr.Length > 1)
+                {
+                    for (int i = 1; i < arr.Length; i++)
+                    {
+                        url += "/" + arr[i];
+                    }
+                }
+            }
 
             try
             {
-                HttpMethod httpMethod = new HttpMethod(httpContext.Request.Method);
+                HttpMethod httpMethod = new HttpMethod(request.Method);
 
                 var msg = new HttpRequestMessage()
                 {
                     Method = httpMethod
                 };
-                foreach (var item in httpContext.Request.Headers)
+
+                foreach (var item in request.Headers)
                 {
-                    msg.Headers.Add(item.Key, item.Value);
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(item.Key) && !string.IsNullOrEmpty(item.Value) && item.Key.IndexOf("content-type", StringComparison.OrdinalIgnoreCase) == -1)
+                            msg.Headers.Add(item.Key, item.Value);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
 
                 msg.RequestUri = new Uri(url);
 
-                if (httpContext.Request.Method == "POST")
+                if (request.Method == "POST")
                 {
-                    msg.Content = new ByteArrayContent(httpContext.Request.Body);
+                    msg.Content = new ByteArrayContent(request.Body);
                 }
 
                 var httpClient = HttpClientWrapper.GetWrapper(routeInfo.VirtualAddress, routeInfo.ServiceIP, routeInfo.ServicePort);
 
-                var result = await httpClient.SendAsync(msg, routeInfo.Timeout * 1000);
-
-                httpContext.Response.Status = result.StatusCode;
+                var result = await httpClient.SendAsync(msg, routeInfo.Timeout * 1000);                
 
                 foreach (var kv in result.Headers)
                 {
-                    httpContext.Response.Headers.TryAdd(kv.Key, kv.Value.FirstOrDefault());
+                    response.Headers.TryAdd(kv.Key, kv.Value.FirstOrDefault());
                 }
 
-                if (result.IsSuccessStatusCode)
-                {
-                    httpContext.Response.Write(await result.Content.ReadAsStringAsync());
-                }
+                var body = result.Content.ReadAsStringAsync().Result;
+
+                response.Status = result.StatusCode;
+                response.Write(body);
             }
             catch (SocketException se)
             {
-                httpContext.Response.Status = System.Net.HttpStatusCode.BadRequest;
-                httpContext.Response.Write(SerializeHelper.Serialize(se));
+                response.Status = System.Net.HttpStatusCode.BadRequest;
+                response.Write(SerializeHelper.Serialize(se));
             }
             catch (TimeoutException te)
             {
-                httpContext.Response.Status = System.Net.HttpStatusCode.RequestTimeout;
-                httpContext.Response.Write(SerializeHelper.Serialize(te));
+                response.Status = System.Net.HttpStatusCode.RequestTimeout;
+                response.Write(SerializeHelper.Serialize(te));
             }
             catch (Exception e)
             {
-                httpContext.Response.Status = System.Net.HttpStatusCode.InternalServerError;
-                httpContext.Response.Write(SerializeHelper.Serialize(e));
+                response.Status = System.Net.HttpStatusCode.InternalServerError;
+                response.Write(SerializeHelper.Serialize(e));
             }
-            httpContext.Response.End();
+
+            response.End();
 
             stopwatch.Stop();
 
-            CallLog.Log(routeInfo.ServiceName, url, httpContext.Request.Headers.ToList(), Encoding.UTF8.GetString(httpContext.Response.Body), stopwatch.ElapsedMilliseconds);
+            CallLog.Log(routeInfo.ServiceName, url, request.Headers.ToList(), response.Body != null ? Encoding.UTF8.GetString(response.Body) : "", stopwatch.ElapsedMilliseconds);
         }
     }
 }

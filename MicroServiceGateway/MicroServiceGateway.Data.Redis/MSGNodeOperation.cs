@@ -18,6 +18,7 @@
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using SAEA.RedisSocket;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,11 +38,18 @@ namespace MicroServiceGateway.Data.Redis
         /// </summary>
         static MSGNodeOperation()
         {
-            var mConfig = ManagerConfig.Read();
+            try
+            {
+                var mConfig = ManagerConfig.Read();
 
-            _redisClient = new RedisClient(mConfig.RedisCnnStr);
+                _redisClient = new RedisClient(mConfig.RedisCnnStr);
 
-            _redisClient.Connect();
+                _redisClient.Connect();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSGNodeOperation.Init", ex);
+            }
         }
 
         static string GetZid()

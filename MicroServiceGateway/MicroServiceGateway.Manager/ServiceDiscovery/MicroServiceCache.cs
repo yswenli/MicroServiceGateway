@@ -64,7 +64,9 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                     }
                     else
                     {
-
+#if DEBUG
+                        ConsoleHelper.WriteLine("路由通知到网关服务器失败，msgnode.NodeName："+ msgnode.NodeName);
+#endif
                     }
                 }
             }

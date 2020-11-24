@@ -35,6 +35,9 @@ namespace MicroServiceGateway.Manager.Services
         /// <returns></returns>
         public bool Regist(MicroServiceConfig microServiceConfig)
         {
+#if DEBUG
+            ConsoleHelper.WriteLine("收到微服务注册信息："+SerializeHelper.Serialize(microServiceConfig));
+#endif
             return MicroServiceCache.Set(microServiceConfig);
         }
 
