@@ -18,6 +18,7 @@
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using SAEA.RedisSocket;
+using System;
 using System.Collections.Generic;
 
 namespace MicroServiceGateway.Data.Redis
@@ -36,9 +37,18 @@ namespace MicroServiceGateway.Data.Redis
         /// </summary>
         static MSGRouteInfoOperation()
         {
-            var mConfig = ManagerConfig.Read();
+            try
+            {
+                var mConfig = ManagerConfig.Read();
 
-            _redisClient = new RedisClient(mConfig.RedisCnnStr);
+                _redisClient = new RedisClient(mConfig.RedisCnnStr);
+
+                _redisClient.Connect();
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Error("MSGRouteInfoOperation.Init", ex);
+            }
         }
         /// <summary>
         /// 设置路由
@@ -46,8 +56,15 @@ namespace MicroServiceGateway.Data.Redis
         /// <param name="routeInfos"></param>
         public static void Write(List<RouteInfo> routeInfos)
         {
-            var json = SerializeHelper.Serialize(routeInfos);
-            _redisClient.GetDataBase().Set(_prex, json);
+            try
+            {
+                var json = SerializeHelper.Serialize(routeInfos);
+                _redisClient.GetDataBase().Set(_prex, json);
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Error("MSGRouteInfoOperation.Write", ex);
+            }
         }
         /// <summary>
         /// 获取路由列表
@@ -55,13 +72,19 @@ namespace MicroServiceGateway.Data.Redis
         /// <returns></returns>
         public static List<RouteInfo> Read()
         {
-            var json = _redisClient.GetDataBase().Get(_prex);
-
-            if (!string.IsNullOrEmpty(json))
+            try
             {
-                return SerializeHelper.Deserialize<List<RouteInfo>>(json);
-            }
+                var json = _redisClient.GetDataBase().Get(_prex);
 
+                if (!string.IsNullOrEmpty(json))
+                {
+                    return SerializeHelper.Deserialize<List<RouteInfo>>(json);
+                }
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Error("MSGRouteInfoOperation.Read", ex);
+            }
             return new List<RouteInfo>();
         }
     }

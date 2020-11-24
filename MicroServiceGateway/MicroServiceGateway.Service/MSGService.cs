@@ -94,15 +94,28 @@ namespace MicroServiceGateway.Service
             LogHelper.Error("rpc service error", ex);
         }
 
+        /// <summary>
+        /// Start
+        /// </summary>
         public static void Start()
         {
+#if DEBUG
+            Console.WriteLine($"{DateTimeHelper.Now} Microservice gateway service starting");
+#endif
             StatisticsReporter.Start();
 
             _application.Start();
 
             _rpcProvider.Start();
+
+#if DEBUG
+            Console.WriteLine($"{DateTimeHelper.Now} Microservice gateway service started");
+#endif
         }
 
+        /// <summary>
+        /// Stop
+        /// </summary>
         public static void Stop()
         {
             _application.Stop();

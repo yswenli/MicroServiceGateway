@@ -56,7 +56,16 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                 {
                     var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
 
-                    MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
+                    var proxry = MSGNodeRPCServiceDic.Get(msgnode.NodeName);
+
+                    if (proxry != null)
+                    {
+                        proxry.NodeService.SetRoutes(routes);
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -100,11 +109,11 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                 MSInfoOperation.SetOnline(virtualAddress, serviceIP, servicePort);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogHelper.Error("MicroServiceCache.SetOnline", ex, virtualAddress, serviceIP, servicePort);
             }
-            
+
         }
         /// <summary>
         /// 调整缓存过期时间
@@ -139,7 +148,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogHelper.Error("MicroServiceCache.GetOnline", ex, virtualAddress, serviceIP, servicePort);
             }

@@ -45,13 +45,18 @@ namespace MicroServiceGateway.Common
         /// <returns></returns>
         public static Tuple<string, string> ToVirtualAddressUrl(this string url)
         {
-            if (!string.IsNullOrEmpty(url) && url.IndexOf("/") > -1)
+            if (!string.IsNullOrEmpty(url))
             {
-                var auri = new Uri(url).AbsoluteUri;
+                var arr = url.Split("/", StringSplitOptions.RemoveEmptyEntries);
 
-                var arr = auri.Split("/", StringSplitOptions.RemoveEmptyEntries);
-                
-                return Tuple.Create(arr[0], auri.Substring(auri.IndexOf(arr[0]) + arr[0].Length));
+                if (arr.Length == 1)
+                {
+                    return Tuple.Create(arr[0], string.Empty);
+                }
+                else
+                {
+                    return Tuple.Create(arr[0], url.Substring(url.IndexOf(arr[0])));
+                }
             }
             return null;
         }

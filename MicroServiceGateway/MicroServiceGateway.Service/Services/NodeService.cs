@@ -18,7 +18,9 @@
 using MicroServiceGateway.Model;
 using MicroServiceGateway.Routing;
 using MicroServiceGateway.Service.Common;
+using SAEA.Common;
 using SAEA.RPC;
+using System;
 using System.Collections.Generic;
 
 namespace MicroServiceGateway.Service.Services
@@ -42,6 +44,9 @@ namespace MicroServiceGateway.Service.Services
         /// <returns></returns>
         public bool SetRoutes(List<RouteInfo> routeInfos)
         {
+#if DEBUG
+            Console.WriteLine(SerializeHelper.Serialize(routeInfos));
+#endif
             return NodeRouteInfoCache.Set(routeInfos);
         }
 

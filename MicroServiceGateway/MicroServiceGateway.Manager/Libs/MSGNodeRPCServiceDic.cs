@@ -55,6 +55,28 @@ namespace MicroServiceGateway.Manager.Libs
             {
                 if (performaceModel != null)
                 {
+                    if (Get(name) == null)
+                    {
+                        var msgnode = MSGNodeOperation.Get(name);
+
+                        if (msgnode != null)
+                        {
+                            RPCServiceProxy serviceProxy = new RPCServiceProxy($"rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
+
+                            var performace = serviceProxy.NodeService.GetPerformace();
+
+                            if (performace != null)
+                            {
+                                msgnode.Linked = true;
+                                msgnode.LinkedTime = DateTime.Now;
+
+                                Set(msgnode.NodeName, serviceProxy);
+
+                                MSGNodeOperation.Set(msgnode);
+                            }
+                        }
+                    }
+
                     return performaceModel;
                 }
             }
@@ -67,6 +89,10 @@ namespace MicroServiceGateway.Manager.Libs
                     RPCServiceProxy serviceProxy = new RPCServiceProxy($"rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
 
                     var performace = serviceProxy.NodeService.GetPerformace();
+
+#if DEBUG
+                    Console.WriteLine($"已连接 rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
+#endif
 
                     if (performace != null)
                     {
@@ -127,8 +153,47 @@ namespace MicroServiceGateway.Manager.Libs
                                     }
                                     catch (Exception ex)
                                     {
-                                        LogHelper.Error("获取结点详情失败", ex, item);
+                                        LogHelper.Error("MSGNodeRPCServiceDic.Start 获取结点详情失败", ex, item);
                                     }
+                                }
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var list = MSGNodeOperation.GetList();
+
+                                    foreach (var msgnode in list)
+                                    {
+                                        try
+                                        {
+                                            RPCServiceProxy serviceProxy = new RPCServiceProxy($"rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
+
+                                            var performace = serviceProxy.NodeService.GetPerformace();
+
+#if DEBUG
+                                            Console.WriteLine($"已连接 rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
+#endif
+
+                                            if (performace != null)
+                                            {
+                                                msgnode.Linked = true;
+                                                msgnode.LinkedTime = DateTime.Now;
+
+                                                Set(msgnode.NodeName, serviceProxy);
+
+                                                MSGNodeOperation.Set(msgnode);
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            LogHelper.Error("MSGNodeRPCServiceDic.Start foreach", ex);
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogHelper.Error("MSGNodeRPCServiceDic.Start", ex);
                                 }
                             }
                         }
