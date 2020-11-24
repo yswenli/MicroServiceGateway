@@ -4,7 +4,6 @@ using SAEA.RedisSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MicroServiceGateway.Data.Redis
 {
@@ -27,11 +26,18 @@ namespace MicroServiceGateway.Data.Redis
         /// </summary>
         static MSInfoOperation()
         {
-            var mConfig = ManagerConfig.Read();
+            try
+            {
+                var mConfig = ManagerConfig.Read();
 
-            _redisClient = new RedisClient(mConfig.RedisCnnStr);
+                _redisClient = new RedisClient(mConfig.RedisCnnStr);
 
-            _redisClient.Connect();
+                _redisClient.Connect();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSInfoOperation 初始化失败", ex);
+            }
         }
 
         /// <summary>
@@ -40,8 +46,15 @@ namespace MicroServiceGateway.Data.Redis
         /// <param name="microServiceConfig"></param>
         public static void Set(MicroServiceConfig microServiceConfig)
         {
-            _redisClient.GetDataBase().HSet(GetKey(microServiceConfig.VirtualAddress), microServiceConfig.ServiceIP + microServiceConfig.ServicePort, SerializeHelper.Serialize(microServiceConfig));
-            _redisClient.GetDataBase().SAdd("msinfo_virtualAddress", microServiceConfig.VirtualAddress);
+            try
+            {
+                _redisClient.GetDataBase().HSet(GetKey(microServiceConfig.VirtualAddress), microServiceConfig.ServiceIP + microServiceConfig.ServicePort, SerializeHelper.Serialize(microServiceConfig));
+                _redisClient.GetDataBase().SAdd("msinfo_virtualAddress", microServiceConfig.VirtualAddress);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSInfoOperation Set失败", ex);
+            }
         }
 
         /// <summary>
@@ -52,8 +65,15 @@ namespace MicroServiceGateway.Data.Redis
         /// <param name="servicePort"></param>
         public static void SetOnline(string virtualAddress, string serviceIP, int servicePort)
         {
-            _redisClient.GetDataBase().Set($"{virtualAddress}{serviceIP}{servicePort}", DateTimeHelper.Now.Ticks.ToString());
-            _redisClient.GetDataBase().Expire($"{virtualAddress}{serviceIP}{servicePort}", 60);
+            try
+            {
+                _redisClient.GetDataBase().Set($"{virtualAddress}{serviceIP}{servicePort}", DateTimeHelper.Now.Ticks.ToString());
+                _redisClient.GetDataBase().Expire($"{virtualAddress}{serviceIP}{servicePort}", 60);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSInfoOperation SetOnline 失败", ex);
+            }
         }
         /// <summary>
         /// GetOnline
@@ -81,11 +101,19 @@ namespace MicroServiceGateway.Data.Redis
         /// <returns></returns>
         public static MicroServiceConfig Get(string virtualAddress, string serviceIP, int servicePort)
         {
-            var json = _redisClient.GetDataBase().HGet(GetKey(virtualAddress), serviceIP + servicePort);
-            if (!string.IsNullOrEmpty(json) && json!= "One or more errors occurred. (A task was canceled.)")
+            try
             {
-                return SerializeHelper.Deserialize<MicroServiceConfig>(json);
+                var json = _redisClient.GetDataBase().HGet(GetKey(virtualAddress), serviceIP + servicePort);
+                if (!string.IsNullOrEmpty(json) && json != "One or more errors occurred. (A task was canceled.)")
+                {
+                    return SerializeHelper.Deserialize<MicroServiceConfig>(json);
+                }
             }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSInfoOperation Get 失败", ex);
+            }
+
             return null;
         }
 
@@ -118,8 +146,16 @@ namespace MicroServiceGateway.Data.Redis
         /// <param name="servicePort"></param>
         public static bool Del(string virtualAddress, string serviceIP, int servicePort)
         {
-            _redisClient.GetDataBase().Del($"{virtualAddress}{serviceIP}{servicePort}");
-            return _redisClient.GetDataBase().HDel(GetKey(virtualAddress), serviceIP + servicePort) > 0;
+            try
+            {
+                _redisClient.GetDataBase().Del($"{virtualAddress}{serviceIP}{servicePort}");
+                return _redisClient.GetDataBase().HDel(GetKey(virtualAddress), serviceIP + servicePort) > 0;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSInfoOperation Del 失败", ex);
+            }
+            return false;
         }
 
         /// <summary>
@@ -128,7 +164,15 @@ namespace MicroServiceGateway.Data.Redis
         /// <returns></returns>
         public static IEnumerable<string> GetVirtualAddress()
         {
-            return _redisClient.GetDataBase().SMemebers("msinfo_virtualAddress");
+            try
+            {
+                return _redisClient.GetDataBase().SMemebers("msinfo_virtualAddress");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("MSInfoOperation GetVirtualAddress 失败", ex);
+            }
+            return null;
         }
 
     }
