@@ -41,14 +41,29 @@ namespace MicroServiceGateway.Manager
 
             _application = new SAEAMvcApplication(mvcConfig);
 
+            _application.OnException += _application_OnException;
+
             _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
 
             _rpcProvider.OnErr += _rpcProvider_OnErr;
         }
 
+        private static SAEA.Http.Model.IHttpResult _application_OnException(SAEA.Http.Model.IHttpContext httpContext, Exception ex)
+        {
+#if DEBUG
+            ConsoleHelper.WriteLine("ManagerService error:" + SerializeHelper.Serialize(ex));
+#endif
+            LogHelper.Error("ManagerService error", ex);
+
+            return new ContentResult("ManagerService error:" + SerializeHelper.Serialize(ex));
+        }
+
         private static void _rpcProvider_OnErr(Exception ex)
         {
-            LogHelper.Error("rpc service error", ex);
+#if DEBUG
+            ConsoleHelper.WriteLine("ManagerService error:" + SerializeHelper.Serialize(ex));
+#endif
+            LogHelper.Error("ManagerService error", ex);
         }
 
         /// <summary>

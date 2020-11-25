@@ -121,16 +121,12 @@ namespace MicroServiceGateway.Service.Forwarding
 
                 var httpClient = HttpClientWrapper.GetWrapper(routeInfo.VirtualAddress, routeInfo.ServiceIP, routeInfo.ServicePort);
 
-                var result = await httpClient.SendAsync(msg, routeInfo.Timeout * 1000);                
+                var requestResult = await httpClient.SendAsync(msg, routeInfo.Timeout * 1000);
 
-                foreach (var kv in result.Headers)
-                {
-                    response.Headers.TryAdd(kv.Key, kv.Value.FirstOrDefault());
-                }
+                var body = await requestResult.Content.ReadAsStringAsync();
 
-                var body = result.Content.ReadAsStringAsync().Result;
+                response.Status = requestResult.StatusCode;
 
-                response.Status = result.StatusCode;
                 response.Write(body);
             }
             catch (SocketException se)

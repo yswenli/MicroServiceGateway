@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="5.3.3.7" />
-    <PackageReference Include="SAEA.RPC" Version="5.3.3.7" />
+    <PackageReference Include="SAEA.MVC" Version="5.3.3.9" />
+    <PackageReference Include="SAEA.RPC" Version="5.3.3.9" />
   </ItemGroup>
 
   <ItemGroup>

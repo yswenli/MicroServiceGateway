@@ -4,21 +4,23 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.5.5</Version>
+    <Version>1.1.2.2</Version>
     <Company>yswenli</Company>
     <Authors>yswenli</Authors>
     <Description>MicroServiceGateway.Common</Description>
     <PackageReleaseNotes>MicroServiceGateway.Common</PackageReleaseNotes>
     <PackageTags>MicroServiceGateway</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/yswenli/MicroServiceGateway</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yswenli/MicroServiceGateway</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="SAEA.Common" Version="5.3.3.8" />
+    <PackageReference Include="SAEA.Common" Version="5.3.3.9" />
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.0" />
     <PackageReference Include="System.Security.Permissions" Version="5.0.0" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="YamlDotNet" Version="9.1.0" />
   </ItemGroup>
 
   <ItemGroup>

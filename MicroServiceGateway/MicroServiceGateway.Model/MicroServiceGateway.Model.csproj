@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.0.5.5</Version>
+    <Version>1.1.2.2</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>MicroServiceGateway.Model</Description>
     <Company>yswenli</Company>
@@ -10,6 +10,8 @@
     <PackageTags>MicroServiceGateway</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/yswenli/MicroServiceGateway</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yswenli/MicroServiceGateway</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
