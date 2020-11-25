@@ -9,7 +9,7 @@ MicroServiceGateway
 
 ### 3.在Startup.cs中添加app.UseMSGMiddleware(); 按如下编码
 
-```
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +49,7 @@ namespace WebApplication1
                 app.UseDeveloperExceptionPage();
             }
 
+            //取消https，暂不支持
             //app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -70,7 +71,7 @@ namespace WebApplication1
 
 ### 4.添加或修改MicroServiceConfig.yaml文件（直接运行会报错并生成一个默认配置文件）
 
-```
+```yaml
 ManagerServerIP: 127.0.0.1
 ManagerServerPort: 28080
 VirtualAddress: APIService
