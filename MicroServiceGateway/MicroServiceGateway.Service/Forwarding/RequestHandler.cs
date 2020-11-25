@@ -131,18 +131,27 @@ namespace MicroServiceGateway.Service.Forwarding
             }
             catch (SocketException se)
             {
-                response.Status = System.Net.HttpStatusCode.BadRequest;
-                response.Write(SerializeHelper.Serialize(se));
+                response.ContentType = "text/plain;charset=utf-8";
+                response.Status = System.Net.HttpStatusCode.InternalServerError;
+                response.Write(se.Message);
             }
             catch (TimeoutException te)
             {
+                response.ContentType = "text/plain;charset=utf-8";
                 response.Status = System.Net.HttpStatusCode.RequestTimeout;
-                response.Write(SerializeHelper.Serialize(te));
+                response.Write(te.Message);
+            }
+            catch (HttpRequestException hre)
+            {
+                response.ContentType = "text/plain;charset=utf-8";
+                response.Status = System.Net.HttpStatusCode.NotFound;
+                response.Write(hre.Message);
             }
             catch (Exception e)
             {
+                response.ContentType = "text/plain;charset=utf-8";
                 response.Status = System.Net.HttpStatusCode.InternalServerError;
-                response.Write(SerializeHelper.Serialize(e));
+                response.Write(e.Message);
             }
 
             response.End();

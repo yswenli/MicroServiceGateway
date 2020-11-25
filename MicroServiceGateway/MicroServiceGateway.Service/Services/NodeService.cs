@@ -45,7 +45,7 @@ namespace MicroServiceGateway.Service.Services
         public bool SetRoutes(List<RouteInfo> routeInfos)
         {
 #if DEBUG
-            Console.WriteLine(SerializeHelper.Serialize(routeInfos));
+            Console.WriteLine("收到路由信息："+SerializeHelper.Serialize(routeInfos));
 #endif
             return NodeRouteInfoCache.Set(routeInfos);
         }
