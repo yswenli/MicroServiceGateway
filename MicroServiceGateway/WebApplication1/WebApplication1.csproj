@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroServiceGateway.Client\MicroServiceGateway.Client.csproj" />
+    <PackageReference Include="MicroServiceGateway.Client" Version="1.1.2.2" />
   </ItemGroup>
 
 
