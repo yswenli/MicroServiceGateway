@@ -1,5 +1,5 @@
 # MicroServiceGateway
-MicroServiceGateway
+MicroService 分成MicroServiceGateway.Service.Host、MicroServiceGateway.Manager.Host和MicroServiceGateway.Client三部分构成，其中MicroServiceGateway.Service.Host、MicroServiceGateway.Manager.Host只需要和redis服务器配置正确后即可使用，MicroServiceGateway.Client则需要嵌入到具体的服务项目中，目前项目正处于完善阶段。
 
 ## MicroServiceGateway.Client使用步骤
 
