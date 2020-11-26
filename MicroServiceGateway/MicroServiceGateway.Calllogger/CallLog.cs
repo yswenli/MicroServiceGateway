@@ -31,29 +31,37 @@ namespace MicroServiceGateway.Calllogger
     {
         static ConcurrentQueue<ApiLog> _queue;
 
+        static ConcurrentDictionary<string, long> _staticsDic;
+
         /// <summary>
         /// CallLog
         /// </summary>
         static CallLog()
         {
             _queue = new ConcurrentQueue<ApiLog>();
+
+            _staticsDic = new ConcurrentDictionary<string, long>();
         }
 
         /// <summary>
         /// 记录日志
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="url"></param>
+        /// <param name="uri"></param>
         /// <param name="inputs"></param>
         /// <param name="output"></param>
         /// <param name="cost"></param>
         /// <param name="exception"></param>
-        public static void Log(string name, string url, IEnumerable<KeyValuePair<string,string>> inputs, object output, long cost, Exception exception = null)
+        public static void Log(string name, Uri uri, IEnumerable<KeyValuePair<string, string>> inputs, object output, long cost, Exception exception = null)
         {
+            var url = GetUrl(uri);
+
+            _staticsDic.AddOrUpdate(url, 1, (k, v) => v++);
+
             var apiLog = new ApiLog()
             {
                 name = name,
-                url = url,
+                url = uri.AbsoluteUri,
                 inputs = inputs,
                 output = output,
                 cost = cost
@@ -74,6 +82,24 @@ namespace MicroServiceGateway.Calllogger
                 Thread.Sleep(1);
             }
             return apiLog;
+        }
+
+        /// <summary>
+        /// 获取url
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        static string GetUrl(Uri uri)
+        {
+            var url = uri.AbsoluteUri;
+
+            var offset = url.IndexOf("?");
+
+            if (offset > 0)
+            {
+                url = url.Substring(offset);
+            }
+            return url.ToLower();
         }
 
     }

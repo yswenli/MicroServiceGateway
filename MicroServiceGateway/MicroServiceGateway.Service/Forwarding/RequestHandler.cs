@@ -112,7 +112,9 @@ namespace MicroServiceGateway.Service.Forwarding
                     }
                 }
 
-                msg.RequestUri = new Uri(url);
+                var uri= new Uri(url);
+
+                msg.RequestUri = uri;
 
                 if (request.Method == "POST")
                 {
@@ -158,7 +160,7 @@ namespace MicroServiceGateway.Service.Forwarding
 
             stopwatch.Stop();
 
-            CallLog.Log(routeInfo.ServiceName, url, request.Headers.ToList(), response.Body != null ? Encoding.UTF8.GetString(response.Body) : "", stopwatch.ElapsedMilliseconds);
+            CallLog.Log(routeInfo.ServiceName, Uri, request.Headers.ToList(), response.Body != null ? Encoding.UTF8.GetString(response.Body) : "", stopwatch.ElapsedMilliseconds);
         }
     }
 }
