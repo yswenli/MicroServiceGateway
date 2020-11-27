@@ -73,7 +73,7 @@ namespace MicroServiceGateway.Manager
         {
             _application.Start();
             _rpcProvider.Start();
-            MSGNodeRPCServiceDic.Start();
+            MSGNodeRPCServiceCache.Start();
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace MicroServiceGateway.Manager
         /// </summary>
         public static void Stop()
         {
-            MSGNodeRPCServiceDic.Stop();
+            MSGNodeRPCServiceCache.Stop();
             _application.Stop();
             _rpcProvider.Stop();
         }

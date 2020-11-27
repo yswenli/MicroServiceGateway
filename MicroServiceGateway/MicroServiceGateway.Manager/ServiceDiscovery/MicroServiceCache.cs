@@ -25,6 +25,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MicroServiceGateway.Manager.ServiceDiscovery
 {
@@ -35,9 +37,18 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
     /// </summary>
     public static class MicroServiceCache
     {
+        /// <summary>
+        /// 微服务缓存
+        /// </summary>
         static MicroServiceCache()
         {
-           
+            Task.Factory.StartNew(() =>
+            {
+                UpdateRouteInfo();
+
+                Thread.Sleep(10 * 1000);
+
+            }, TaskCreationOptions.LongRunning);
         }
 
         /// <summary>
@@ -45,31 +56,42 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         /// </summary>
         static void UpdateRouteInfo()
         {
-            var list = MSGNodeOperation.GetList();
-
-            foreach (var msgnode in list)
+            try
             {
-                try
+                var list = MSGNodeOperation.GetList();
+
+                foreach (var msgnode in list)
                 {
-                    var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
-
-                    var proxry = MSGNodeRPCServiceDic.Get(msgnode.NodeName);
-
-                    if (proxry != null)
+                    try
                     {
-                        proxry.NodeService.SetRoutes(routes);
-                    }
-                    else
-                    {
+                        var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                        var proxry = MSGNodeRPCServiceCache.Get(msgnode.NodeName);
+
+                        if (proxry != null && proxry.IsConnected)
+                        {
+                            proxry.NodeService.SetRoutes(routes);
+                        }
+                        else
+                        {
 #if DEBUG
-                        ConsoleHelper.WriteLine("路由通知到网关服务器失败，msgnode.NodeName：" + msgnode.NodeName);
+                            ConsoleHelper.WriteLine("路由通知到网关服务器失败，msgnode.NodeName：" + msgnode.NodeName);
 #endif
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Error("路由通知到网关服务器失败", ex);
                     }
                 }
-                catch(Exception ex)
-                {
-                    LogHelper.Error("UpdateRouteInfo", ex);
-                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                ConsoleHelper.WriteLine("从redis中获取网关节点信息失败：" + ex.Message);
+#endif
+                LogHelper.Error("从redis中获取网关节点信息失败", ex);
+
             }
         }
 
