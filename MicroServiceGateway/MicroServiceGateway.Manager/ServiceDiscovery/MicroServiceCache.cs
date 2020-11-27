@@ -35,6 +35,44 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
     /// </summary>
     public static class MicroServiceCache
     {
+        static MicroServiceCache()
+        {
+           
+        }
+
+        /// <summary>
+        /// 更新路由信息到网关服务器
+        /// </summary>
+        static void UpdateRouteInfo()
+        {
+            var list = MSGNodeOperation.GetList();
+
+            foreach (var msgnode in list)
+            {
+                try
+                {
+                    var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
+
+                    var proxry = MSGNodeRPCServiceDic.Get(msgnode.NodeName);
+
+                    if (proxry != null)
+                    {
+                        proxry.NodeService.SetRoutes(routes);
+                    }
+                    else
+                    {
+#if DEBUG
+                        ConsoleHelper.WriteLine("路由通知到网关服务器失败，msgnode.NodeName：" + msgnode.NodeName);
+#endif
+                    }
+                }
+                catch(Exception ex)
+                {
+                    LogHelper.Error("UpdateRouteInfo", ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 更新微服务信息
         /// </summary>
@@ -50,25 +88,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
 
                 RouteInfoCache.Add(ri);
 
-                var list = MSGNodeOperation.GetList();
-
-                foreach (var msgnode in list)
-                {
-                    var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
-
-                    var proxry = MSGNodeRPCServiceDic.Get(msgnode.NodeName);
-
-                    if (proxry != null)
-                    {
-                        proxry.NodeService.SetRoutes(routes);
-                    }
-                    else
-                    {
-#if DEBUG
-                        ConsoleHelper.WriteLine("路由通知到网关服务器失败，msgnode.NodeName："+ msgnode.NodeName);
-#endif
-                    }
-                }
+                UpdateRouteInfo();
             }
             catch (Exception ex)
             {
@@ -98,14 +118,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
 
                         RouteInfoCache.Add(ri);
 
-                        var list = MSGNodeOperation.GetList();
-
-                        foreach (var msgnode in list)
-                        {
-                            var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
-
-                            MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
-                        }
+                        UpdateRouteInfo();
                     }
                 }
                 MSInfoOperation.SetOnline(virtualAddress, serviceIP, servicePort);
@@ -139,14 +152,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                     {
                         RouteInfoCache.Del(serviceIP, servicePort, virtualAddress);
 
-                        var list = MSGNodeOperation.GetList();
-
-                        foreach (var msgnode in list)
-                        {
-                            var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
-
-                            MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
-                        }
+                        UpdateRouteInfo();
                     }
                 }
             }
@@ -173,14 +179,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                 {
                     RouteInfoCache.Del(serviceIP, servicePort, virtualAddress);
 
-                    var list = MSGNodeOperation.GetList();
-
-                    foreach (var msgnode in list)
-                    {
-                        var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
-
-                        MSGNodeRPCServiceDic.Get(msgnode.NodeName).NodeService.SetRoutes(routes);
-                    }
+                    UpdateRouteInfo();
                 }
 
                 return MSInfoOperation.Del(virtualAddress, serviceIP, servicePort);

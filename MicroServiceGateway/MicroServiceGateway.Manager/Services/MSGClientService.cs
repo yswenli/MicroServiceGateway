@@ -15,10 +15,12 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Common;
 using MicroServiceGateway.Manager.ServiceDiscovery;
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using SAEA.RPC;
+using System.Collections.Generic;
 
 namespace MicroServiceGateway.Manager.Services
 {
@@ -53,5 +55,6 @@ namespace MicroServiceGateway.Manager.Services
             PerformaceModelCache.Set(performaceModel);
             return true;
         }
+
     }
 }

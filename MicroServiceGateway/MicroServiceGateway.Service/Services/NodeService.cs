@@ -15,6 +15,8 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Calllogger;
+using MicroServiceGateway.Common;
 using MicroServiceGateway.Model;
 using MicroServiceGateway.Routing;
 using MicroServiceGateway.Service.Common;
@@ -32,6 +34,10 @@ namespace MicroServiceGateway.Service.Services
     public class NodeService
     {
         static MSGNodeConfig _msgnodeConfig;
+
+        /// <summary>
+        /// 网关节点服务
+        /// </summary>
         static NodeService()
         {
             _msgnodeConfig = MSGNodeConfig.Read();
@@ -45,7 +51,7 @@ namespace MicroServiceGateway.Service.Services
         public bool SetRoutes(List<RouteInfo> routeInfos)
         {
 #if DEBUG
-            Console.WriteLine("收到路由信息："+SerializeHelper.Serialize(routeInfos));
+            Console.WriteLine("收到路由信息：" + SerializeHelper.Serialize(routeInfos));
 #endif
             return NodeRouteInfoCache.Set(routeInfos);
         }
@@ -62,5 +68,24 @@ namespace MicroServiceGateway.Service.Services
             return performance;
         }
 
+
+        /// <summary>
+        /// 读取调用日志
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetApiLogs()
+        {
+            return CallLog.GetApiLogs();
+        }
+
+
+        /// <summary>
+        /// 读取调用次数统计
+        /// </summary>
+        /// <returns></returns>
+        public ApiStatics GetApiStatics()
+        {
+            return CallLog.GetApiStatics();
+        }
     }
 }

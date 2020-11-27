@@ -1,6 +1,6 @@
 ﻿/*******
 * 此代码为SAEA.RPC.Generater生成
-* 尽量不要修改此代码 2020-09-12 17:22:20
+* 尽量不要修改此代码 2020-11-27 12:23:15
 *******/
 
 using System;
@@ -23,7 +23,7 @@ namespace MicroServiceGateway.Manager.Consumer
 
         public bool IsConnected
         {
-            get{ return _serviceConsumer.IsConnected; }
+            get { return _serviceConsumer.IsConnected; }
         }
         public RPCServiceProxy(string uri = "rpc://127.0.0.1:39654") : this(uri, 4, 5, 10 * 1000) { }
         public RPCServiceProxy(string uri, int links = 4, int retry = 5, int timeOut = 10 * 1000)
@@ -44,7 +44,7 @@ namespace MicroServiceGateway.Manager.Consumer
         NodeService _No;
         public NodeService NodeService
         {
-             get{ return _No; }
+            get { return _No; }
         }
         public void RegistReceiveNotice()
         {
@@ -66,13 +66,21 @@ namespace MicroServiceGateway.Manager.Consumer.Service
         {
             _serviceConsumer = serviceConsumer;
         }
-        public bool SetRoutes(List<RouteInfo> routeInfos)
+        public Boolean SetRoutes(List<RouteInfo> routeInfos)
         {
-            return _serviceConsumer.RemoteCall<bool>("NodeService", "SetRoutes", routeInfos);
+            return _serviceConsumer.RemoteCall<Boolean>("NodeService", "SetRoutes", routeInfos);
         }
         public PerformaceModel GetPerformace()
         {
             return _serviceConsumer.RemoteCall<PerformaceModel>("NodeService", "GetPerformace");
+        }
+        public List<String> GetApiLogs()
+        {
+            return _serviceConsumer.RemoteCall<List<String>>("NodeService", "GetApiLogs");
+        }
+        public ApiStatics GetApiStatics()
+        {
+            return _serviceConsumer.RemoteCall<ApiStatics>("NodeService", "GetApiStatics");
         }
     }
 }
@@ -83,39 +91,39 @@ namespace MicroServiceGateway.Manager.Consumer.Model
     {
         public Int32 Score
         {
-            get;set;
+            get; set;
         }
         public Int32 Timeout
         {
-            get;set;
+            get; set;
         }
         public Boolean Fused
         {
-            get;set;
+            get; set;
         }
         public DateTime FuseTime
         {
-            get;set;
+            get; set;
         }
         public String VirtualAddress
         {
-            get;set;
+            get; set;
         }
         public String ServiceName
         {
-            get;set;
+            get; set;
         }
         public String ServiceIP
         {
-            get;set;
+            get; set;
         }
         public Int32 ServicePort
         {
-            get;set;
+            get; set;
         }
         public String Description
         {
-            get;set;
+            get; set;
         }
     }
 }
@@ -126,44 +134,51 @@ namespace MicroServiceGateway.Manager.Consumer.Model
     {
         public String VirtualAddress
         {
-            get;set;
+            get; set;
         }
         public String IP
         {
-            get;set;
+            get; set;
         }
         public Int32 Port
         {
-            get;set;
+            get; set;
         }
         public DateTime Created
         {
-            get;set;
+            get; set;
         }
         public Single CPU
         {
-            get;set;
+            get; set;
         }
         public Single MemoryUsage
         {
-            get;set;
+            get; set;
         }
         public Single TotalThreads
         {
-            get;set;
+            get; set;
         }
         public Single HandleCount
         {
-            get;set;
+            get; set;
         }
         public Single BytesRec
         {
-            get;set;
+            get; set;
         }
         public Single BytesSen
         {
-            get;set;
+            get; set;
         }
+    }
+}
+
+namespace MicroServiceGateway.Manager.Consumer.Model
+{
+    public class ApiStatics
+    {
     }
 }
 

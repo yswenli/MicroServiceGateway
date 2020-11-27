@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MicroServiceGateway.Common\MicroServiceGateway.Common.csproj" />
+    <ProjectReference Include="..\MicroServiceGateway.Model\MicroServiceGateway.Model.csproj" />
   </ItemGroup>
 
 </Project>

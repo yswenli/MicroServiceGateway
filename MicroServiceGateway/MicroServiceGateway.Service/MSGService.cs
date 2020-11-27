@@ -130,7 +130,7 @@ namespace MicroServiceGateway.Service
         /// </summary>
         public static void GeneratCode()
         {
-            SAEA.RPC.Generater.CodeGnerater.Generate(@"C:\Users\Administrator\Desktop", "MicroServiceGateway.Manager", typeof(Services.NodeService));
+            SAEA.RPC.Generater.CodeGnerater.Generate(@"C:\Users\yswenli\Desktop\", "MicroServiceGateway.Manager", typeof(Services.NodeService));
         }
 #endif
     }

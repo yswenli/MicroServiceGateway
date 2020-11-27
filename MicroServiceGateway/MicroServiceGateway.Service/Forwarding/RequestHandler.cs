@@ -90,6 +90,8 @@ namespace MicroServiceGateway.Service.Forwarding
                 }
             }
 
+            var uri = new Uri(url);
+
             try
             {
                 HttpMethod httpMethod = new HttpMethod(request.Method);
@@ -111,8 +113,6 @@ namespace MicroServiceGateway.Service.Forwarding
 
                     }
                 }
-
-                var uri= new Uri(url);
 
                 msg.RequestUri = uri;
 
@@ -160,7 +160,7 @@ namespace MicroServiceGateway.Service.Forwarding
 
             stopwatch.Stop();
 
-            CallLog.Log(routeInfo.ServiceName, Uri, request.Headers.ToList(), response.Body != null ? Encoding.UTF8.GetString(response.Body) : "", stopwatch.ElapsedMilliseconds);
+            CallLog.Log(routeInfo.ServiceName, uri, request.Headers.ToList(), response.Body != null ? Encoding.UTF8.GetString(response.Body) : "", stopwatch.ElapsedMilliseconds);
         }
     }
 }

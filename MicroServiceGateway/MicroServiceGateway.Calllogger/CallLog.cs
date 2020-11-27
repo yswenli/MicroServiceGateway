@@ -16,11 +16,14 @@
 *描    述：
 *****************************************************************************/
 using MicroServiceGateway.Common;
+using MicroServiceGateway.Model;
+using SAEA.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MicroServiceGateway.Calllogger
 {
@@ -29,7 +32,7 @@ namespace MicroServiceGateway.Calllogger
     /// </summary>
     public static class CallLog
     {
-        static ConcurrentQueue<ApiLog> _queue;
+        static ConcurrentBag<ApiLog> _bags;
 
         static ConcurrentDictionary<string, long> _staticsDic;
 
@@ -38,9 +41,45 @@ namespace MicroServiceGateway.Calllogger
         /// </summary>
         static CallLog()
         {
-            _queue = new ConcurrentQueue<ApiLog>();
+            _bags = new ConcurrentBag<ApiLog>();
 
             _staticsDic = new ConcurrentDictionary<string, long>();
+
+            //每天清理一次数据
+            Task.Factory.StartNew(() =>
+            {
+                var date = DateTimeHelper.Now.Date;
+
+                while (true)
+                {
+                    Thread.Sleep(1000);
+
+                    if (DateTimeHelper.Now >= date)
+                    {
+                        date = date.AddDays(1);
+
+                        _staticsDic.Clear();
+                    }
+                }
+            }, TaskCreationOptions.LongRunning);
+        }
+
+        /// <summary>
+        /// 获取url
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        static string GetUrl(Uri uri)
+        {
+            var url = uri.AbsoluteUri;
+
+            var offset = url.IndexOf("?");
+
+            if (offset > 0)
+            {
+                url = url.Substring(offset);
+            }
+            return url.ToLower();
         }
 
         /// <summary>
@@ -66,40 +105,41 @@ namespace MicroServiceGateway.Calllogger
                 output = output,
                 cost = cost
             };
-            _queue.Enqueue(apiLog);
+            _bags.Add(apiLog);
         }
 
         /// <summary>
-        /// 阻塞式读取日志
+        /// 读取日志
         /// </summary>
         /// <returns></returns>
-        public static ApiLog Read()
+        public static List<string> GetApiLogs()
         {
-            ApiLog apiLog;
-
-            while (_queue.IsEmpty || !_queue.TryDequeue(out apiLog) || apiLog == null)
+            if (_bags.IsEmpty)
             {
-                Thread.Sleep(1);
+                return new List<string>();
             }
-            return apiLog;
+            List<string> data = new List<string>();
+            while (_bags.TryTake(out ApiLog apiLog))
+            {
+                data.Add(SerializeHelper.Serialize(apiLog));
+            }
+            return data;
         }
 
         /// <summary>
-        /// 获取url
+        /// 获取api统计
         /// </summary>
-        /// <param name="uri"></param>
         /// <returns></returns>
-        static string GetUrl(Uri uri)
+        public static ApiStatics GetApiStatics()
         {
-            var url = uri.AbsoluteUri;
+            var apiStatics = new ApiStatics();
 
-            var offset = url.IndexOf("?");
-
-            if (offset > 0)
+            foreach (var item in _staticsDic)
             {
-                url = url.Substring(offset);
+                apiStatics.Add(item.Key, item.Value);
             }
-            return url.ToLower();
+
+            return apiStatics;
         }
 
     }
