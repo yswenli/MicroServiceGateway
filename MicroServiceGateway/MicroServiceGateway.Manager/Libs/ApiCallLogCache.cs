@@ -4,7 +4,18 @@ using System.Text;
 
 namespace MicroServiceGateway.Manager.Libs
 {
-    class ApiCallLogCache
+    /// <summary>
+    /// ApiCallLogCache
+    /// </summary>
+    public static class ApiCallLogCache
     {
+        /// <summary>
+        /// ApiCallLogCache
+        /// </summary>
+        static ApiCallLogCache()
+        {
+
+        }
+
     }
 }

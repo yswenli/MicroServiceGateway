@@ -79,7 +79,7 @@ namespace MicroServiceGateway.Manager
 
             _application.Start();
             _rpcProvider.Start();
-            MSGNodeRPCServiceCache.Start();
+            MsgNodeRpcServiceCache.Start();
 
 #if DEBUG
             ConsoleHelper.WriteLine("MicroServiceGateway.Manager 已启动");
@@ -92,7 +92,7 @@ namespace MicroServiceGateway.Manager
         /// </summary>
         public static void Stop()
         {
-            MSGNodeRPCServiceCache.Stop();
+            MsgNodeRpcServiceCache.Stop();
             _application.Stop();
             _rpcProvider.Stop();
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MicroServiceGateway.Manager.Libs
@@ -13,39 +14,40 @@ namespace MicroServiceGateway.Manager.Libs
     /// <summary>
     /// 微服务节点rpc服务缓存
     /// </summary>
-    public static class MSGNodeRPCServiceCache
+    public static class MsgNodeRpcServiceCache
     {
-        static ConcurrentDictionary<string, RPCServiceProxy> _dic;
-
-        static ConcurrentDictionary<string, PerformaceModel> _cache;
+        static ConcurrentDictionary<string, RPCServiceProxy> _msgNodeRpcServiceProxyCache;
 
         /// <summary>
         /// 微服务节点rpc服务缓存
         /// </summary>
-        static MSGNodeRPCServiceCache()
+        static MsgNodeRpcServiceCache()
         {
-            _dic = new ConcurrentDictionary<string, RPCServiceProxy>();
-            _cache = new ConcurrentDictionary<string, PerformaceModel>();
+            _msgNodeRpcServiceProxyCache = new ConcurrentDictionary<string, RPCServiceProxy>();
         }
 
         /// <summary>
         /// Set
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="nodeName"></param>
         /// <param name="serviceProxy"></param>
-        public static void Set(string name, RPCServiceProxy serviceProxy)
+        public static void Set(string nodeName, RPCServiceProxy serviceProxy)
         {
-            _dic.AddOrUpdate(name, serviceProxy, (k, v) => serviceProxy);
+            _msgNodeRpcServiceProxyCache.AddOrUpdate(nodeName, serviceProxy, (k, v) =>
+            {
+                v.Dispose();
+                return serviceProxy;
+            });
         }
 
         /// <summary>
         /// Get
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="nodeName"></param>
         /// <returns></returns>
-        public static RPCServiceProxy Get(string name)
+        public static RPCServiceProxy Get(string nodeName)
         {
-            if (_dic.TryGetValue(name, out RPCServiceProxy serviceProxy))
+            if (_msgNodeRpcServiceProxyCache.TryGetValue(nodeName, out RPCServiceProxy serviceProxy))
             {
                 return serviceProxy;
             }
@@ -53,34 +55,30 @@ namespace MicroServiceGateway.Manager.Libs
         }
 
         /// <summary>
-        /// Del
+        /// getlist
         /// </summary>
-        /// <param name="name"></param>
-        public static void Del(string name)
+        /// <returns></returns>
+        public static List<RPCServiceProxy> GetList()
         {
-            if (_dic.TryRemove(name, out RPCServiceProxy serviceProxy))
+            if (!_msgNodeRpcServiceProxyCache.IsEmpty)
             {
-                _cache.TryRemove(name, out PerformaceModel val);
-
-                serviceProxy.Dispose();
+                return _msgNodeRpcServiceProxyCache.Values.ToList();
             }
+            return null;
         }
 
         /// <summary>
-        /// GetPerformace
+        /// Del
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static PerformaceModel GetPerformace(string name)
+        /// <param name="nodeName"></param>
+        public static void Del(string nodeName)
         {
-            if (_cache.TryGetValue(name, out PerformaceModel performaceModel))
+            if (_msgNodeRpcServiceProxyCache.TryRemove(nodeName, out RPCServiceProxy serviceProxy))
             {
-                if (performaceModel != null)
-                {
-                    return performaceModel;
-                }
+                MsgNodePerformanceCache.Del(nodeName);
+
+                serviceProxy.Dispose();
             }
-            return new PerformaceModel();
         }
 
 
@@ -112,15 +110,17 @@ namespace MicroServiceGateway.Manager.Libs
         {
             try
             {
-                if (!_dic.IsEmpty)
+                if (!_msgNodeRpcServiceProxyCache.IsEmpty)
                 {
-                    foreach (var item in _dic)
+                    foreach (var item in _msgNodeRpcServiceProxyCache)
                     {
                         try
                         {
                             var p = item.Value.NodeService.GetPerformace();
+
                             var cp = p.ConvertTo<PerformaceModel>();
-                            _cache.AddOrUpdate(item.Key, cp, (k, v) => cp);
+
+                            MsgNodePerformanceCache.Set(item.Key, cp);
 
                             var nodeInfo = MSGNodeOperation.Get(item.Key);
                             if (nodeInfo != null)

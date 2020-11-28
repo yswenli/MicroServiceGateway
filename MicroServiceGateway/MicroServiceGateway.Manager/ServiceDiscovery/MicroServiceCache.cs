@@ -44,9 +44,12 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
         {
             Task.Factory.StartNew(() =>
             {
-                UpdateRouteInfoAsync();
+                while (true)
+                {
+                    _ = UpdateRouteInfoAsync();
 
-                Thread.Sleep(10 * 1000);
+                    Thread.Sleep(10 * 1000);
+                }
 
             }, TaskCreationOptions.LongRunning);
         }
@@ -68,7 +71,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                         {
                             var routes = RouteInfoCache.GetRouteInfos().ConvertToList<Consumer.Model.RouteInfo>();
 
-                            var proxry = MSGNodeRPCServiceCache.Get(msgnode.NodeName);
+                            var proxry = MsgNodeRpcServiceCache.Get(msgnode.NodeName);
 
                             if (proxry != null && proxry.IsConnected)
                             {
@@ -143,7 +146,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
 
                         RouteInfoCache.Add(ri);
 
-                        UpdateRouteInfoAsync();
+                        _ = UpdateRouteInfoAsync();
                     }
                 }
                 MSInfoOperation.SetOnline(virtualAddress, serviceIP, servicePort);
@@ -177,7 +180,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                     {
                         RouteInfoCache.Del(serviceIP, servicePort, virtualAddress);
 
-                        UpdateRouteInfoAsync();
+                        _ = UpdateRouteInfoAsync();
                     }
                 }
             }
@@ -204,7 +207,7 @@ namespace MicroServiceGateway.Manager.ServiceDiscovery
                 {
                     RouteInfoCache.Del(serviceIP, servicePort, virtualAddress);
 
-                    UpdateRouteInfoAsync();
+                    _ = UpdateRouteInfoAsync();
                 }
 
                 return MSInfoOperation.Del(virtualAddress, serviceIP, servicePort);

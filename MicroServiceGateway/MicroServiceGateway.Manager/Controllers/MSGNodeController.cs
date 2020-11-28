@@ -74,7 +74,7 @@ namespace MicroServiceGateway.Manager.Controllers
                         msgnode.Linked = true;
                         msgnode.LinkedTime = DateTime.Now;
 
-                        MSGNodeRPCServiceCache.Set(msgnode.NodeName, serviceProxy);
+                        MsgNodeRpcServiceCache.Set(msgnode.NodeName, serviceProxy);
 
                         result.SetResult(true);
                     }
@@ -107,7 +107,7 @@ namespace MicroServiceGateway.Manager.Controllers
             {
                 MSGNodeOperation.Del(nodeName);
 
-                MSGNodeRPCServiceCache.Del(nodeName);
+                MsgNodeRpcServiceCache.Del(nodeName);
 
                 result.SetResult(true);
             }
@@ -147,7 +147,7 @@ namespace MicroServiceGateway.Manager.Controllers
 
             try
             {
-                result.SetResult(MSGNodeRPCServiceCache.GetPerformace(nodeName));
+                result.SetResult(MsgNodePerformanceCache.Get(nodeName));
             }
             catch (Exception ex)
             {

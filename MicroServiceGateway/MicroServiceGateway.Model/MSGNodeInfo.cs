@@ -24,6 +24,9 @@ namespace MicroServiceGateway.Model
     /// </summary>
     public class MSGNodeInfo : MSGNodeBaseInfo
     {
+        /// <summary>
+        /// 节点管理中用户配置网关的名称
+        /// </summary>
         public string NodeName { get; set; }
         /// <summary>
         /// 与管理端连接状态
