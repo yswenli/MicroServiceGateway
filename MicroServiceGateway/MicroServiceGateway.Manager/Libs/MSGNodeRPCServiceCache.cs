@@ -151,7 +151,7 @@ namespace MicroServiceGateway.Manager.Libs
                                 var performace = serviceProxy.NodeService.GetPerformace();
 
 #if DEBUG
-                                Console.WriteLine($"已连接到网关 rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
+                                ConsoleHelper.WriteLine($"已成功连接到网关 rpc://{msgnode.NodeIP}:{msgnode.NodeRpcPort}");
 #endif
 
                                 if (performace != null)
