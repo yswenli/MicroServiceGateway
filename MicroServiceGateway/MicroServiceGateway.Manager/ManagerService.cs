@@ -28,6 +28,8 @@ namespace MicroServiceGateway.Manager
     /// </summary>
     public static class ManagerService
     {
+        static SAEAMvcApplicationConfig _mvcConfig;
+
         static SAEAMvcApplication _application;
 
         static ServiceProvider _rpcProvider;
@@ -37,13 +39,13 @@ namespace MicroServiceGateway.Manager
         /// </summary>
         static ManagerService()
         {
-            SAEAMvcApplicationConfig mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
+            _mvcConfig = SAEAMvcApplicationConfigBuilder.Read();
 
-            _application = new SAEAMvcApplication(mvcConfig);
+            _application = new SAEAMvcApplication(_mvcConfig);
 
             _application.OnException += _application_OnException;
 
-            _rpcProvider = new ServiceProvider(mvcConfig.Port + 1, mvcConfig.BufferSize, mvcConfig.Count);
+            _rpcProvider = new ServiceProvider(_mvcConfig.Port + 1, _mvcConfig.BufferSize, _mvcConfig.Count);
 
             _rpcProvider.OnErr += _rpcProvider_OnErr;
         }
@@ -71,9 +73,18 @@ namespace MicroServiceGateway.Manager
         /// </summary>
         public static void Start()
         {
+#if DEBUG
+            ConsoleHelper.WriteLine("MicroServiceGateway.Manager 正在启动...");
+#endif
+
             _application.Start();
             _rpcProvider.Start();
             MSGNodeRPCServiceCache.Start();
+
+#if DEBUG
+            ConsoleHelper.WriteLine("MicroServiceGateway.Manager 已启动");
+            ConsoleHelper.WriteLine($"打开 http://127.0.0.1:{_mvcConfig.Port}/ 查看相关信息");
+#endif
         }
 
         /// <summary>
