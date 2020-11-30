@@ -130,13 +130,17 @@ namespace MicroServiceGateway.Calllogger
         /// 获取api统计
         /// </summary>
         /// <returns></returns>
-        public static ApiStatics GetApiStatics()
+        public static List<Apistatistical> GetApiStatics()
         {
-            var apiStatics = new ApiStatics();
+            var apiStatics = new List<Apistatistical>();
 
             foreach (var item in _staticsDic)
             {
-                apiStatics.Add(item.Key, item.Value);
+                apiStatics.Add(new Apistatistical()
+                {
+                    Url = item.Key,
+                    Count = item.Value
+                });
             }
 
             return apiStatics;

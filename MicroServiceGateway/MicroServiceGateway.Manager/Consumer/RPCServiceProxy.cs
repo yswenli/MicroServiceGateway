@@ -1,6 +1,6 @@
 ﻿/*******
 * 此代码为SAEA.RPC.Generater生成
-* 尽量不要修改此代码 2020-11-27 12:23:15
+* 尽量不要修改此代码 2020-11-30 17:04:42
 *******/
 
 using System;
@@ -78,9 +78,9 @@ namespace MicroServiceGateway.Manager.Consumer.Service
         {
             return _serviceConsumer.RemoteCall<List<String>>("NodeService", "GetApiLogs");
         }
-        public ApiStatics GetApiStatics()
+        public List<Apistatistical> GetApiStatics()
         {
-            return _serviceConsumer.RemoteCall<ApiStatics>("NodeService", "GetApiStatics");
+            return _serviceConsumer.RemoteCall<List<Apistatistical>>("NodeService", "GetApiStatics");
         }
     }
 }
@@ -177,8 +177,16 @@ namespace MicroServiceGateway.Manager.Consumer.Model
 
 namespace MicroServiceGateway.Manager.Consumer.Model
 {
-    public class ApiStatics
+    public class Apistatistical
     {
+        public String Url
+        {
+            get; set;
+        }
+        public Int64 Count
+        {
+            get; set;
+        }
     }
 }
 

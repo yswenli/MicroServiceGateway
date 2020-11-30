@@ -83,7 +83,7 @@ namespace MicroServiceGateway.Service.Services
         /// 读取调用次数统计
         /// </summary>
         /// <returns></returns>
-        public ApiStatics GetApiStatics()
+        public List<Apistatistical> GetApiStatics()
         {
             return CallLog.GetApiStatics();
         }
