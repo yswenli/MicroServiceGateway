@@ -103,10 +103,21 @@ namespace MicroServiceGateway.Manager.Libs
         /// <summary>
         /// get api访问计数器
         /// </summary>
+        /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public static List<MicroServiceGateway.Model.Apistatistical> GetApistatisticals()
+        public static List<MicroServiceGateway.Model.Apistatistical> GetApistatisticals(int pageIndex)
         {
-            return ApiCounterOperation.GetApistatisticals();
+            if (pageIndex < 0) pageIndex = 1;
+
+            var count = 12;
+
+            var result= ApiCounterOperation.GetApistatisticals();
+
+            if (result.Any())
+            {
+                result = result.OrderByDescending(b => b.Count).Skip((pageIndex - 1) * count).Take(count).ToList();
+            }
+            return result;
         }
     }
 }

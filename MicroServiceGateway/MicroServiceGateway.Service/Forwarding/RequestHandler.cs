@@ -121,6 +121,18 @@ namespace MicroServiceGateway.Service.Forwarding
                     msg.Content = new ByteArrayContent(request.Body);
                 }
 
+                if (httpContext.Request.Headers.ContainsKey("REMOTE_ADDR"))
+                {
+                    if (httpContext.Request.Headers.ContainsKey("HTTP_X_FORWARDED_FOR"))
+                    {
+                        msg.Headers.Add("HTTP_X_FORWARDED_FOR", httpContext.Request.Headers["HTTP_X_FORWARDED_FOR"] + "," + httpContext.Request.Headers["REMOTE_ADDR"]);
+                    }
+                    else
+                    {
+                        msg.Headers.Add("HTTP_X_FORWARDED_FOR", httpContext.Request.Headers["REMOTE_ADDR"]);
+                    }
+                }
+
                 var httpClient = HttpClientWrapper.GetWrapper(routeInfo.VirtualAddress, routeInfo.ServiceIP, routeInfo.ServicePort);
 
                 var requestResult = await httpClient.SendAsync(msg, routeInfo.Timeout * 1000);

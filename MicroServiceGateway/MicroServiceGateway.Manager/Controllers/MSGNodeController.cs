@@ -237,12 +237,13 @@ namespace MicroServiceGateway.Manager.Controllers
         /// <summary>
         /// get api访问计数器
         /// </summary>
+        /// <param name="pageIndex"></param>
         /// <returns></returns>
         [Auth(false)]
-        public ActionResult GetApistatisticals()
+        public ActionResult GetApistatisticals(int pageIndex)
         {
             var result = JsonResult<List<Apistatistical>>.Default;
-            result.SetResult(ApiCallLogCache.GetApistatisticals());
+            result.SetResult(ApiCallLogCache.GetApistatisticals(pageIndex));
             return Json(result);
         }
     }
