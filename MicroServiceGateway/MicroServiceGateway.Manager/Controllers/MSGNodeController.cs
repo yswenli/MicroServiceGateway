@@ -30,8 +30,19 @@ using System.Threading.Tasks;
 
 namespace MicroServiceGateway.Manager.Controllers
 {
+    /// <summary>
+    /// 微服务节点
+    /// </summary>
     public class MSGNodeController : Controller
     {
+        /// <summary>
+        /// 添加微服务节点
+        /// </summary>
+        /// <param name="nodeName"></param>
+        /// <param name="nodeIP"></param>
+        /// <param name="nodePort"></param>
+        /// <param name="nodeRpcPort"></param>
+        /// <returns></returns>
         [Auth(false)]
         public ActionResult Add(string nodeName, string nodeIP, int nodePort = 0, int nodeRpcPort = 0)
         {
@@ -98,9 +109,13 @@ namespace MicroServiceGateway.Manager.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        /// 删除微服务节点
+        /// </summary>
+        /// <param name="nodeName"></param>
+        /// <returns></returns>
         public ActionResult Del(string nodeName)
         {
-
             var result = JsonResult<bool>.Default;
 
             try
@@ -119,6 +134,10 @@ namespace MicroServiceGateway.Manager.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        /// 获取微服务网关列表
+        /// </summary>
+        /// <returns></returns>
         [Auth(false)]
         public ActionResult GetList()
         {
@@ -139,7 +158,11 @@ namespace MicroServiceGateway.Manager.Controllers
         }
 
 
-
+        /// <summary>
+        /// 获取微服务网关信息
+        /// </summary>
+        /// <param name="nodeName"></param>
+        /// <returns></returns>
         [Auth(false)]
         public ActionResult GetPerformance(string nodeName)
         {
@@ -157,6 +180,11 @@ namespace MicroServiceGateway.Manager.Controllers
             return Json(result);
         }
 
+
+        /// <summary>
+        /// 获取网关节点信息集合
+        /// </summary>
+        /// <returns></returns>
         [Auth(false)]
         public ActionResult GetConfig()
         {
@@ -176,6 +204,11 @@ namespace MicroServiceGateway.Manager.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        /// 将网关节点信息添加到集合
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
         [Auth(false)]
         public ActionResult SetConfig(string json)
         {
@@ -185,7 +218,6 @@ namespace MicroServiceGateway.Manager.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(json))
                 {
-
                     var list = Deserialize<List<MSGNodeInfo>>(json);
 
                     MSGNodeOperation.Set(list);
@@ -198,6 +230,19 @@ namespace MicroServiceGateway.Manager.Controllers
                 Logger.Error("获取微服务节点列表失败", ex);
                 result.SetError(new Exception("获取微服务节点列表失败"));
             }
+            return Json(result);
+        }
+
+
+        /// <summary>
+        /// get api访问计数器
+        /// </summary>
+        /// <returns></returns>
+        [Auth(false)]
+        public ActionResult GetApistatisticals()
+        {
+            var result = JsonResult<List<Apistatistical>>.Default;
+            result.SetResult(ApiCallLogCache.GetApistatisticals());
             return Json(result);
         }
     }

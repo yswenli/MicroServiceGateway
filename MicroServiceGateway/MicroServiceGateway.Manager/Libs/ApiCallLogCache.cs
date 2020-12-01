@@ -1,4 +1,5 @@
-﻿using MicroServiceGateway.Manager.Consumer;
+﻿using MicroServiceGateway.Data.Redis;
+using MicroServiceGateway.Manager.Consumer;
 using MicroServiceGateway.Manager.Consumer.Model;
 using SAEA.Common;
 using System;
@@ -18,29 +19,6 @@ namespace MicroServiceGateway.Manager.Libs
     public static class ApiCallLogCache
     {
         static bool _running = false;
-
-        static ConcurrentDictionary<string, long> _apiCountCache = new ConcurrentDictionary<string, long>();
-
-        /// <summary>
-        /// ApiCallLogCache
-        /// </summary>
-        static ApiCallLogCache()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                var date = DateTimeHelper.Now;
-
-                while (true)
-                {
-                    if (DateTimeHelper.Now.Date > date)
-                    {
-                        date = DateTimeHelper.Now.Date;
-
-                        _apiCountCache.Clear();
-                    }
-                }
-            }, TaskCreationOptions.LongRunning);
-        }
 
         public static void Start()
         {
@@ -80,7 +58,7 @@ namespace MicroServiceGateway.Manager.Libs
                 {
                     foreach (var item in apiStatics)
                     {
-                        _apiCountCache.AddOrUpdate(item.Url, item.Count, (k, v) => { v += item.Count; return v; });
+                        ApiCounterOperation.Set(item.Url, item.Count);
                     }
                 }
             }
@@ -122,10 +100,13 @@ namespace MicroServiceGateway.Manager.Libs
         }
 
 
-
-        public static List<Apistatistical> GetApistatisticals()
+        /// <summary>
+        /// get api访问计数器
+        /// </summary>
+        /// <returns></returns>
+        public static List<MicroServiceGateway.Model.Apistatistical> GetApistatisticals()
         {
-
+            return ApiCounterOperation.GetApistatisticals();
         }
     }
 }
