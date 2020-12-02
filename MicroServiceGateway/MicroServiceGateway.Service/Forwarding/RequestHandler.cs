@@ -110,7 +110,7 @@ namespace MicroServiceGateway.Service.Forwarding
                     }
                     catch (Exception ex)
                     {
-
+                        LogHelper.Error("RequestHandler.Forward.HttpRequestMessage.Header", ex);
                     }
                 }
 
