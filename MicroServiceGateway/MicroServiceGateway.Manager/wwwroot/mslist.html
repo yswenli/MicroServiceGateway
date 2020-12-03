@@ -103,9 +103,13 @@
                             $.get("/api/ms/isonline", `virtualAddress=${virtualAddress}&serviceIP=${serviceIP}&servicePort=${servicePort}`, function (data) {
                                 if (data.Data === true) {
                                     tr.children("td").eq(6).html("Online");
+                                    tr.children("td").eq(8).children("a").removeAttr("disabled");
+                                    tr.children("td").eq(8).children("a").css("pointer-events", "auto");
                                 }
                                 else {
                                     tr.children("td").eq(6).html("Offline");
+                                    tr.children("td").eq(8).children("a").attr("disabled", "disabled");
+                                    tr.children("td").eq(8).children("a").css("pointer-events", "none");
                                 }
                             });
 
