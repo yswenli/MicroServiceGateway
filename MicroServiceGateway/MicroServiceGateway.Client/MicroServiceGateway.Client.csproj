@@ -9,17 +9,18 @@
     <Authors>yswenli</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.2.2</Version>
-    <AssemblyVersion>1.1.2.2</AssemblyVersion>
-    <FileVersion>1.1.2.2</FileVersion>
+    <Version>1.1.2.3</Version>
+    <AssemblyVersion>1.1.2.3</AssemblyVersion>
+    <FileVersion>1.1.2.3</FileVersion>
     <Description>MicroServiceGateway.Client</Description>
     <PackageProjectUrl>https://github.com/yswenli/MicroServiceGateway</PackageProjectUrl>
     <RepositoryUrl>https://github.com/yswenli/MicroServiceGateway</RepositoryUrl>
+    <PackageReleaseNotes>MicroServiceGateway.Client</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="SAEA.RPC" Version="5.3.3.9" />
+    <PackageReference Include="SAEA.RPC" Version="5.3.5.1" />
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.0" />
   </ItemGroup>
 
