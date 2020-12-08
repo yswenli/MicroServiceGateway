@@ -48,7 +48,7 @@ namespace MicroServiceGateway.Model
 
     public static class JsonResultExtention
     {
-        public static JsonResult<T> SetResult<T>(this JsonResult<T> result, string msg, T t = default(T), int code = 1)
+        static JsonResult<T> SetResult<T>(this JsonResult<T> result, string msg, T t = default(T), int code = 1)
         {
             result.Code = code;
             result.Message = msg;
@@ -61,11 +61,10 @@ namespace MicroServiceGateway.Model
             return result.SetResult("OK", t, code);
         }
 
-
-        public static JsonResult<T> SetError<T>(this JsonResult<T> result, Exception ex, int code = 2)
+        public static JsonResult<T> SetError<T>(this JsonResult<T> result, string msg, int code = 2)
         {
             result.Code = code;
-            result.Message = $"系统异常：{ex.Message}";
+            result.Message = msg;
             result.Data = default(T);
             return result;
         }

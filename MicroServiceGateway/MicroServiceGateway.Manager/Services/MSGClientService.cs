@@ -15,10 +15,12 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using MicroServiceGateway.Manager.Libs;
 using MicroServiceGateway.Manager.ServiceDiscovery;
 using MicroServiceGateway.Model;
 using SAEA.Common;
 using SAEA.RPC;
+using System.Collections.Generic;
 
 namespace MicroServiceGateway.Manager.Services
 {
@@ -52,6 +54,11 @@ namespace MicroServiceGateway.Manager.Services
             MicroServiceCache.SetOnline(performaceModel.VirtualAddress, performaceModel.IP, performaceModel.Port);
             PerformaceModelCache.Set(performaceModel);
             return true;
+        }
+
+        public List<ConfigDataItem> GetConfigs(string appIds, string env)
+        {
+            return AppDataHelper.GetConfigs(appIds, env);
         }
 
     }

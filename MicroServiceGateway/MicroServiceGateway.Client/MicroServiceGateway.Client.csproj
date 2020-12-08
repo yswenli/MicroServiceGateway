@@ -9,9 +9,9 @@
     <Authors>yswenli</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.2.3</Version>
-    <AssemblyVersion>1.1.2.3</AssemblyVersion>
-    <FileVersion>1.1.2.3</FileVersion>
+    <Version>1.1.2.4</Version>
+    <AssemblyVersion>1.1.2.4</AssemblyVersion>
+    <FileVersion>1.1.2.4</FileVersion>
     <Description>MicroServiceGateway.Client</Description>
     <PackageProjectUrl>https://github.com/yswenli/MicroServiceGateway</PackageProjectUrl>
     <RepositoryUrl>https://github.com/yswenli/MicroServiceGateway</RepositoryUrl>

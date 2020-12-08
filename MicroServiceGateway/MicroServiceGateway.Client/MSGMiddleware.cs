@@ -78,7 +78,9 @@ namespace MicroServiceGateway.Client
 #if DEBUG
                 Console.WriteLine($"{DateTimeHelper.Now.ToFString()} MicroServiceNodeManager is connecting...");
 #endif
-                _rpcServiceProxy = new RPCServiceProxy($"rpc://{_microServiceConfig.ManagerServerIP}:{_microServiceConfig.ManagerServerPort + 1}");
+                MSNMService.Init($"rpc://{_microServiceConfig.ManagerServerIP}:{_microServiceConfig.ManagerServerPort + 1}");
+
+                _rpcServiceProxy = MSNMService.GetService();
 
                 _rpcServiceProxy.OnErr += _rpcServiceProxy_OnErr;
 
@@ -106,39 +108,36 @@ namespace MicroServiceGateway.Client
         /// 上报资源使用情况
         /// </summary>
         /// <param name="performace"></param>
-        private async void PerformanceHelper_OnCounted(Performace performace)
+        private void PerformanceHelper_OnCounted(Performace performace)
         {
-            await Task.Run(() =>
+            try
             {
-                try
+                if (_rpcServiceProxy.IsConnected)
                 {
-                    if (_rpcServiceProxy.IsConnected)
+                    _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
                     {
-                        _rpcServiceProxy.MSGClientService.Report(new Consumer.Model.PerformaceModel()
-                        {
-                            IP = _microServiceConfig.ServiceIP,
-                            Port = _microServiceConfig.ServicePort,
-                            VirtualAddress = _microServiceConfig.VirtualAddress,
-                            CPU = performace.CPU,
-                            MemoryUsage = performace.MemoryUsage,
-                            TotalThreads = performace.TotalThreads,
-                            BytesRec = performace.BytesRec,
-                            BytesSen = performace.BytesSen,
-                            HandleCount = performace.HandleCount
-                        });
-                    }
+                        IP = _microServiceConfig.ServiceIP,
+                        Port = _microServiceConfig.ServicePort,
+                        VirtualAddress = _microServiceConfig.VirtualAddress,
+                        CPU = performace.CPU,
+                        MemoryUsage = performace.MemoryUsage,
+                        TotalThreads = performace.TotalThreads,
+                        BytesRec = performace.BytesRec,
+                        BytesSen = performace.BytesSen,
+                        HandleCount = performace.HandleCount
+                    });
+                }
 #if DEBUG
-                    else
-                    {
-                        ConsoleHelper.WriteLine("The connection to gateway management center has been lost");
-                    }
-#endif
-                }
-                catch (Exception ex)
+                else
                 {
-                    LogHelper.Error("The connection to gateway management center has been lost", ex, _microServiceConfig);
+                    ConsoleHelper.WriteLine("The connection to gateway management center has been lost");
                 }
-            });
+#endif
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("The connection to gateway management center has been lost", ex, _microServiceConfig);
+            }
         }
 
 

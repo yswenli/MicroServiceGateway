@@ -44,7 +44,7 @@ namespace MicroServiceGateway.Manager.Controllers
             catch (Exception ex)
             {
                 LogHelper.Error("MSController.GetList", ex, virtualAddress);
-                result.SetError(ex);
+                result.SetError(ex.Message);
             }
             return Json(result);
         }

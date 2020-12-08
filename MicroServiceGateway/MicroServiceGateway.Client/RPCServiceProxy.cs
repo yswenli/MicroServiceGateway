@@ -74,6 +74,12 @@ namespace MicroServiceGateway.Client.Consumer.Service
         {
             return _serviceConsumer.RemoteCall<Boolean>("MSGClientService", "Report", performaceModel);
         }
+
+        public List<ConfigDataItem> GetConfigs(string appId, string env)
+        {
+            return _serviceConsumer.RemoteCall<List<ConfigDataItem>>("MSGClientService", "GetConfigs", appId, env);
+        }
+
     }
 }
 
@@ -156,6 +162,26 @@ namespace MicroServiceGateway.Client.Consumer.Model
         {
             get;set;
         }
+    }
+    public class ConfigDataItem
+    {
+        public string ID { get; set; }
+
+        public string ConfigDataID { get; set; }
+
+        public Int32 OperationMode { get; set; }
+
+        public string Name { get; set; }
+
+        public string Value { get; set; }
+
+        public string Created { get; set; }
+
+        public string Updated { get; set; }
+
+        public bool IsPublished { get; set; }
+
+        public string Published { get; set; }
     }
 }
 
