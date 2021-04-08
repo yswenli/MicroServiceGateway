@@ -68,5 +68,12 @@ namespace MicroServiceGateway.Model
             result.Data = default(T);
             return result;
         }
+        public static JsonResult<T> SetError<T>(this JsonResult<T> result, Exception ex, int code = 2)
+        {
+            result.Code = code;
+            result.Message = ex.Message;
+            result.Data = default(T);
+            return result;
+        }
     }
 }
